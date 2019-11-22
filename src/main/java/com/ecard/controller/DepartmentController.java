@@ -18,7 +18,7 @@ public class DepartmentController {
     private DepartmentService departmentService;
 
     /**
-     * 新增科室
+     * 新增科室接口
      *
      * @return
      */
