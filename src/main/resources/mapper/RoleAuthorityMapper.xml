@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecard.dao.RoleAuthorityMapper" >
+  <resultMap id="BaseResultMap" type="com.ecard.entity.RoleAuthority">
+    <id column="Id" jdbcType="BIGINT" property="id" />
+    <result column="RoleNo" jdbcType="BIGINT" property="roleNo" />
+    <result column="AuthorityNo" jdbcType="BIGINT" property="authorityNo" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    Id, RoleNo, AuthorityNo
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from roleauthority
+    where Id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from roleauthority
+    where Id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByRoleNo" parameterType="java.lang.Long">
+    delete from roleauthority
+    where roleNo = #{roleNo,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.ecard.entity.RoleAuthority">
+    insert into roleauthority (Id, RoleNo, AuthorityNo
+      )
+    values (#{id,jdbcType=BIGINT}, #{roleNo,jdbcType=BIGINT}, #{authorityNo,jdbcType=BIGINT}
+      )
+  </insert>
+  <select id="selectByRoleNo" resultType="com.ecard.entity.RoleAuthority">
+    select <include refid="Base_Column_List" />
+    from roleauthority
+    where RoleNo = #{RoleNo,jdbcType=BIGINT}
+  </select>
+  <insert id="insertSelective" parameterType="com.ecard.entity.RoleAuthority">
+    insert into roleauthority
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        Id,
+      </if>
+      <if test="roleNo != null">
+        RoleNo,
+      </if>
+      <if test="authorityNo != null">
+        AuthorityNo,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="roleNo != null">
+        #{roleNo,jdbcType=BIGINT},
+      </if>
+      <if test="authorityNo != null">
+        #{authorityNo,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecard.entity.RoleAuthority">
+    update roleauthority
+    <set>
+      <if test="roleNo != null">
+        RoleNo = #{roleNo,jdbcType=BIGINT},
+      </if>
+      <if test="authorityNo != null">
+        AuthorityNo = #{authorityNo,jdbcType=BIGINT},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecard.entity.RoleAuthority">
+    update roleauthority
+    set RoleNo = #{roleNo,jdbcType=BIGINT},
+      AuthorityNo = #{authorityNo,jdbcType=BIGINT}
+    where Id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

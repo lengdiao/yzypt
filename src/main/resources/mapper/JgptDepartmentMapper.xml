@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecard.dao.JgptDepartmentMapper" >
+  <resultMap id="BaseResultMap" type="com.ecard.entity.JgptDepartment" >
+    <id column="DepartmentNo" property="departmentNo" jdbcType="VARCHAR" />
+    <result column="DepartmentName" property="departmentName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    DepartmentNo, DepartmentName
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from jgptdepartment
+    where DepartmentNo = #{departmentNo,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from jgptdepartment
+    where DepartmentNo = #{departmentNo,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ecard.entity.JgptDepartment" >
+    insert into jgptdepartment (DepartmentNo, DepartmentName)
+    values (#{departmentNo,jdbcType=VARCHAR}, #{departmentName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecard.entity.JgptDepartment" >
+    insert into jgptdepartment
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="departmentNo != null" >
+        DepartmentNo,
+      </if>
+      <if test="departmentName != null" >
+        DepartmentName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="departmentNo != null" >
+        #{departmentNo,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentName != null" >
+        #{departmentName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecard.entity.JgptDepartment" >
+    update jgptdepartment
+    <set >
+      <if test="departmentName != null" >
+        DepartmentName = #{departmentName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where DepartmentNo = #{departmentNo,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecard.entity.JgptDepartment" >
+    update jgptdepartment
+    set DepartmentName = #{departmentName,jdbcType=VARCHAR}
+    where DepartmentNo = #{departmentNo,jdbcType=VARCHAR}
+  </update>
+  <select id="selectAll" resultType="com.ecard.entity.JgptDepartment">
+    select * from jgptdepartment
+  </select>
+</mapper>

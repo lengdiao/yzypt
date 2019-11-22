@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecard.dao.ApiDiseaseMapper" >
+  <resultMap id="BaseResultMap" type="com.ecard.entity.ApiDisease" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="order_no" property="order_no" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="DNo" property="DNo" jdbcType="BIGINT" />
+    <result column="CreateUser" property="createUser" jdbcType="BIGINT" />
+    <result column="CreateTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UpdateUser" property="updateUser" jdbcType="BIGINT" />
+    <result column="UpdateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="Version" property="version" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, code, name, order_no, type, DNo, CreateUser, CreateTime, UpdateUser, UpdateTime, 
+    Version
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from apidisease
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from apidisease
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ecard.entity.ApiDisease" >
+    insert into apidisease (id, code, name, 
+      order_no, type, DNo, 
+      CreateUser, CreateTime, UpdateUser, 
+      UpdateTime, Version)
+    values (#{id,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{order_no,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{DNo,jdbcType=BIGINT}, 
+      #{createUser,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=BIGINT}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{version,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecard.entity.ApiDisease" >
+    insert into apidisease
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="order_no != null" >
+        order_no,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="DNo != null" >
+        DNo,
+      </if>
+      <if test="createUser != null" >
+        CreateUser,
+      </if>
+      <if test="createTime != null" >
+        CreateTime,
+      </if>
+      <if test="updateUser != null" >
+        UpdateUser,
+      </if>
+      <if test="updateTime != null" >
+        UpdateTime,
+      </if>
+      <if test="version != null" >
+        Version,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="order_no != null" >
+        #{order_no,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="DNo != null" >
+        #{DNo,jdbcType=BIGINT},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null" >
+        #{updateUser,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecard.entity.ApiDisease" >
+    update apidisease
+    <set >
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="order_no != null" >
+        order_no = #{order_no,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="DNo != null" >
+        DNo = #{DNo,jdbcType=BIGINT},
+      </if>
+      <if test="createUser != null" >
+        CreateUser = #{createUser,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        CreateTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null" >
+        UpdateUser = #{updateUser,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        UpdateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null" >
+        Version = #{version,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecard.entity.ApiDisease" >
+    update apidisease
+    set code = #{code,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      order_no = #{order_no,jdbcType=INTEGER},
+      type = #{type,jdbcType=VARCHAR},
+      DNo = #{DNo,jdbcType=BIGINT},
+      CreateUser = #{createUser,jdbcType=BIGINT},
+      CreateTime = #{createTime,jdbcType=TIMESTAMP},
+      UpdateUser = #{updateUser,jdbcType=BIGINT},
+      UpdateTime = #{updateTime,jdbcType=TIMESTAMP},
+      Version = #{version,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectAll" resultType="com.ecard.entity.ApiDisease">
+    select * from apidisease
+  </select>
+</mapper>

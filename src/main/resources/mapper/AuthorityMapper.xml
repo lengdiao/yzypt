@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecard.dao.AuthorityMapper" >
+  <resultMap id="BaseResultMap" type="com.ecard.entity.Authority">
+    <id column="AuthorityNo" jdbcType="BIGINT" property="authorityNo" />
+    <result column="AuthorityName" jdbcType="VARCHAR" property="authorityName" />
+    <result column="Img" jdbcType="VARCHAR" property="img" />
+    <result column="Url" jdbcType="VARCHAR" property="url" />
+    <result column="EvntName" jdbcType="VARCHAR" property="evntName" />
+    <result column="CreateUser" jdbcType="VARCHAR" property="createUser" />
+    <result column="CreatTime" jdbcType="TIMESTAMP" property="creatTime" />
+    <result column="UpdateUser" jdbcType="VARCHAR" property="updateUser" />
+    <result column="UpdateTime" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="Version" jdbcType="INTEGER" property="version" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    AuthorityNo, AuthorityName, Img, Url, EvntName, CreateUser, CreatTime, UpdateUser,
+    UpdateTime, Version
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from authority
+    where AuthorityNo = #{authorityNo,jdbcType=BIGINT}
+  </select>
+
+  <select id="selectByRoleno" parameterType="java.lang.Long" resultType="com.ecard.pojo.queryResult.Authoritys">
+    select
+   	a.AuthorityNo,a.AuthorityName,a.Img,a.Url
+    from authority a,roleauthority ra
+    where a.AuthorityNo =ra.AuthorityNo and ra.RoleNo=#{roleNo,jdbcType=INTEGER}
+  </select>
+
+
+  <select id="selectAllauths" resultType="com.ecard.pojo.queryResult.Authoritys">
+    select
+   	AuthorityNo,AuthorityName,Img,Url
+    from authority
+
+  </select>
+
+
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from authority
+    where AuthorityNo = #{authorityNo,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.ecard.entity.Authority">
+    insert into authority (AuthorityNo, AuthorityName, Img,
+      Url, EvntName, CreateUser,
+      CreatTime, UpdateUser, UpdateTime,
+      Version)
+    values (#{authorityNo,jdbcType=BIGINT}, #{authorityName,jdbcType=VARCHAR}, #{img,jdbcType=VARCHAR},
+      #{url,jdbcType=VARCHAR}, #{evntName,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR},
+      #{creatTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP},
+      #{version,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecard.entity.Authority">
+    insert into authority
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="authorityNo != null">
+        AuthorityNo,
+      </if>
+      <if test="authorityName != null">
+        AuthorityName,
+      </if>
+      <if test="img != null">
+        Img,
+      </if>
+      <if test="url != null">
+        Url,
+      </if>
+      <if test="evntName != null">
+        EvntName,
+      </if>
+      <if test="createUser != null">
+        CreateUser,
+      </if>
+      <if test="creatTime != null">
+        CreatTime,
+      </if>
+      <if test="updateUser != null">
+        UpdateUser,
+      </if>
+      <if test="updateTime != null">
+        UpdateTime,
+      </if>
+      <if test="version != null">
+        Version,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="authorityNo != null">
+        #{authorityNo,jdbcType=BIGINT},
+      </if>
+      <if test="authorityName != null">
+        #{authorityName,jdbcType=VARCHAR},
+      </if>
+      <if test="img != null">
+        #{img,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="evntName != null">
+        #{evntName,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null">
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="creatTime != null">
+        #{creatTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null">
+        #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecard.entity.Authority">
+    update authority
+    <set>
+      <if test="authorityName != null">
+        AuthorityName = #{authorityName,jdbcType=VARCHAR},
+      </if>
+      <if test="img != null">
+        Img = #{img,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        Url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="evntName != null">
+        EvntName = #{evntName,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null">
+        CreateUser = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="creatTime != null">
+        CreatTime = #{creatTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null">
+        UpdateUser = #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        UpdateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null">
+        Version = #{version,jdbcType=INTEGER},
+      </if>
+    </set>
+    where AuthorityNo = #{authorityNo,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecard.entity.Authority">
+    update authority
+    set AuthorityName = #{authorityName,jdbcType=VARCHAR},
+      Img = #{img,jdbcType=VARCHAR},
+      Url = #{url,jdbcType=VARCHAR},
+      EvntName = #{evntName,jdbcType=VARCHAR},
+      CreateUser = #{createUser,jdbcType=VARCHAR},
+      CreatTime = #{creatTime,jdbcType=TIMESTAMP},
+      UpdateUser = #{updateUser,jdbcType=VARCHAR},
+      UpdateTime = #{updateTime,jdbcType=TIMESTAMP},
+      Version = #{version,jdbcType=INTEGER}
+    where AuthorityNo = #{authorityNo,jdbcType=BIGINT}
+  </update>
+</mapper>

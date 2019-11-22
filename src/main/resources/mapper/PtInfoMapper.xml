@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ecard.dao.PtInfoMapper">
+  <resultMap id="BaseResultMap" type="com.ecard.entity.PtInfo">
+    <id column="PtNo" jdbcType="BIGINT" property="ptNo" />
+    <result column="CloudPassNo" jdbcType="BIGINT" property="cloudPassNo" />
+    <result column="Sex" jdbcType="VARCHAR" property="sex" />
+    <result column="BirthDay" jdbcType="DATE" property="birthDay" />
+    <result column="Height" jdbcType="DOUBLE" property="height" />
+    <result column="Weight" jdbcType="DOUBLE" property="weight" />
+    <result column="DisableFlag" jdbcType="INTEGER" property="disableFlag" />
+    <result column="CreateUser" jdbcType="VARCHAR" property="createUser" />
+    <result column="CreateTime" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UpdateUser" jdbcType="VARCHAR" property="updateUser" />
+    <result column="UpdateTime" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="Version" jdbcType="INTEGER" property="version" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    PtNo, CloudPassNo, Sex, BirthDay, Height, Weight, DisableFlag, CreateUser, CreateTime, 
+    UpdateUser, UpdateTime, Version
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ptinfo
+    where PtNo = #{ptNo,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from ptinfo
+    where PtNo = #{ptNo,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.ecard.entity.PtInfo">
+    insert into ptinfo (PtNo, CloudPassNo, Sex, 
+      BirthDay, Height, Weight, 
+      DisableFlag, CreateUser, CreateTime, 
+      UpdateUser, UpdateTime, Version
+      )
+    values (#{ptNo,jdbcType=BIGINT}, #{cloudPassNo,jdbcType=BIGINT}, #{sex,jdbcType=VARCHAR}, 
+      #{birthDay,jdbcType=DATE}, #{height,jdbcType=DOUBLE}, #{weight,jdbcType=DOUBLE}, 
+      #{disableFlag,jdbcType=INTEGER}, #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateUser,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{version,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecard.entity.PtInfo"
+          useGeneratedKeys="true" keyProperty="ptNo" keyColumn="PtNo">
+    insert into ptinfo
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="ptNo != null">
+        PtNo,
+      </if>
+      <if test="cloudPassNo != null">
+        CloudPassNo,
+      </if>
+      <if test="sex != null">
+        Sex,
+      </if>
+      <if test="birthDay != null">
+        BirthDay,
+      </if>
+      <if test="height != null">
+        Height,
+      </if>
+      <if test="weight != null">
+        Weight,
+      </if>
+      <if test="disableFlag != null">
+        DisableFlag,
+      </if>
+      <if test="createUser != null">
+        CreateUser,
+      </if>
+      <if test="createTime != null">
+        CreateTime,
+      </if>
+      <if test="updateUser != null">
+        UpdateUser,
+      </if>
+      <if test="updateTime != null">
+        UpdateTime,
+      </if>
+      <if test="version != null">
+        Version,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="ptNo != null">
+        #{ptNo,jdbcType=BIGINT},
+      </if>
+      <if test="cloudPassNo != null">
+        #{cloudPassNo,jdbcType=BIGINT},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="birthDay != null">
+        #{birthDay,jdbcType=DATE},
+      </if>
+      <if test="height != null">
+        #{height,jdbcType=DOUBLE},
+      </if>
+      <if test="weight != null">
+        #{weight,jdbcType=DOUBLE},
+      </if>
+      <if test="disableFlag != null">
+        #{disableFlag,jdbcType=INTEGER},
+      </if>
+      <if test="createUser != null">
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null">
+        #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecard.entity.PtInfo">
+    update ptinfo
+    <set>
+      <if test="cloudPassNo != null">
+        CloudPassNo = #{cloudPassNo,jdbcType=BIGINT},
+      </if>
+      <if test="sex != null">
+        Sex = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="birthDay != null">
+        BirthDay = #{birthDay,jdbcType=DATE},
+      </if>
+      <if test="height != null">
+        Height = #{height,jdbcType=DOUBLE},
+      </if>
+      <if test="weight != null">
+        Weight = #{weight,jdbcType=DOUBLE},
+      </if>
+      <if test="disableFlag != null">
+        DisableFlag = #{disableFlag,jdbcType=INTEGER},
+      </if>
+      <if test="createUser != null">
+        CreateUser = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        CreateTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null">
+        UpdateUser = #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        UpdateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null">
+        Version = #{version,jdbcType=INTEGER},
+      </if>
+    </set>
+    where PtNo = #{ptNo,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecard.entity.PtInfo">
+    update ptinfo
+    set CloudPassNo = #{cloudPassNo,jdbcType=BIGINT},
+      Sex = #{sex,jdbcType=VARCHAR},
+      BirthDay = #{birthDay,jdbcType=DATE},
+      Height = #{height,jdbcType=DOUBLE},
+      Weight = #{weight,jdbcType=DOUBLE},
+      DisableFlag = #{disableFlag,jdbcType=INTEGER},
+      CreateUser = #{createUser,jdbcType=VARCHAR},
+      CreateTime = #{createTime,jdbcType=TIMESTAMP},
+      UpdateUser = #{updateUser,jdbcType=VARCHAR},
+      UpdateTime = #{updateTime,jdbcType=TIMESTAMP},
+      Version = #{version,jdbcType=INTEGER}
+    where PtNo = #{ptNo,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPtNo" resultType="com.ecard.pojo.queryResult.PtInfoQr" parameterType="java.lang.Long">
+    select
+    pt.PtNo, pt.CloudPassNo, pt.Sex, pt.BirthDay, pt.Height, pt.Weight, pt.DisableFlag, pt.CreateUser, pt.CreateTime,
+    pt.UpdateUser, pt.UpdateTime, pt.Version, cpi.Name
+    from
+    ptinfo pt ,cloudpassinfo cpi
+    where cpi.CloudPassNo = pt.CloudPassNo
+    and
+    pt.PtNo = #{ptNo,jdbcType=BIGINT}
+  </select>
+  <select id="selectPtInfo" resultType="com.ecard.pojo.queryResult.PtInfoQr">
+    select
+    pt.PtNo, pt.CloudPassNo, pt.Sex, pt.BirthDay, pt.Height, pt.Weight, pt.DisableFlag, pt.CreateUser, pt.CreateTime,
+    pt.UpdateUser, pt.UpdateTime, pt.Version, cpi.Name
+    from
+    ptinfo pt ,cloudpassinfo cpi
+    where cpi.CloudPassNo = pt.CloudPassNo
+    <if test="name != null">
+      and cpi.Name like "%"#{name,jdbcType=VARCHAR}"%"
+    </if>
+    <if test="idCard != null">
+      and cpi.IdCard = #{idCard,jdbcType=VARCHAR}
+    </if>
+  </select>
+</mapper>

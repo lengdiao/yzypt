@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ecard.dao.MedItemMapper">
+  <resultMap id="BaseResultMap" type="com.ecard.entity.MedItem">
+    <id column="MedItemNo" jdbcType="BIGINT" property="medItemNo" />
+    <result column="MedOrderNo" jdbcType="BIGINT" property="medOrderNo" />
+    <result column="DrugNo" jdbcType="BIGINT" property="drugNo" />
+    <result column="Number" jdbcType="DOUBLE" property="number" />
+    <result column="ExecDay" jdbcType="INTEGER" property="execDay" />
+    <result column="WayNo" jdbcType="VARCHAR" property="wayNo" />
+    <result column="ExecWhen" jdbcType="VARCHAR" property="execWhen" />
+    <result column="ExecAim" jdbcType="VARCHAR" property="execAim" />
+    <result column="DayDose" jdbcType="DECIMAL" property="dayDose" />
+    <result column="Dose" jdbcType="DECIMAL" property="dose" />
+    <result column="DoseUnit" jdbcType="VARCHAR" property="doseUnit" />
+    <result column="UsageNo" jdbcType="VARCHAR" property="usageNo" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    MedItemNo, MedOrderNo, DrugNo, Number, ExecDay, WayNo, ExecWhen, ExecAim, DayDose, 
+    Dose, DoseUnit, UsageNo
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from meditem
+    where MedItemNo = #{medItemNo,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from meditem
+    where MedItemNo = #{medItemNo,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.ecard.entity.MedItem">
+    insert into meditem (MedItemNo, MedOrderNo, DrugNo, 
+      Number, ExecDay, WayNo, 
+      ExecWhen, ExecAim, DayDose, 
+      Dose, DoseUnit, UsageNo
+      )
+    values (#{medItemNo,jdbcType=BIGINT}, #{medOrderNo,jdbcType=BIGINT}, #{drugNo,jdbcType=BIGINT}, 
+      #{number,jdbcType=DOUBLE}, #{execDay,jdbcType=INTEGER}, #{wayNo,jdbcType=VARCHAR}, 
+      #{execWhen,jdbcType=VARCHAR}, #{execAim,jdbcType=VARCHAR}, #{dayDose,jdbcType=DECIMAL}, 
+      #{dose,jdbcType=DECIMAL}, #{doseUnit,jdbcType=VARCHAR}, #{usageNo,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecard.entity.MedItem">
+    insert into meditem
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="medItemNo != null">
+        MedItemNo,
+      </if>
+      <if test="medOrderNo != null">
+        MedOrderNo,
+      </if>
+      <if test="drugNo != null">
+        DrugNo,
+      </if>
+      <if test="number != null">
+        Number,
+      </if>
+      <if test="execDay != null">
+        ExecDay,
+      </if>
+      <if test="wayNo != null">
+        WayNo,
+      </if>
+      <if test="execWhen != null">
+        ExecWhen,
+      </if>
+      <if test="execAim != null">
+        ExecAim,
+      </if>
+      <if test="dayDose != null">
+        DayDose,
+      </if>
+      <if test="dose != null">
+        Dose,
+      </if>
+      <if test="doseUnit != null">
+        DoseUnit,
+      </if>
+      <if test="usageNo != null">
+        UsageNo,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="medItemNo != null">
+        #{medItemNo,jdbcType=BIGINT},
+      </if>
+      <if test="medOrderNo != null">
+        #{medOrderNo,jdbcType=BIGINT},
+      </if>
+      <if test="drugNo != null">
+        #{drugNo,jdbcType=BIGINT},
+      </if>
+      <if test="number != null">
+        #{number,jdbcType=DOUBLE},
+      </if>
+      <if test="execDay != null">
+        #{execDay,jdbcType=INTEGER},
+      </if>
+      <if test="wayNo != null">
+        #{wayNo,jdbcType=VARCHAR},
+      </if>
+      <if test="execWhen != null">
+        #{execWhen,jdbcType=VARCHAR},
+      </if>
+      <if test="execAim != null">
+        #{execAim,jdbcType=VARCHAR},
+      </if>
+      <if test="dayDose != null">
+        #{dayDose,jdbcType=DECIMAL},
+      </if>
+      <if test="dose != null">
+        #{dose,jdbcType=DECIMAL},
+      </if>
+      <if test="doseUnit != null">
+        #{doseUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="usageNo != null">
+        #{usageNo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecard.entity.MedItem">
+    update meditem
+    <set>
+      <if test="medOrderNo != null">
+        MedOrderNo = #{medOrderNo,jdbcType=BIGINT},
+      </if>
+      <if test="drugNo != null">
+        DrugNo = #{drugNo,jdbcType=BIGINT},
+      </if>
+      <if test="number != null">
+        Number = #{number,jdbcType=DOUBLE},
+      </if>
+      <if test="execDay != null">
+        ExecDay = #{execDay,jdbcType=INTEGER},
+      </if>
+      <if test="wayNo != null">
+        WayNo = #{wayNo,jdbcType=VARCHAR},
+      </if>
+      <if test="execWhen != null">
+        ExecWhen = #{execWhen,jdbcType=VARCHAR},
+      </if>
+      <if test="execAim != null">
+        ExecAim = #{execAim,jdbcType=VARCHAR},
+      </if>
+      <if test="dayDose != null">
+        DayDose = #{dayDose,jdbcType=DECIMAL},
+      </if>
+      <if test="dose != null">
+        Dose = #{dose,jdbcType=DECIMAL},
+      </if>
+      <if test="doseUnit != null">
+        DoseUnit = #{doseUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="usageNo != null">
+        UsageNo = #{usageNo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where MedItemNo = #{medItemNo,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecard.entity.MedItem">
+    update meditem
+    set MedOrderNo = #{medOrderNo,jdbcType=BIGINT},
+      DrugNo = #{drugNo,jdbcType=BIGINT},
+      Number = #{number,jdbcType=DOUBLE},
+      ExecDay = #{execDay,jdbcType=INTEGER},
+      WayNo = #{wayNo,jdbcType=VARCHAR},
+      ExecWhen = #{execWhen,jdbcType=VARCHAR},
+      ExecAim = #{execAim,jdbcType=VARCHAR},
+      DayDose = #{dayDose,jdbcType=DECIMAL},
+      Dose = #{dose,jdbcType=DECIMAL},
+      DoseUnit = #{doseUnit,jdbcType=VARCHAR},
+      UsageNo = #{usageNo,jdbcType=VARCHAR}
+    where MedItemNo = #{medItemNo,jdbcType=BIGINT}
+  </update>
+  <select id="selectByMedOrderNo" resultType="com.ecard.pojo.queryResult.MedItemQr" parameterType="java.lang.Long">
+    select
+    mei.medItemNo,mei.medOrderNo,mei.drugNo,mei.number,mei.execDay,mei.wayNo,mei.execWhen,mei.execAim,mei.dayDose,
+    mei.dose,mei.doseUnit,mei.usageNo,
+    ds.drugSetNo,ds.hisDrugCode,ds.commonName,ds.itemName,
+    ds.nhiType,ds.manufactory,ds.category,ds.essentialDrug,
+    ds.ctrlDrug,ds.highAlert,ds.dividend,ds.saleUnit,ds.divisor,
+    ds.doseUnit as doseUnit1,ds.form,ds.material,ds.dosege,ds.dosegeUnit,
+    ds.volume,ds.unit
+    from meditem mei,drugset ds
+    where mei.drugNo = ds.drugSetNo
+    and mei.medOrderNo = #{orderNo,jdbcType=BIGINT}
+  </select>
+</mapper>

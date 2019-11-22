@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ecard.dao.CommonMasterMapper">
+  <resultMap id="BaseResultMap" type="com.ecard.entity.CommonMaster">
+    <id column="BigCategoryNo" jdbcType="INTEGER" property="bigCategoryNo" />
+    <id column="SmallCategoryNo" jdbcType="VARCHAR" property="smallCategoryNo" />
+    <result column="BigCategoryName" jdbcType="VARCHAR" property="bigCategoryName" />
+    <result column="ModifyDivision" jdbcType="VARCHAR" property="modifyDivision" />
+    <result column="SmallCategoryName" jdbcType="VARCHAR" property="smallCategoryName" />
+    <result column="Description" jdbcType="VARCHAR" property="description" />
+    <result column="DisplaySort" jdbcType="INTEGER" property="displaySort" />
+    <result column="Remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="Keyword1" jdbcType="VARCHAR" property="keyword1" />
+    <result column="Keyword2" jdbcType="VARCHAR" property="keyword2" />
+    <result column="Keyword3" jdbcType="VARCHAR" property="keyword3" />
+    <result column="DisableFlag" jdbcType="INTEGER" property="disableFlag" />
+    <result column="CreateUser" jdbcType="BIGINT" property="createUser" />
+    <result column="CreateTime" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UpdateUser" jdbcType="BIGINT" property="updateUser" />
+    <result column="UpdateTime" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="Version" jdbcType="INTEGER" property="version" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    BigCategoryNo, SmallCategoryNo, BigCategoryName, ModifyDivision, SmallCategoryName, 
+    Description, DisplaySort, Remarks, Keyword1, Keyword2, Keyword3, DisableFlag, CreateUser, 
+    CreateTime, UpdateUser, UpdateTime, Version
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="com.ecard.entity.CommonMasterKey" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from commonmaster
+    where BigCategoryNo = #{bigCategoryNo,jdbcType=INTEGER}
+      and SmallCategoryNo = #{smallCategoryNo,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.ecard.entity.CommonMasterKey">
+    delete from commonmaster
+    where BigCategoryNo = #{bigCategoryNo,jdbcType=INTEGER}
+      and SmallCategoryNo = #{smallCategoryNo,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ecard.entity.CommonMaster">
+    insert into commonmaster (BigCategoryNo, SmallCategoryNo, BigCategoryName, 
+      ModifyDivision, SmallCategoryName, Description, 
+      DisplaySort, Remarks, Keyword1, 
+      Keyword2, Keyword3, DisableFlag, 
+      CreateUser, CreateTime, UpdateUser, 
+      UpdateTime, Version)
+    values (#{bigCategoryNo,jdbcType=INTEGER}, #{smallCategoryNo,jdbcType=VARCHAR}, #{bigCategoryName,jdbcType=VARCHAR}, 
+      #{modifyDivision,jdbcType=VARCHAR}, #{smallCategoryName,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{displaySort,jdbcType=INTEGER}, #{remarks,jdbcType=VARCHAR}, #{keyword1,jdbcType=VARCHAR}, 
+      #{keyword2,jdbcType=VARCHAR}, #{keyword3,jdbcType=VARCHAR}, #{disableFlag,jdbcType=INTEGER}, 
+      #{createUser,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=BIGINT}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{version,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecard.entity.CommonMaster">
+    insert into commonmaster
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="bigCategoryNo != null">
+        BigCategoryNo,
+      </if>
+      <if test="smallCategoryNo != null">
+        SmallCategoryNo,
+      </if>
+      <if test="bigCategoryName != null">
+        BigCategoryName,
+      </if>
+      <if test="modifyDivision != null">
+        ModifyDivision,
+      </if>
+      <if test="smallCategoryName != null">
+        SmallCategoryName,
+      </if>
+      <if test="description != null">
+        Description,
+      </if>
+      <if test="displaySort != null">
+        DisplaySort,
+      </if>
+      <if test="remarks != null">
+        Remarks,
+      </if>
+      <if test="keyword1 != null">
+        Keyword1,
+      </if>
+      <if test="keyword2 != null">
+        Keyword2,
+      </if>
+      <if test="keyword3 != null">
+        Keyword3,
+      </if>
+      <if test="disableFlag != null">
+        DisableFlag,
+      </if>
+      <if test="createUser != null">
+        CreateUser,
+      </if>
+      <if test="createTime != null">
+        CreateTime,
+      </if>
+      <if test="updateUser != null">
+        UpdateUser,
+      </if>
+      <if test="updateTime != null">
+        UpdateTime,
+      </if>
+      <if test="version != null">
+        Version,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="bigCategoryNo != null">
+        #{bigCategoryNo,jdbcType=INTEGER},
+      </if>
+      <if test="smallCategoryNo != null">
+        #{smallCategoryNo,jdbcType=VARCHAR},
+      </if>
+      <if test="bigCategoryName != null">
+        #{bigCategoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyDivision != null">
+        #{modifyDivision,jdbcType=VARCHAR},
+      </if>
+      <if test="smallCategoryName != null">
+        #{smallCategoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="displaySort != null">
+        #{displaySort,jdbcType=INTEGER},
+      </if>
+      <if test="remarks != null">
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="keyword1 != null">
+        #{keyword1,jdbcType=VARCHAR},
+      </if>
+      <if test="keyword2 != null">
+        #{keyword2,jdbcType=VARCHAR},
+      </if>
+      <if test="keyword3 != null">
+        #{keyword3,jdbcType=VARCHAR},
+      </if>
+      <if test="disableFlag != null">
+        #{disableFlag,jdbcType=INTEGER},
+      </if>
+      <if test="createUser != null">
+        #{createUser,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null">
+        #{updateUser,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecard.entity.CommonMaster">
+    update commonmaster
+    <set>
+      <if test="bigCategoryName != null">
+        BigCategoryName = #{bigCategoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyDivision != null">
+        ModifyDivision = #{modifyDivision,jdbcType=VARCHAR},
+      </if>
+      <if test="smallCategoryName != null">
+        SmallCategoryName = #{smallCategoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        Description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="displaySort != null">
+        DisplaySort = #{displaySort,jdbcType=INTEGER},
+      </if>
+      <if test="remarks != null">
+        Remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="keyword1 != null">
+        Keyword1 = #{keyword1,jdbcType=VARCHAR},
+      </if>
+      <if test="keyword2 != null">
+        Keyword2 = #{keyword2,jdbcType=VARCHAR},
+      </if>
+      <if test="keyword3 != null">
+        Keyword3 = #{keyword3,jdbcType=VARCHAR},
+      </if>
+      <if test="disableFlag != null">
+        DisableFlag = #{disableFlag,jdbcType=INTEGER},
+      </if>
+      <if test="createUser != null">
+        CreateUser = #{createUser,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        CreateTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null">
+        UpdateUser = #{updateUser,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null">
+        UpdateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null">
+        Version = #{version,jdbcType=INTEGER},
+      </if>
+    </set>
+    where BigCategoryNo = #{bigCategoryNo,jdbcType=INTEGER}
+      and SmallCategoryNo = #{smallCategoryNo,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecard.entity.CommonMaster">
+    update commonmaster
+    set BigCategoryName = #{bigCategoryName,jdbcType=VARCHAR},
+      ModifyDivision = #{modifyDivision,jdbcType=VARCHAR},
+      SmallCategoryName = #{smallCategoryName,jdbcType=VARCHAR},
+      Description = #{description,jdbcType=VARCHAR},
+      DisplaySort = #{displaySort,jdbcType=INTEGER},
+      Remarks = #{remarks,jdbcType=VARCHAR},
+      Keyword1 = #{keyword1,jdbcType=VARCHAR},
+      Keyword2 = #{keyword2,jdbcType=VARCHAR},
+      Keyword3 = #{keyword3,jdbcType=VARCHAR},
+      DisableFlag = #{disableFlag,jdbcType=INTEGER},
+      CreateUser = #{createUser,jdbcType=BIGINT},
+      CreateTime = #{createTime,jdbcType=TIMESTAMP},
+      UpdateUser = #{updateUser,jdbcType=BIGINT},
+      UpdateTime = #{updateTime,jdbcType=TIMESTAMP},
+      Version = #{version,jdbcType=INTEGER}
+    where BigCategoryNo = #{bigCategoryNo,jdbcType=INTEGER}
+      and SmallCategoryNo = #{smallCategoryNo,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByNo" resultType="java.lang.String" parameterType="java.lang.Integer">
+    select SmallCategoryName from commonmaster where  BigCategoryNo = #{bigCategoryNo,jdbcType=INTEGER}
+  </select>
+</mapper>

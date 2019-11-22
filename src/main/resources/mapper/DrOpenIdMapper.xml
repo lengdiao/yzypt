@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecard.dao.DrOpenIdMapper" >
+  <resultMap id="BaseResultMap" type="com.ecard.entity.DrOpenId" >
+    <id column="Id" property="id" jdbcType="BIGINT" />
+    <result column="DrNo" property="drNo" jdbcType="BIGINT" />
+    <result column="OpenId" property="openId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, DrNo, OpenId
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from dropenid
+    where Id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from dropenid
+    where Id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.ecard.entity.DrOpenId" >
+    insert into dropenid (Id, DrNo, OpenId
+      )
+    values (#{id,jdbcType=BIGINT}, #{drNo,jdbcType=BIGINT}, #{openId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecard.entity.DrOpenId" >
+    insert into dropenid
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="drNo != null" >
+        DrNo,
+      </if>
+      <if test="openId != null" >
+        OpenId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="drNo != null" >
+        #{drNo,jdbcType=BIGINT},
+      </if>
+      <if test="openId != null" >
+        #{openId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecard.entity.DrOpenId" >
+    update dropenid
+    <set >
+      <if test="drNo != null" >
+        DrNo = #{drNo,jdbcType=BIGINT},
+      </if>
+      <if test="openId != null" >
+        OpenId = #{openId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecard.entity.DrOpenId" >
+    update dropenid
+    set DrNo = #{drNo,jdbcType=BIGINT},
+      OpenId = #{openId,jdbcType=VARCHAR}
+    where Id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByOpenId" resultType="com.ecard.entity.DrOpenId" parameterType="java.lang.String">
+    select * from dropenid where OpenId = #{openId,jdbcType=VARCHAR}
+  </select>
+</mapper>

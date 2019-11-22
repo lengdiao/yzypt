@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecard.dao.DrugSetMapper" >
+  <resultMap id="BaseResultMap" type="com.ecard.entity.DrugSet" >
+    <id column="DrugSetNo" property="drugSetNo" jdbcType="BIGINT" />
+    <result column="HisDrugCode" property="hisDrugCode" jdbcType="VARCHAR" />
+    <result column="CommonName" property="commonName" jdbcType="VARCHAR" />
+    <result column="ItemName" property="itemName" jdbcType="VARCHAR" />
+    <result column="NhiType" property="nhiType" jdbcType="INTEGER" />
+    <result column="Manufactory" property="manufactory" jdbcType="VARCHAR" />
+    <result column="Category" property="category" jdbcType="INTEGER" />
+    <result column="EssentialDrug" property="essentialDrug" jdbcType="INTEGER" />
+    <result column="CtrlDrug" property="ctrlDrug" jdbcType="VARCHAR" />
+    <result column="HighAlert" property="highAlert" jdbcType="VARCHAR" />
+    <result column="Dividend" property="dividend" jdbcType="DECIMAL" />
+    <result column="SaleUnit" property="saleUnit" jdbcType="VARCHAR" />
+    <result column="Divisor" property="divisor" jdbcType="DECIMAL" />
+    <result column="DoseUnit" property="doseUnit" jdbcType="VARCHAR" />
+    <result column="Form" property="form" jdbcType="INTEGER" />
+    <result column="Material" property="material" jdbcType="INTEGER" />
+    <result column="Dosege" property="dosege" jdbcType="DECIMAL" />
+    <result column="DosegeUnit" property="dosegeUnit" jdbcType="VARCHAR" />
+    <result column="Volume" property="volume" jdbcType="DECIMAL" />
+    <result column="Unit" property="unit" jdbcType="VARCHAR" />
+    <result column="Remark" property="remark" jdbcType="VARCHAR" />
+    <result column="Keyword1" property="keyword1" jdbcType="VARCHAR" />
+    <result column="Keyword2" property="keyword2" jdbcType="VARCHAR" />
+    <result column="Keyword3" property="keyword3" jdbcType="VARCHAR" />
+    <result column="SaleGenPrice" property="saleGenPrice" jdbcType="DECIMAL" />
+    <result column="DisableFlag" property="disableFlag" jdbcType="INTEGER" />
+    <result column="CreateUser" property="createUser" jdbcType="BIGINT" />
+    <result column="CreateTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UpdateUser" property="updateUser" jdbcType="BIGINT" />
+    <result column="UpdateTime" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="Version" property="version" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    DrugSetNo, HisDrugCode, CommonName, ItemName, NhiType, Manufactory, Category, EssentialDrug, 
+    CtrlDrug, HighAlert, Dividend, SaleUnit, Divisor, DoseUnit, Form, Material, Dosege, 
+    DosegeUnit, Volume, Unit, Remark, Keyword1, Keyword2, Keyword3, SaleGenPrice, DisableFlag, 
+    CreateUser, CreateTime, UpdateUser, UpdateTime, Version
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from drugset
+    where DrugSetNo = #{drugSetNo,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from drugset
+    where DrugSetNo = #{drugSetNo,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.ecard.entity.DrugSet" >
+    insert into drugset (DrugSetNo, HisDrugCode, CommonName, 
+      ItemName, NhiType, Manufactory, 
+      Category, EssentialDrug, CtrlDrug, 
+      HighAlert, Dividend, SaleUnit, 
+      Divisor, DoseUnit, Form, 
+      Material, Dosege, DosegeUnit, 
+      Volume, Unit, Remark, 
+      Keyword1, Keyword2, Keyword3, 
+      SaleGenPrice, DisableFlag, CreateUser, 
+      CreateTime, UpdateUser, UpdateTime, 
+      Version)
+    values (#{drugSetNo,jdbcType=BIGINT}, #{hisDrugCode,jdbcType=VARCHAR}, #{commonName,jdbcType=VARCHAR}, 
+      #{itemName,jdbcType=VARCHAR}, #{nhiType,jdbcType=INTEGER}, #{manufactory,jdbcType=VARCHAR}, 
+      #{category,jdbcType=INTEGER}, #{essentialDrug,jdbcType=INTEGER}, #{ctrlDrug,jdbcType=VARCHAR}, 
+      #{highAlert,jdbcType=VARCHAR}, #{dividend,jdbcType=DECIMAL}, #{saleUnit,jdbcType=VARCHAR}, 
+      #{divisor,jdbcType=DECIMAL}, #{doseUnit,jdbcType=VARCHAR}, #{form,jdbcType=INTEGER}, 
+      #{material,jdbcType=INTEGER}, #{dosege,jdbcType=DECIMAL}, #{dosegeUnit,jdbcType=VARCHAR}, 
+      #{volume,jdbcType=DECIMAL}, #{unit,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{keyword1,jdbcType=VARCHAR}, #{keyword2,jdbcType=VARCHAR}, #{keyword3,jdbcType=VARCHAR}, 
+      #{saleGenPrice,jdbcType=DECIMAL}, #{disableFlag,jdbcType=INTEGER}, #{createUser,jdbcType=BIGINT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=BIGINT}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{version,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecard.entity.DrugSet" >
+    insert into drugset
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="drugSetNo != null" >
+        DrugSetNo,
+      </if>
+      <if test="hisDrugCode != null" >
+        HisDrugCode,
+      </if>
+      <if test="commonName != null" >
+        CommonName,
+      </if>
+      <if test="itemName != null" >
+        ItemName,
+      </if>
+      <if test="nhiType != null" >
+        NhiType,
+      </if>
+      <if test="manufactory != null" >
+        Manufactory,
+      </if>
+      <if test="category != null" >
+        Category,
+      </if>
+      <if test="essentialDrug != null" >
+        EssentialDrug,
+      </if>
+      <if test="ctrlDrug != null" >
+        CtrlDrug,
+      </if>
+      <if test="highAlert != null" >
+        HighAlert,
+      </if>
+      <if test="dividend != null" >
+        Dividend,
+      </if>
+      <if test="saleUnit != null" >
+        SaleUnit,
+      </if>
+      <if test="divisor != null" >
+        Divisor,
+      </if>
+      <if test="doseUnit != null" >
+        DoseUnit,
+      </if>
+      <if test="form != null" >
+        Form,
+      </if>
+      <if test="material != null" >
+        Material,
+      </if>
+      <if test="dosege != null" >
+        Dosege,
+      </if>
+      <if test="dosegeUnit != null" >
+        DosegeUnit,
+      </if>
+      <if test="volume != null" >
+        Volume,
+      </if>
+      <if test="unit != null" >
+        Unit,
+      </if>
+      <if test="remark != null" >
+        Remark,
+      </if>
+      <if test="keyword1 != null" >
+        Keyword1,
+      </if>
+      <if test="keyword2 != null" >
+        Keyword2,
+      </if>
+      <if test="keyword3 != null" >
+        Keyword3,
+      </if>
+      <if test="saleGenPrice != null" >
+        SaleGenPrice,
+      </if>
+      <if test="disableFlag != null" >
+        DisableFlag,
+      </if>
+      <if test="createUser != null" >
+        CreateUser,
+      </if>
+      <if test="createTime != null" >
+        CreateTime,
+      </if>
+      <if test="updateUser != null" >
+        UpdateUser,
+      </if>
+      <if test="updateTime != null" >
+        UpdateTime,
+      </if>
+      <if test="version != null" >
+        Version,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="drugSetNo != null" >
+        #{drugSetNo,jdbcType=BIGINT},
+      </if>
+      <if test="hisDrugCode != null" >
+        #{hisDrugCode,jdbcType=VARCHAR},
+      </if>
+      <if test="commonName != null" >
+        #{commonName,jdbcType=VARCHAR},
+      </if>
+      <if test="itemName != null" >
+        #{itemName,jdbcType=VARCHAR},
+      </if>
+      <if test="nhiType != null" >
+        #{nhiType,jdbcType=INTEGER},
+      </if>
+      <if test="manufactory != null" >
+        #{manufactory,jdbcType=VARCHAR},
+      </if>
+      <if test="category != null" >
+        #{category,jdbcType=INTEGER},
+      </if>
+      <if test="essentialDrug != null" >
+        #{essentialDrug,jdbcType=INTEGER},
+      </if>
+      <if test="ctrlDrug != null" >
+        #{ctrlDrug,jdbcType=VARCHAR},
+      </if>
+      <if test="highAlert != null" >
+        #{highAlert,jdbcType=VARCHAR},
+      </if>
+      <if test="dividend != null" >
+        #{dividend,jdbcType=DECIMAL},
+      </if>
+      <if test="saleUnit != null" >
+        #{saleUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="divisor != null" >
+        #{divisor,jdbcType=DECIMAL},
+      </if>
+      <if test="doseUnit != null" >
+        #{doseUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="form != null" >
+        #{form,jdbcType=INTEGER},
+      </if>
+      <if test="material != null" >
+        #{material,jdbcType=INTEGER},
+      </if>
+      <if test="dosege != null" >
+        #{dosege,jdbcType=DECIMAL},
+      </if>
+      <if test="dosegeUnit != null" >
+        #{dosegeUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="volume != null" >
+        #{volume,jdbcType=DECIMAL},
+      </if>
+      <if test="unit != null" >
+        #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="keyword1 != null" >
+        #{keyword1,jdbcType=VARCHAR},
+      </if>
+      <if test="keyword2 != null" >
+        #{keyword2,jdbcType=VARCHAR},
+      </if>
+      <if test="keyword3 != null" >
+        #{keyword3,jdbcType=VARCHAR},
+      </if>
+      <if test="saleGenPrice != null" >
+        #{saleGenPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="disableFlag != null" >
+        #{disableFlag,jdbcType=INTEGER},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null" >
+        #{updateUser,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecard.entity.DrugSet" >
+    update drugset
+    <set >
+      <if test="hisDrugCode != null" >
+        HisDrugCode = #{hisDrugCode,jdbcType=VARCHAR},
+      </if>
+      <if test="commonName != null" >
+        CommonName = #{commonName,jdbcType=VARCHAR},
+      </if>
+      <if test="itemName != null" >
+        ItemName = #{itemName,jdbcType=VARCHAR},
+      </if>
+      <if test="nhiType != null" >
+        NhiType = #{nhiType,jdbcType=INTEGER},
+      </if>
+      <if test="manufactory != null" >
+        Manufactory = #{manufactory,jdbcType=VARCHAR},
+      </if>
+      <if test="category != null" >
+        Category = #{category,jdbcType=INTEGER},
+      </if>
+      <if test="essentialDrug != null" >
+        EssentialDrug = #{essentialDrug,jdbcType=INTEGER},
+      </if>
+      <if test="ctrlDrug != null" >
+        CtrlDrug = #{ctrlDrug,jdbcType=VARCHAR},
+      </if>
+      <if test="highAlert != null" >
+        HighAlert = #{highAlert,jdbcType=VARCHAR},
+      </if>
+      <if test="dividend != null" >
+        Dividend = #{dividend,jdbcType=DECIMAL},
+      </if>
+      <if test="saleUnit != null" >
+        SaleUnit = #{saleUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="divisor != null" >
+        Divisor = #{divisor,jdbcType=DECIMAL},
+      </if>
+      <if test="doseUnit != null" >
+        DoseUnit = #{doseUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="form != null" >
+        Form = #{form,jdbcType=INTEGER},
+      </if>
+      <if test="material != null" >
+        Material = #{material,jdbcType=INTEGER},
+      </if>
+      <if test="dosege != null" >
+        Dosege = #{dosege,jdbcType=DECIMAL},
+      </if>
+      <if test="dosegeUnit != null" >
+        DosegeUnit = #{dosegeUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="volume != null" >
+        Volume = #{volume,jdbcType=DECIMAL},
+      </if>
+      <if test="unit != null" >
+        Unit = #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        Remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="keyword1 != null" >
+        Keyword1 = #{keyword1,jdbcType=VARCHAR},
+      </if>
+      <if test="keyword2 != null" >
+        Keyword2 = #{keyword2,jdbcType=VARCHAR},
+      </if>
+      <if test="keyword3 != null" >
+        Keyword3 = #{keyword3,jdbcType=VARCHAR},
+      </if>
+      <if test="saleGenPrice != null" >
+        SaleGenPrice = #{saleGenPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="disableFlag != null" >
+        DisableFlag = #{disableFlag,jdbcType=INTEGER},
+      </if>
+      <if test="createUser != null" >
+        CreateUser = #{createUser,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null" >
+        CreateTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null" >
+        UpdateUser = #{updateUser,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null" >
+        UpdateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null" >
+        Version = #{version,jdbcType=INTEGER},
+      </if>
+    </set>
+    where DrugSetNo = #{drugSetNo,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecard.entity.DrugSet" >
+    update drugset
+    set HisDrugCode = #{hisDrugCode,jdbcType=VARCHAR},
+      CommonName = #{commonName,jdbcType=VARCHAR},
+      ItemName = #{itemName,jdbcType=VARCHAR},
+      NhiType = #{nhiType,jdbcType=INTEGER},
+      Manufactory = #{manufactory,jdbcType=VARCHAR},
+      Category = #{category,jdbcType=INTEGER},
+      EssentialDrug = #{essentialDrug,jdbcType=INTEGER},
+      CtrlDrug = #{ctrlDrug,jdbcType=VARCHAR},
+      HighAlert = #{highAlert,jdbcType=VARCHAR},
+      Dividend = #{dividend,jdbcType=DECIMAL},
+      SaleUnit = #{saleUnit,jdbcType=VARCHAR},
+      Divisor = #{divisor,jdbcType=DECIMAL},
+      DoseUnit = #{doseUnit,jdbcType=VARCHAR},
+      Form = #{form,jdbcType=INTEGER},
+      Material = #{material,jdbcType=INTEGER},
+      Dosege = #{dosege,jdbcType=DECIMAL},
+      DosegeUnit = #{dosegeUnit,jdbcType=VARCHAR},
+      Volume = #{volume,jdbcType=DECIMAL},
+      Unit = #{unit,jdbcType=VARCHAR},
+      Remark = #{remark,jdbcType=VARCHAR},
+      Keyword1 = #{keyword1,jdbcType=VARCHAR},
+      Keyword2 = #{keyword2,jdbcType=VARCHAR},
+      Keyword3 = #{keyword3,jdbcType=VARCHAR},
+      SaleGenPrice = #{saleGenPrice,jdbcType=DECIMAL},
+      DisableFlag = #{disableFlag,jdbcType=INTEGER},
+      CreateUser = #{createUser,jdbcType=BIGINT},
+      CreateTime = #{createTime,jdbcType=TIMESTAMP},
+      UpdateUser = #{updateUser,jdbcType=BIGINT},
+      UpdateTime = #{updateTime,jdbcType=TIMESTAMP},
+      Version = #{version,jdbcType=INTEGER}
+    where DrugSetNo = #{drugSetNo,jdbcType=BIGINT}
+  </update>
+  <select id="selectByCaKeyDis" resultType="com.ecard.entity.DrugSet">
+    select * from drugset where 1=1
+    <if test="disableFlag != null" >
+      and DisableFlag = #{disableFlag,jdbcType=INTEGER}
+    </if>
+    <if test="keyword1 != null" >
+      and Keyword1 = #{keyword1,jdbcType=VARCHAR}
+    </if>
+    <if test="keyword1 != null" >
+      and Keyword1 like #{keyword1,jdbcType=VARCHAR}"%"
+    </if>
+  </select>
+</mapper>

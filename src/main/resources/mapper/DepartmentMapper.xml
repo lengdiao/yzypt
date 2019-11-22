@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecard.dao.DepartmentMapper" >
+  <resultMap id="BaseResultMap" type="com.ecard.entity.Department" >
+    <id column="DeptID" property="deptID" jdbcType="BIGINT" />
+    <result column="SubjectCode" property="subjectCode" jdbcType="VARCHAR" />
+    <result column="SubjectName" property="subjectName" jdbcType="VARCHAR" />
+    <result column="DeptName" property="deptName" jdbcType="VARCHAR" />
+    <result column="DeputyDoctorCertID" property="deputyDoctorCertID" jdbcType="VARCHAR" />
+    <result column="DeputyDoctorName" property="deputyDoctorName" jdbcType="VARCHAR" />
+    <result column="PrincipalDoctorCertID" property="principalDoctorCertID" jdbcType="VARCHAR" />
+    <result column="PrincipalDoctorName" property="principalDoctorName" jdbcType="VARCHAR" />
+    <result column="DisableFlag" property="disableFlag" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    DeptID, SubjectCode, SubjectName, DeptName, DeputyDoctorCertID, DeputyDoctorName, 
+    PrincipalDoctorCertID, PrincipalDoctorName, DisableFlag
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from department
+    where DeptID = #{deptID,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from department
+    where DeptID = #{deptID,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.ecard.entity.Department" >
+    insert into department (DeptID, SubjectCode, SubjectName, 
+      DeptName, DeputyDoctorCertID, DeputyDoctorName, 
+      PrincipalDoctorCertID, PrincipalDoctorName, 
+      DisableFlag)
+    values (#{deptID,jdbcType=BIGINT}, #{subjectCode,jdbcType=VARCHAR}, #{subjectName,jdbcType=VARCHAR}, 
+      #{deptName,jdbcType=VARCHAR}, #{deputyDoctorCertID,jdbcType=VARCHAR}, #{deputyDoctorName,jdbcType=VARCHAR}, 
+      #{principalDoctorCertID,jdbcType=VARCHAR}, #{principalDoctorName,jdbcType=VARCHAR}, 
+      #{disableFlag,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecard.entity.Department" >
+    insert into department
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="deptID != null" >
+        DeptID,
+      </if>
+      <if test="subjectCode != null" >
+        SubjectCode,
+      </if>
+      <if test="subjectName != null" >
+        SubjectName,
+      </if>
+      <if test="deptName != null" >
+        DeptName,
+      </if>
+      <if test="deputyDoctorCertID != null" >
+        DeputyDoctorCertID,
+      </if>
+      <if test="deputyDoctorName != null" >
+        DeputyDoctorName,
+      </if>
+      <if test="principalDoctorCertID != null" >
+        PrincipalDoctorCertID,
+      </if>
+      <if test="principalDoctorName != null" >
+        PrincipalDoctorName,
+      </if>
+      <if test="disableFlag != null" >
+        DisableFlag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="deptID != null" >
+        #{deptID,jdbcType=BIGINT},
+      </if>
+      <if test="subjectCode != null" >
+        #{subjectCode,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectName != null" >
+        #{subjectName,jdbcType=VARCHAR},
+      </if>
+      <if test="deptName != null" >
+        #{deptName,jdbcType=VARCHAR},
+      </if>
+      <if test="deputyDoctorCertID != null" >
+        #{deputyDoctorCertID,jdbcType=VARCHAR},
+      </if>
+      <if test="deputyDoctorName != null" >
+        #{deputyDoctorName,jdbcType=VARCHAR},
+      </if>
+      <if test="principalDoctorCertID != null" >
+        #{principalDoctorCertID,jdbcType=VARCHAR},
+      </if>
+      <if test="principalDoctorName != null" >
+        #{principalDoctorName,jdbcType=VARCHAR},
+      </if>
+      <if test="disableFlag != null" >
+        #{disableFlag,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecard.entity.Department" >
+    update department
+    <set >
+      <if test="subjectCode != null" >
+        SubjectCode = #{subjectCode,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectName != null" >
+        SubjectName = #{subjectName,jdbcType=VARCHAR},
+      </if>
+      <if test="deptName != null" >
+        DeptName = #{deptName,jdbcType=VARCHAR},
+      </if>
+      <if test="deputyDoctorCertID != null" >
+        DeputyDoctorCertID = #{deputyDoctorCertID,jdbcType=VARCHAR},
+      </if>
+      <if test="deputyDoctorName != null" >
+        DeputyDoctorName = #{deputyDoctorName,jdbcType=VARCHAR},
+      </if>
+      <if test="principalDoctorCertID != null" >
+        PrincipalDoctorCertID = #{principalDoctorCertID,jdbcType=VARCHAR},
+      </if>
+      <if test="principalDoctorName != null" >
+        PrincipalDoctorName = #{principalDoctorName,jdbcType=VARCHAR},
+      </if>
+      <if test="disableFlag != null" >
+        DisableFlag = #{disableFlag,jdbcType=INTEGER},
+      </if>
+    </set>
+    where DeptID = #{deptID,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecard.entity.Department" >
+    update department
+    set SubjectCode = #{subjectCode,jdbcType=VARCHAR},
+      SubjectName = #{subjectName,jdbcType=VARCHAR},
+      DeptName = #{deptName,jdbcType=VARCHAR},
+      DeputyDoctorCertID = #{deputyDoctorCertID,jdbcType=VARCHAR},
+      DeputyDoctorName = #{deputyDoctorName,jdbcType=VARCHAR},
+      PrincipalDoctorCertID = #{principalDoctorCertID,jdbcType=VARCHAR},
+      PrincipalDoctorName = #{principalDoctorName,jdbcType=VARCHAR},
+      DisableFlag = #{disableFlag,jdbcType=INTEGER}
+    where DeptID = #{deptID,jdbcType=BIGINT}
+  </update>
+  <select id="selectByNameFlag" resultType="com.ecard.entity.Department">
+    select * from department where 1=1
+    <if test="deptName != null" >
+      and DeptName like "%"#{deptName,jdbcType=VARCHAR}"%"
+    </if>
+    <if test="disableFlag != null" >
+      and DisableFlag = #{disableFlag,jdbcType=INTEGER}
+    </if>
+  </select>
+</mapper>

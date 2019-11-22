@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ecard.dao.MedOrderMapper">
+  <resultMap id="BaseResultMap" type="com.ecard.entity.MedOrder">
+    <id column="OrderNo" jdbcType="BIGINT" property="orderNo" />
+    <result column="MedRecordNo" jdbcType="VARCHAR" property="medRecordNo" />
+    <result column="DrugStoreNo" jdbcType="VARCHAR" property="drugStoreNo" />
+    <result column="ExecUser" jdbcType="VARCHAR" property="execUser" />
+    <result column="ExecTime" jdbcType="TIMESTAMP" property="execTime" />
+    <result column="ExecLoc" jdbcType="VARCHAR" property="execLoc" />
+    <result column="ExecRefuseReason" jdbcType="VARCHAR" property="execRefuseReason" />
+    <result column="OrderStatus" jdbcType="INTEGER" property="orderStatus" />
+    <result column="OrderAmount" jdbcType="DECIMAL" property="orderAmount" />
+    <result column="DiagContent" jdbcType="VARCHAR" property="diagContent" />
+    <result column="OrderType" jdbcType="INTEGER" property="orderType" />
+    <result column="PrescriptionNum" jdbcType="INTEGER" property="prescriptionNum" />
+    <result column="PrescriptionName" jdbcType="VARCHAR" property="prescriptionName" />
+    <result column="DecoctionWay" jdbcType="INTEGER" property="decoctionWay" />
+    <result column="DecoctionNum" jdbcType="INTEGER" property="decoctionNum" />
+    <result column="UseTimes" jdbcType="VARCHAR" property="useTimes" />
+    <result column="SpecialUsage" jdbcType="VARCHAR" property="specialUsage" />
+    <result column="DisableFlag" jdbcType="INTEGER" property="disableFlag" />
+    <result column="CreateUser" jdbcType="BIGINT" property="createUser" />
+    <result column="CreateTime" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UpdateUser" jdbcType="BIGINT" property="updateUser" />
+    <result column="UpdateTime" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="Version" jdbcType="INTEGER" property="version" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    OrderNo, MedRecordNo, DrugStoreNo, ExecUser, ExecTime, ExecLoc, ExecRefuseReason, 
+    OrderStatus, OrderAmount, DiagContent, OrderType, PrescriptionNum, PrescriptionName, 
+    DecoctionWay, DecoctionNum, UseTimes, SpecialUsage, DisableFlag, CreateUser, CreateTime, 
+    UpdateUser, UpdateTime, Version
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from medorder
+    where OrderNo = #{orderNo,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from medorder
+    where OrderNo = #{orderNo,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.ecard.entity.MedOrder">
+    insert into medorder (OrderNo, MedRecordNo, DrugStoreNo, 
+      ExecUser, ExecTime, ExecLoc, 
+      ExecRefuseReason, OrderStatus, OrderAmount, 
+      DiagContent, OrderType, PrescriptionNum, 
+      PrescriptionName, DecoctionWay, DecoctionNum, 
+      UseTimes, SpecialUsage, DisableFlag, 
+      CreateUser, CreateTime, UpdateUser, 
+      UpdateTime, Version)
+    values (#{orderNo,jdbcType=BIGINT}, #{medRecordNo,jdbcType=VARCHAR}, #{drugStoreNo,jdbcType=VARCHAR}, 
+      #{execUser,jdbcType=VARCHAR}, #{execTime,jdbcType=TIMESTAMP}, #{execLoc,jdbcType=VARCHAR}, 
+      #{execRefuseReason,jdbcType=VARCHAR}, #{orderStatus,jdbcType=INTEGER}, #{orderAmount,jdbcType=DECIMAL}, 
+      #{diagContent,jdbcType=VARCHAR}, #{orderType,jdbcType=INTEGER}, #{prescriptionNum,jdbcType=INTEGER}, 
+      #{prescriptionName,jdbcType=VARCHAR}, #{decoctionWay,jdbcType=INTEGER}, #{decoctionNum,jdbcType=INTEGER}, 
+      #{useTimes,jdbcType=VARCHAR}, #{specialUsage,jdbcType=VARCHAR}, #{disableFlag,jdbcType=INTEGER}, 
+      #{createUser,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=BIGINT}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{version,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecard.entity.MedOrder"
+          useGeneratedKeys="true" keyProperty="orderNo" keyColumn="OrderNo">
+    insert into medorder
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="orderNo != null">
+        OrderNo,
+      </if>
+      <if test="medRecordNo != null">
+        MedRecordNo,
+      </if>
+      <if test="drugStoreNo != null">
+        DrugStoreNo,
+      </if>
+      <if test="execUser != null">
+        ExecUser,
+      </if>
+      <if test="execTime != null">
+        ExecTime,
+      </if>
+      <if test="execLoc != null">
+        ExecLoc,
+      </if>
+      <if test="execRefuseReason != null">
+        ExecRefuseReason,
+      </if>
+      <if test="orderStatus != null">
+        OrderStatus,
+      </if>
+      <if test="orderAmount != null">
+        OrderAmount,
+      </if>
+      <if test="diagContent != null">
+        DiagContent,
+      </if>
+      <if test="orderType != null">
+        OrderType,
+      </if>
+      <if test="prescriptionNum != null">
+        PrescriptionNum,
+      </if>
+      <if test="prescriptionName != null">
+        PrescriptionName,
+      </if>
+      <if test="decoctionWay != null">
+        DecoctionWay,
+      </if>
+      <if test="decoctionNum != null">
+        DecoctionNum,
+      </if>
+      <if test="useTimes != null">
+        UseTimes,
+      </if>
+      <if test="specialUsage != null">
+        SpecialUsage,
+      </if>
+      <if test="disableFlag != null">
+        DisableFlag,
+      </if>
+      <if test="createUser != null">
+        CreateUser,
+      </if>
+      <if test="createTime != null">
+        CreateTime,
+      </if>
+      <if test="updateUser != null">
+        UpdateUser,
+      </if>
+      <if test="updateTime != null">
+        UpdateTime,
+      </if>
+      <if test="version != null">
+        Version,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="orderNo != null">
+        #{orderNo,jdbcType=BIGINT},
+      </if>
+      <if test="medRecordNo != null">
+        #{medRecordNo,jdbcType=VARCHAR},
+      </if>
+      <if test="drugStoreNo != null">
+        #{drugStoreNo,jdbcType=VARCHAR},
+      </if>
+      <if test="execUser != null">
+        #{execUser,jdbcType=VARCHAR},
+      </if>
+      <if test="execTime != null">
+        #{execTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="execLoc != null">
+        #{execLoc,jdbcType=VARCHAR},
+      </if>
+      <if test="execRefuseReason != null">
+        #{execRefuseReason,jdbcType=VARCHAR},
+      </if>
+      <if test="orderStatus != null">
+        #{orderStatus,jdbcType=INTEGER},
+      </if>
+      <if test="orderAmount != null">
+        #{orderAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="diagContent != null">
+        #{diagContent,jdbcType=VARCHAR},
+      </if>
+      <if test="orderType != null">
+        #{orderType,jdbcType=INTEGER},
+      </if>
+      <if test="prescriptionNum != null">
+        #{prescriptionNum,jdbcType=INTEGER},
+      </if>
+      <if test="prescriptionName != null">
+        #{prescriptionName,jdbcType=VARCHAR},
+      </if>
+      <if test="decoctionWay != null">
+        #{decoctionWay,jdbcType=INTEGER},
+      </if>
+      <if test="decoctionNum != null">
+        #{decoctionNum,jdbcType=INTEGER},
+      </if>
+      <if test="useTimes != null">
+        #{useTimes,jdbcType=VARCHAR},
+      </if>
+      <if test="specialUsage != null">
+        #{specialUsage,jdbcType=VARCHAR},
+      </if>
+      <if test="disableFlag != null">
+        #{disableFlag,jdbcType=INTEGER},
+      </if>
+      <if test="createUser != null">
+        #{createUser,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null">
+        #{updateUser,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecard.entity.MedOrder">
+    update medorder
+    <set>
+      <if test="medRecordNo != null">
+        MedRecordNo = #{medRecordNo,jdbcType=VARCHAR},
+      </if>
+      <if test="drugStoreNo != null">
+        DrugStoreNo = #{drugStoreNo,jdbcType=VARCHAR},
+      </if>
+      <if test="execUser != null">
+        ExecUser = #{execUser,jdbcType=VARCHAR},
+      </if>
+      <if test="execTime != null">
+        ExecTime = #{execTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="execLoc != null">
+        ExecLoc = #{execLoc,jdbcType=VARCHAR},
+      </if>
+      <if test="execRefuseReason != null">
+        ExecRefuseReason = #{execRefuseReason,jdbcType=VARCHAR},
+      </if>
+      <if test="orderStatus != null">
+        OrderStatus = #{orderStatus,jdbcType=INTEGER},
+      </if>
+      <if test="orderAmount != null">
+        OrderAmount = #{orderAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="diagContent != null">
+        DiagContent = #{diagContent,jdbcType=VARCHAR},
+      </if>
+      <if test="orderType != null">
+        OrderType = #{orderType,jdbcType=INTEGER},
+      </if>
+      <if test="prescriptionNum != null">
+        PrescriptionNum = #{prescriptionNum,jdbcType=INTEGER},
+      </if>
+      <if test="prescriptionName != null">
+        PrescriptionName = #{prescriptionName,jdbcType=VARCHAR},
+      </if>
+      <if test="decoctionWay != null">
+        DecoctionWay = #{decoctionWay,jdbcType=INTEGER},
+      </if>
+      <if test="decoctionNum != null">
+        DecoctionNum = #{decoctionNum,jdbcType=INTEGER},
+      </if>
+      <if test="useTimes != null">
+        UseTimes = #{useTimes,jdbcType=VARCHAR},
+      </if>
+      <if test="specialUsage != null">
+        SpecialUsage = #{specialUsage,jdbcType=VARCHAR},
+      </if>
+      <if test="disableFlag != null">
+        DisableFlag = #{disableFlag,jdbcType=INTEGER},
+      </if>
+      <if test="createUser != null">
+        CreateUser = #{createUser,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        CreateTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null">
+        UpdateUser = #{updateUser,jdbcType=BIGINT},
+      </if>
+      <if test="updateTime != null">
+        UpdateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null">
+        Version = #{version,jdbcType=INTEGER},
+      </if>
+    </set>
+    where OrderNo = #{orderNo,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecard.entity.MedOrder">
+    update medorder
+    set MedRecordNo = #{medRecordNo,jdbcType=VARCHAR},
+      DrugStoreNo = #{drugStoreNo,jdbcType=VARCHAR},
+      ExecUser = #{execUser,jdbcType=VARCHAR},
+      ExecTime = #{execTime,jdbcType=TIMESTAMP},
+      ExecLoc = #{execLoc,jdbcType=VARCHAR},
+      ExecRefuseReason = #{execRefuseReason,jdbcType=VARCHAR},
+      OrderStatus = #{orderStatus,jdbcType=INTEGER},
+      OrderAmount = #{orderAmount,jdbcType=DECIMAL},
+      DiagContent = #{diagContent,jdbcType=VARCHAR},
+      OrderType = #{orderType,jdbcType=INTEGER},
+      PrescriptionNum = #{prescriptionNum,jdbcType=INTEGER},
+      PrescriptionName = #{prescriptionName,jdbcType=VARCHAR},
+      DecoctionWay = #{decoctionWay,jdbcType=INTEGER},
+      DecoctionNum = #{decoctionNum,jdbcType=INTEGER},
+      UseTimes = #{useTimes,jdbcType=VARCHAR},
+      SpecialUsage = #{specialUsage,jdbcType=VARCHAR},
+      DisableFlag = #{disableFlag,jdbcType=INTEGER},
+      CreateUser = #{createUser,jdbcType=BIGINT},
+      CreateTime = #{createTime,jdbcType=TIMESTAMP},
+      UpdateUser = #{updateUser,jdbcType=BIGINT},
+      UpdateTime = #{updateTime,jdbcType=TIMESTAMP},
+      Version = #{version,jdbcType=INTEGER}
+    where OrderNo = #{orderNo,jdbcType=BIGINT}
+  </update>
+  <select id="selectByMedRecordNo" parameterType="java.lang.Long" resultType="com.ecard.entity.MedOrder">
+    select * from medorder where MedRecordNo = #{medRecordNo,jdbcType=VARCHAR}
+  </select>
+  <select id="selectId" resultType="java.lang.Long">
+    call generate_medOrderNo(@a)
+  </select>
+</mapper>

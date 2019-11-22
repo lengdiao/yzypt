@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ecard.mapper.SednsmsMapper">
+     <resultMap id="BaseResultMap" type="com.ecard.entity.Sednsms">
+	    <id column="SedneSmsNo" jdbcType="BIGINT" property="sedneSmsNo" />
+	    <result column="Phone" jdbcType="VARCHAR" property="phone" />
+	    <result column="Code" jdbcType="VARCHAR" property="code" />	  
+	    <result column="ExpiryDate" jdbcType="TIMESTAMP" property="expiryDate" />
+	    <result column="CreateTime" jdbcType="TIMESTAMP" property="createTime" />
+	    <result column="UpdateTime" jdbcType="TIMESTAMP" property="updateTime" />
+     </resultMap>
+     <sql id="Base_Column_List">
+            SedneSmsNo, Phone,Code,ExpiryDate,CreateTime,UpdateTime
+     </sql>
+     
+     <insert id="save" parameterType="com.ecard.entity.Sednsms">
+         
+       insert into sednsms
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="sedneSmsNo != null">
+        SedneSmsNo,
+      </if>
+      <if test="phone != null">
+        Phone,
+      </if>
+      <if test="code != null">
+        Code,
+      </if>
+      <if test="expiryDate != null">
+        ExpiryDate,
+      </if>
+      <if test="createTime != null">
+        CreateTime,
+      </if>
+      <if test="updateTime != null">
+        UpdateTime
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="sedneSmsNo != null">
+        #{sedneSmsNo,jdbcType=BIGINT},
+      </if>
+      <if test="phone != null and phone !=''">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null and code !=''">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="expiryDate != null ">
+        #{expiryDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null ">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null ">
+        #{updateTime,jdbcType=TIMESTAMP}
+      </if>
+    </trim>
+    </insert>
+    
+    <select id="selectByPhone"  resultType="com.ecard.entity.Sednsms">
+       select <include refid="Base_Column_List" />
+       from sednsms 
+       where Phone = #{phone,jdbcType=VARCHAR}
+    
+    </select>
+    
+    <update id="update" parameterType="com.ecard.entity.Sednsms">
+       update sednsms
+       <set>            
+	      <if test="code != null and code !=''">
+	        Code = #{code,jdbcType=VARCHAR},
+	      </if>
+	      <if test="expiryDate != null ">
+	        ExpiryDate = #{expiryDate,jdbcType=TIMESTAMP},
+	      </if>
+      UpdateTime = now()
+    </set>
+       where Phone = #{phone,jdbcType=VARCHAR}
+    </update>
+</mapper>
