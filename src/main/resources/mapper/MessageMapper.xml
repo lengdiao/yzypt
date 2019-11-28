@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ecard.mapper.MessageMapper">
+  <resultMap id="BaseResultMap" type="com.ecard.entity.Message">
+    <id column="MessageNo" jdbcType="BIGINT" property="messageNo" />
+    <result column="MessageKind" jdbcType="VARCHAR" property="messageKind" />
+    <result column="MessageContent" jdbcType="VARCHAR" property="messageContent" />
+    <result column="PtNo" jdbcType="BIGINT" property="ptNo" />
+    <result column="DrNo" jdbcType="BIGINT" property="drNo" />
+    <result column="MallOrderNo" jdbcType="BIGINT" property="mallOrderNo" />
+    <result column="MedRecordNo" jdbcType="BIGINT" property="medRecordNo" />
+    <result column="MedOrderNo" jdbcType="BIGINT" property="medOrderNo" />
+    <result column="ReadStatus" jdbcType="INTEGER" property="readStatus" />
+    <result column="CreateUser" jdbcType="VARCHAR" property="createUser" />
+    <result column="CreateTime" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UpdateUser" jdbcType="VARCHAR" property="updateUser" />
+    <result column="UpdateTime" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="Version" jdbcType="INTEGER" property="version" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    MessageNo, MessageKind, MessageContent, PtNo, DrNo, MallOrderNo, MedRecordNo, MedOrderNo, 
+    ReadStatus, CreateUser, CreateTime, UpdateUser, UpdateTime, Version
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from message
+    where MessageNo = #{messageNo,jdbcType=BIGINT}
+  </select>
+   <select id="selectPtNewMessage" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from message
+    where PtNo=#{ptNo} and DrNo=#{drNo} and MessageKind=2 and ReadStatus=0
+  </select>
+  
+   <select id="selectDrNewMessage" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from message
+    where PtNo=#{ptNo} and DrNo=#{drNo} and MessageKind=1 and ReadStatus=0
+  </select>  
+    <select id="selectMsgByDrNo" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from message
+    where PtNo=#{ptNo} and DrNo=#{drNo}   order by CreateTime asc
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from message
+    where MessageNo = #{messageNo,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.ecard.entity.Message">
+    insert into message (MessageNo, MessageKind, MessageContent, 
+      PtNo, DrNo, MallOrderNo, 
+      MedRecordNo, MedOrderNo, ReadStatus, 
+      CreateUser, CreateTime, UpdateUser, 
+      UpdateTime, Version)
+    values (#{messageNo,jdbcType=BIGINT}, #{messageKind,jdbcType=VARCHAR}, #{messageContent,jdbcType=VARCHAR}, 
+      #{ptNo,jdbcType=BIGINT}, #{drNo,jdbcType=BIGINT}, #{mallOrderNo,jdbcType=BIGINT}, 
+      #{medRecordNo,jdbcType=BIGINT}, #{medOrderNo,jdbcType=BIGINT}, #{readStatus,jdbcType=INTEGER}, 
+      #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{version,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecard.entity.Message">
+    insert into message
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="messageNo != null">
+        MessageNo,
+      </if>
+      <if test="messageKind != null">
+        MessageKind,
+      </if>
+      <if test="messageContent != null">
+        MessageContent,
+      </if>
+      <if test="ptNo != null">
+        PtNo,
+      </if>
+      <if test="drNo != null">
+        DrNo,
+      </if>
+      <if test="mallOrderNo != null">
+        MallOrderNo,
+      </if>
+      <if test="medRecordNo != null">
+        MedRecordNo,
+      </if>
+      <if test="medOrderNo != null">
+        MedOrderNo,
+      </if>
+      <if test="readStatus != null">
+        ReadStatus,
+      </if>
+      <if test="createUser != null">
+        CreateUser,
+      </if>
+      <if test="createTime != null">
+        CreateTime,
+      </if>
+      <if test="updateUser != null">
+        UpdateUser,
+      </if>
+      <if test="updateTime != null">
+        UpdateTime,
+      </if>
+      <if test="version != null">
+        Version,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="messageNo != null">
+        #{messageNo,jdbcType=BIGINT},
+      </if>
+      <if test="messageKind != null">
+        #{messageKind,jdbcType=VARCHAR},
+      </if>
+      <if test="messageContent != null">
+        #{messageContent,jdbcType=VARCHAR},
+      </if>
+      <if test="ptNo != null">
+        #{ptNo,jdbcType=BIGINT},
+      </if>
+      <if test="drNo != null">
+        #{drNo,jdbcType=BIGINT},
+      </if>
+      <if test="mallOrderNo != null">
+        #{mallOrderNo,jdbcType=BIGINT},
+      </if>
+      <if test="medRecordNo != null">
+        #{medRecordNo,jdbcType=BIGINT},
+      </if>
+      <if test="medOrderNo != null">
+        #{medOrderNo,jdbcType=BIGINT},
+      </if>
+      <if test="readStatus != null">
+        #{readStatus,jdbcType=INTEGER},
+      </if>
+      <if test="createUser != null">
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null">
+        #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecard.entity.Message">
+    update message
+    <set>
+      <if test="messageKind != null">
+        MessageKind = #{messageKind,jdbcType=VARCHAR},
+      </if>
+      <if test="messageContent != null">
+        MessageContent = #{messageContent,jdbcType=VARCHAR},
+      </if>
+      <if test="ptNo != null">
+        PtNo = #{ptNo,jdbcType=BIGINT},
+      </if>
+      <if test="drNo != null">
+        DrNo = #{drNo,jdbcType=BIGINT},
+      </if>
+      <if test="mallOrderNo != null">
+        MallOrderNo = #{mallOrderNo,jdbcType=BIGINT},
+      </if>
+      <if test="medRecordNo != null">
+        MedRecordNo = #{medRecordNo,jdbcType=BIGINT},
+      </if>
+      <if test="medOrderNo != null">
+        MedOrderNo = #{medOrderNo,jdbcType=BIGINT},
+      </if>
+      <if test="readStatus != null">
+        ReadStatus = #{readStatus,jdbcType=INTEGER},
+      </if>
+      <if test="createUser != null">
+        CreateUser = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        CreateTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUser != null">
+        UpdateUser = #{updateUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        UpdateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="version != null">
+        Version = #{version,jdbcType=INTEGER},
+      </if>
+    </set>
+    where MessageNo = #{messageNo,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecard.entity.Message">
+    update message
+    set MessageKind = #{messageKind,jdbcType=VARCHAR},
+      MessageContent = #{messageContent,jdbcType=VARCHAR},
+      PtNo = #{ptNo,jdbcType=BIGINT},
+      DrNo = #{drNo,jdbcType=BIGINT},
+      MallOrderNo = #{mallOrderNo,jdbcType=BIGINT},
+      MedRecordNo = #{medRecordNo,jdbcType=BIGINT},
+      MedOrderNo = #{medOrderNo,jdbcType=BIGINT},
+      ReadStatus = #{readStatus,jdbcType=INTEGER},
+      CreateUser = #{createUser,jdbcType=VARCHAR},
+      CreateTime = #{createTime,jdbcType=TIMESTAMP},
+      UpdateUser = #{updateUser,jdbcType=VARCHAR},
+      UpdateTime = #{updateTime,jdbcType=TIMESTAMP},
+      Version = #{version,jdbcType=INTEGER}
+    where MessageNo = #{messageNo,jdbcType=BIGINT}
+  </update>
+</mapper>

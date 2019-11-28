@@ -1,11 +1,9 @@
 package com.ecard.controller;
 
 import com.ecard.pojo.Response;
+import com.ecard.pojo.ResponseHasData;
 import com.ecard.service.PtInfoService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -179,6 +177,8 @@ public class PtInfoController {
         Response response = ptInfoService.selectDrList();
         return response;
     }
+
+
 
 
 
