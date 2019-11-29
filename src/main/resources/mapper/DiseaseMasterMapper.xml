@@ -236,5 +236,8 @@
     <if test="keyword1 != null and keyword1 != ''">
       and Keyword1 like #{keyword1,jdbcType=VARCHAR}"%"
     </if>
+    <if test="chtType != null and chtType != ''" >
+      and ChtType = #{chtType,jdbcType=VARCHAR}
+    </if>
   </select>
 </mapper>

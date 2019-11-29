@@ -1,6 +1,7 @@
 package com.ecard.dao;
 
 import com.ecard.entity.DiseaseMaster;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -17,5 +18,7 @@ public interface DiseaseMasterMapper {
 
     int updateByPrimaryKey(DiseaseMaster record);
 
-    List<DiseaseMaster> selectByKeyword1(String keyword1);
+    List<DiseaseMaster> selectByKeyword1(
+            @Param("keyword1") String keyword1,
+            @Param("chtType") String chtType);
 }

@@ -315,15 +315,17 @@ public class DoctorController {
     @PostMapping("/selectDiseaseMaster")
     @ApiOperation(value = "医生查询诊断下拉框", httpMethod = "POST")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType="query", name = "Keyword1", value = "输入码1", dataType = "String"),
+            @ApiImplicitParam(paramType="query", name = "keyword1", value = "输入码1", dataType = "String"),
+            @ApiImplicitParam(paramType="query", name = "chtType", value = "病种类型（1:西医诊断 2:中医主病 3:中医症候）", dataType = "String"),
             @ApiImplicitParam(paramType="query", name = "page", value = "当前页", dataType = "Integer"),
             @ApiImplicitParam(paramType="query", name = "rows", value = "显示条数", dataType = "Integer")
     })
     public Response selectDiseaseMaster(
-            @RequestParam(value="Keyword1", required=false) String Keyword1,
+            @RequestParam(value="keyword1", required=false) String keyword1,
+            @RequestParam(value="chtType", required=false) String chtType,
             @RequestParam(value="page", required=false, defaultValue="1") Integer page,
             @RequestParam(value="rows", required=false, defaultValue="10") Integer rows) {
-        Response response = doctorService.selectDiseaseMaster(Keyword1,page,rows);
+        Response response = doctorService.selectDiseaseMaster(keyword1,chtType,page,rows);
         return response;
     }
 

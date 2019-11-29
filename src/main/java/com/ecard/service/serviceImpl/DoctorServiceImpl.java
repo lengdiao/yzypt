@@ -6,7 +6,6 @@ import com.ecard.pojo.Response;
 import com.ecard.pojo.ResponseHasData;
 import com.ecard.pojo.queryResult.*;
 import com.ecard.service.DoctorService;
-import com.ecard.utils.GetOpenIdUtils;
 import com.ecard.utils.RoleUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -456,11 +455,11 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
-    public Response selectDiseaseMaster(String keyword1, Integer page, Integer rows) {
+    public Response selectDiseaseMaster(String keyword1, String chtType, Integer page, Integer rows) {
         ResponseHasData response = new ResponseHasData();
         try {
             Page<?> pa =  PageHelper.startPage(page, rows);
-            List<DiseaseMaster> diseaseMasters = diseaseMasterMapper.selectByKeyword1(keyword1);
+            List<DiseaseMaster> diseaseMasters = diseaseMasterMapper.selectByKeyword1(keyword1,chtType);
             //查询结果总数
             Long total = pa.getTotal();
             //创建分页条件

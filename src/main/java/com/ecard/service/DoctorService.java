@@ -29,5 +29,5 @@ public interface DoctorService {
 
     Response Binding(Long ptNo, String code);
 
-    Response selectDiseaseMaster(String keyword1, Integer page, Integer rows);
+    Response selectDiseaseMaster(String keyword1, String chtType, Integer page, Integer rows);
 }
