@@ -1,5 +1,7 @@
 package com.ecard.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class MedRecord {
@@ -20,20 +22,30 @@ public class MedRecord {
     private String objective;
 
     private String plan;
-
+    @JsonFormat(pattern="yyyy-MM-dd",timezone="GMT+8")
     private Date visitDate;
 
     private Integer medRecordStatus;
 
     private String createUser;
-
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date createTime;
 
     private String updateUser;
-
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date updateTime;
 
     private Integer version;
+
+    private String diagContentName;
+
+    public String getDiagContentName() {
+        return diagContentName;
+    }
+
+    public void setDiagContentName(String diagContentName) {
+        this.diagContentName = diagContentName;
+    }
 
     public Long getMedRecordNo() {
         return medRecordNo;

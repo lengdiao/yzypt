@@ -33,6 +33,16 @@ public class DrugStore {
 
     private Integer version;
 
+    private String type;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public Long getDrugStoreNo() {
         return drugStoreNo;
     }

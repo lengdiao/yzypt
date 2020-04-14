@@ -232,7 +232,7 @@
     where BigCategoryNo = #{bigCategoryNo,jdbcType=INTEGER}
       and SmallCategoryNo = #{smallCategoryNo,jdbcType=VARCHAR}
   </update>
-  <select id="selectByNo" resultType="java.lang.String" parameterType="java.lang.Integer">
-    select SmallCategoryName from commonmaster where  BigCategoryNo = #{bigCategoryNo,jdbcType=INTEGER}
+  <select id="selectByNo" resultType="com.ecard.entity.CommonMaster" parameterType="java.lang.Integer">
+    select * from commonmaster where  BigCategoryNo = #{bigCategoryNo,jdbcType=INTEGER}
   </select>
 </mapper>

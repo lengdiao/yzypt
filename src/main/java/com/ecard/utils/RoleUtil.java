@@ -32,12 +32,20 @@ public class RoleUtil {
 	 */
 	public static void accredit(Long cloudPassNo,String roleName) {
 		try {
-			//创建userRole
-			UserRole userRole = new UserRole();
-			userRole.setCloudPassNo(cloudPassNo);
-			Long roleNo = roleMapper.selectbyRoleName(roleName);	//查询医生的roleNo
-			userRole.setRoleNo(roleNo);
-			userRoleMapper.insert(userRole);
+			UserRole user = userRoleMapper.selectByCloudPassNo(cloudPassNo);
+			if(user==null){
+				//创建userRole
+				UserRole userRole = new UserRole();
+				userRole.setCloudPassNo(cloudPassNo);
+				Long roleNo = roleMapper.selectbyRoleName(roleName);	//查询医生的roleNo
+				userRole.setRoleNo(roleNo);
+				userRoleMapper.insert(userRole);
+			}else{
+				Long roleNo = roleMapper.selectbyRoleName(roleName);	//查询医生的roleNo
+				user.setRoleNo(roleNo);
+				userRoleMapper.updateByPrimaryKeySelective(user);
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

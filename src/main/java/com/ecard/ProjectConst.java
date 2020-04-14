@@ -9,7 +9,7 @@ public class ProjectConst {
 	
 	public static final String PROJECT_APPID = "wx5a917cabd0432687";
 	
-	public static final String PROJECT_APPSECRET="ea9210e5361b2ce522dbbb205b4603fe";
+	public static final String PROJECT_APPSECRET="44076cfd93495db70c64b1b769d6781e";
 	
     /**
      * 用于获取当前与微信公众号交互的用户信息的接口（一般是用第一个接口地址）

@@ -1,74 +1,63 @@
 package com.ecard.pojo.queryResult;
 
+import com.ecard.entity.Activity;
+import com.ecard.entity.DrugSet;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.math.BigDecimal;
 
 public class MedItemQr {
+    @ApiModelProperty(value = "处方明细编号", name = "medItemNo")
     private Long medItemNo;
-
+    @ApiModelProperty(value = "处方编号", name = "medOrderNo")
     private Long medOrderNo;
-
+    @ApiModelProperty(value = "药品编号", name = "drugNo")
     private Long drugNo;
-
+    @ApiModelProperty(value = "药品数量", name = "number")
     private Double number;
-
+    @ApiModelProperty(value = "给药天数", name = "execDay")
     private Integer execDay;
-
+    @ApiModelProperty(value = "给药途径", name = "wayNo")
     private String wayNo;
-
+    @ApiModelProperty(value = "给药时机（没用）", name = "execWhen")
     private String execWhen;
-
+    @ApiModelProperty(value = "给药目的（没用）", name = "execAim")
     private String execAim;
-
+    @ApiModelProperty(value = "日剂量（没用）", name = "dayDose")
     private BigDecimal dayDose;
-
+    @ApiModelProperty(value = "剂量", name = "dose")
     private BigDecimal dose;
-
+    @ApiModelProperty(value = "剂量单位", name = "doseUnit")
     private String doseUnit;
-
+    @ApiModelProperty(value = "给药频率", name = "usageNo")
     private String usageNo;
+    private DrugSet drugSet;
+    private BigDecimal saleGenPrice;
+    private Activity activity;
 
-    @ApiModelProperty(value = "药品编号", name = "drugSetNo")
-    private Long drugSetNo;
-    @ApiModelProperty(value = "HIS系统内药品编码", name = "hisDrugCode")
-    private String hisDrugCode;
-    @ApiModelProperty(value = "通用名称", name = "commonName")
-    private String commonName;
-    @ApiModelProperty(value = "商品名", name = "itemName")
-    private String itemName;
-    @ApiModelProperty(value = "医保分类", name = "nhiType")
-    private Integer nhiType;
-    @ApiModelProperty(value = "制造商", name = "manufactory")
-    private String manufactory;
-    @ApiModelProperty(value = "药物大分类", name = "category")
-    private Integer category;
-    @ApiModelProperty(value = "基本药物分类", name = "essentialDrug")
-    private Integer essentialDrug;
-    @ApiModelProperty(value = "管制药品", name = "ctrlDrug")
-    private String ctrlDrug;
-    @ApiModelProperty(value = "高警讯药品", name = "highAlert")
-    private String highAlert;
-    @ApiModelProperty(value = "被除数 (销售量)", name = "dividend")
-    private BigDecimal dividend;
-    @ApiModelProperty(value = "销售单位", name = "saleUnit")
-    private String saleUnit;
-    @ApiModelProperty(value = "除数 (次剂量)", name = "divisor")
-    private BigDecimal divisor;
-    @ApiModelProperty(value = "次剂量单位", name = "doseUnit")
-    private String doseUnit1;
-    @ApiModelProperty(value = "剂型", name = "form")
-    private Integer form;
-    @ApiModelProperty(value = "材质", name = "material")
-    private Integer material;
-    @ApiModelProperty(value = "成份剂量    规格（按体重）", name = "dosege")
-    private BigDecimal dosege;
-    @ApiModelProperty(value = "成份单位", name = "dosegeUnit")
-    private String dosegeUnit;
-    @ApiModelProperty(value = "体积   规格（按体积）", name = "volume")
-    private BigDecimal volume;
-    @ApiModelProperty(value = "体积单位", name = "unit")
-    private String unit;
+    public Activity getActivity() {
+        return activity;
+    }
+
+    public void setActivity(Activity activity) {
+        this.activity = activity;
+    }
+
+    public BigDecimal getSaleGenPrice() {
+        return saleGenPrice;
+    }
+
+    public void setSaleGenPrice(BigDecimal saleGenPrice) {
+        this.saleGenPrice = saleGenPrice;
+    }
+
+    public DrugSet getDrugSet() {
+        return drugSet;
+    }
+
+    public void setDrugSet(DrugSet drugSet) {
+        this.drugSet = drugSet;
+    }
 
     public Long getMedItemNo() {
         return medItemNo;
@@ -158,14 +147,6 @@ public class MedItemQr {
         this.doseUnit = doseUnit;
     }
 
-    public String getDoseUnit1() {
-        return doseUnit1;
-    }
-
-    public void setDoseUnit1(String doseUnit1) {
-        this.doseUnit1 = doseUnit1;
-    }
-
     public String getUsageNo() {
         return usageNo;
     }
@@ -175,155 +156,5 @@ public class MedItemQr {
     }
 
 
-    public Long getDrugSetNo() {
-        return drugSetNo;
-    }
 
-    public void setDrugSetNo(Long drugSetNo) {
-        this.drugSetNo = drugSetNo;
-    }
-
-    public String getHisDrugCode() {
-        return hisDrugCode;
-    }
-
-    public void setHisDrugCode(String hisDrugCode) {
-        this.hisDrugCode = hisDrugCode;
-    }
-
-    public String getCommonName() {
-        return commonName;
-    }
-
-    public void setCommonName(String commonName) {
-        this.commonName = commonName;
-    }
-
-    public String getItemName() {
-        return itemName;
-    }
-
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
-    }
-
-    public Integer getNhiType() {
-        return nhiType;
-    }
-
-    public void setNhiType(Integer nhiType) {
-        this.nhiType = nhiType;
-    }
-
-    public String getManufactory() {
-        return manufactory;
-    }
-
-    public void setManufactory(String manufactory) {
-        this.manufactory = manufactory;
-    }
-
-    public Integer getCategory() {
-        return category;
-    }
-
-    public void setCategory(Integer category) {
-        this.category = category;
-    }
-
-    public Integer getEssentialDrug() {
-        return essentialDrug;
-    }
-
-    public void setEssentialDrug(Integer essentialDrug) {
-        this.essentialDrug = essentialDrug;
-    }
-
-    public String getCtrlDrug() {
-        return ctrlDrug;
-    }
-
-    public void setCtrlDrug(String ctrlDrug) {
-        this.ctrlDrug = ctrlDrug;
-    }
-
-    public String getHighAlert() {
-        return highAlert;
-    }
-
-    public void setHighAlert(String highAlert) {
-        this.highAlert = highAlert;
-    }
-
-    public BigDecimal getDividend() {
-        return dividend;
-    }
-
-    public void setDividend(BigDecimal dividend) {
-        this.dividend = dividend;
-    }
-
-    public String getSaleUnit() {
-        return saleUnit;
-    }
-
-    public void setSaleUnit(String saleUnit) {
-        this.saleUnit = saleUnit;
-    }
-
-    public BigDecimal getDivisor() {
-        return divisor;
-    }
-
-    public void setDivisor(BigDecimal divisor) {
-        this.divisor = divisor;
-    }
-
-    public Integer getForm() {
-        return form;
-    }
-
-    public void setForm(Integer form) {
-        this.form = form;
-    }
-
-    public Integer getMaterial() {
-        return material;
-    }
-
-    public void setMaterial(Integer material) {
-        this.material = material;
-    }
-
-    public BigDecimal getDosege() {
-        return dosege;
-    }
-
-    public void setDosege(BigDecimal dosege) {
-        this.dosege = dosege;
-    }
-
-    public String getDosegeUnit() {
-        return dosegeUnit;
-    }
-
-    public void setDosegeUnit(String dosegeUnit) {
-        this.dosegeUnit = dosegeUnit;
-    }
-
-    public BigDecimal getVolume() {
-        return volume;
-    }
-
-    public void setVolume(BigDecimal volume) {
-        this.volume = volume;
-    }
-
-    public String getUnit() {
-        return unit;
-    }
-
-    public void setUnit(String unit) {
-        this.unit = unit;
-    }
 }

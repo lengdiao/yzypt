@@ -20,16 +20,19 @@
     <result column="ConsultingHour" jdbcType="VARCHAR" property="consultingHour" />
     <result column="leaderDrNo" jdbcType="BIGINT" property="leaderDrNo" />
     <result column="DisableFlag" jdbcType="INTEGER" property="disableFlag" />
+    <result column="Type" jdbcType="INTEGER" property="type" />
     <result column="CreateUser" jdbcType="VARCHAR" property="createUser" />
     <result column="CreateTime" jdbcType="TIMESTAMP" property="createTime" />
     <result column="UpdateUser" jdbcType="VARCHAR" property="updateUser" />
     <result column="UpdateTime" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="Version" jdbcType="INTEGER" property="version" />
+    <result column="City" jdbcType="VARCHAR" property="city" />
   </resultMap>
   <sql id="Base_Column_List">
     DrNo, CloudPassNo, Hospital, DivNo, Province, ChiefNo, Age, Address, PracticeProfile, 
     Signature, Introducer, Company, Title, DrTitleCert, DrPracticeRegCert, ConsultingHour, 
-    leaderDrNo, DisableFlag, CreateUser, CreateTime, UpdateUser, UpdateTime, Version
+    leaderDrNo, DisableFlag, CreateUser, CreateTime, UpdateUser, UpdateTime, Version,`Type`,
+    City
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -49,7 +52,7 @@
       Title, DrTitleCert, DrPracticeRegCert, 
       ConsultingHour, leaderDrNo, DisableFlag, 
       CreateUser, CreateTime, UpdateUser, 
-      UpdateTime, Version)
+      UpdateTime, Version ,`Type`,City)
     values (#{drNo,jdbcType=BIGINT}, #{cloudPassNo,jdbcType=BIGINT}, #{hospital,jdbcType=VARCHAR}, 
       #{divNo,jdbcType=BIGINT}, #{province,jdbcType=VARCHAR}, #{chiefNo,jdbcType=VARCHAR}, 
       #{age,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR}, #{practiceProfile,jdbcType=VARCHAR}, 
@@ -57,9 +60,11 @@
       #{title,jdbcType=VARCHAR}, #{drTitleCert,jdbcType=VARCHAR}, #{drPracticeRegCert,jdbcType=VARCHAR}, 
       #{consultingHour,jdbcType=VARCHAR}, #{leaderDrNo,jdbcType=BIGINT}, #{disableFlag,jdbcType=INTEGER}, 
       #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{version,jdbcType=INTEGER})
+      #{updateTime,jdbcType=TIMESTAMP}, #{version,jdbcType=INTEGER},#{type,jdbcType=INTEGER}
+      , #{city,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.ecard.entity.DrInfo">
+  <insert id="insertSelective" parameterType="com.ecard.entity.DrInfo"
+          useGeneratedKeys="true" keyProperty="drNo" keyColumn="DrNo">
     insert into drinfo
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="drNo != null">
@@ -68,43 +73,43 @@
       <if test="cloudPassNo != null">
         CloudPassNo,
       </if>
-      <if test="hospital != null">
+      <if test="hospital != null and hospital !='' and hospital !='null'">
         Hospital,
       </if>
       <if test="divNo != null">
         DivNo,
       </if>
-      <if test="province != null">
+      <if test="province != null and province !='' and province !='null'">
         Province,
       </if>
-      <if test="chiefNo != null">
+      <if test="chiefNo != null and chiefNo !='' and chiefNo !='null'">
         ChiefNo,
       </if>
       <if test="age != null">
         Age,
       </if>
-      <if test="address != null">
+      <if test="address != null and address !='' and address !='null'">
         Address,
       </if>
-      <if test="practiceProfile != null">
+      <if test="practiceProfile != null and practiceProfile !='' and practiceProfile !='null'">
         PracticeProfile,
       </if>
-      <if test="signature != null">
+      <if test="signature != null and signature !='' and signature !='null'">
         Signature,
       </if>
-      <if test="introducer != null">
+      <if test="introducer != null and introducer !='' and introducer !='null'">
         Introducer,
       </if>
-      <if test="company != null">
+      <if test="company != null and company !='' and company !='null'">
         Company,
       </if>
-      <if test="title != null">
+      <if test="title != null and title !='' and title !='null'">
         Title,
       </if>
-      <if test="drTitleCert != null">
+      <if test="drTitleCert != null and drTitleCert !='' and drTitleCert !='null'">
         DrTitleCert,
       </if>
-      <if test="drPracticeRegCert != null">
+      <if test="drPracticeRegCert != null and drPracticeRegCert !='' and drPracticeRegCert !='null'">
         DrPracticeRegCert,
       </if>
       <if test="consultingHour != null">
@@ -130,6 +135,12 @@
       </if>
       <if test="version != null">
         Version,
+      </if>
+      <if test="type != null">
+        `Type`,
+      </if>
+      <if test="city != null and city !=''">
+        City,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -157,7 +168,7 @@
       <if test="address != null">
         #{address,jdbcType=VARCHAR},
       </if>
-      <if test="practiceProfile != null">
+      <if test="practiceProfile != null and practiceProfile !='' and practiceProfile !='null'">
         #{practiceProfile,jdbcType=VARCHAR},
       </if>
       <if test="signature != null">
@@ -169,13 +180,13 @@
       <if test="company != null">
         #{company,jdbcType=VARCHAR},
       </if>
-      <if test="title != null">
+      <if test="title != null and title !='' and title !='null'">
         #{title,jdbcType=VARCHAR},
       </if>
-      <if test="drTitleCert != null">
+      <if test="drTitleCert != null and drTitleCert !='' and drTitleCert !='null'">
         #{drTitleCert,jdbcType=VARCHAR},
       </if>
-      <if test="drPracticeRegCert != null">
+      <if test="drPracticeRegCert != null and drPracticeRegCert !='' and drPracticeRegCert !='null'">
         #{drPracticeRegCert,jdbcType=VARCHAR},
       </if>
       <if test="consultingHour != null">
@@ -201,6 +212,12 @@
       </if>
       <if test="version != null">
         #{version,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="city != null and city !=''">
+        #{city,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -273,6 +290,12 @@
       <if test="version != null">
         Version = #{version,jdbcType=INTEGER},
       </if>
+      <if test="type != null">
+        `Type` = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="city != null and city !='' and city !='null'">
+        City = #{city,jdbcType=VARCHAR},
+      </if>
     </set>
     where DrNo = #{drNo,jdbcType=BIGINT}
   </update>
@@ -299,7 +322,9 @@
       CreateTime = #{createTime,jdbcType=TIMESTAMP},
       UpdateUser = #{updateUser,jdbcType=VARCHAR},
       UpdateTime = #{updateTime,jdbcType=TIMESTAMP},
-      Version = #{version,jdbcType=INTEGER}
+      Version = #{version,jdbcType=INTEGER},
+      City = #{city,jdbcType=VARCHAR},
+      `Type` = #{type,jdbcType=INTEGER}
     where DrNo = #{drNo,jdbcType=BIGINT}
   </update>
   <select id="selectByNameChiefTitleFlag" resultType="com.ecard.pojo.queryResult.DrInfoQr">
@@ -308,18 +333,18 @@
     dr.Signature, dr.Introducer, dr.Company, dr.Title, dr.DrTitleCert, dr.DrPracticeRegCert,
     dr.ConsultingHour,
     dr.leaderDrNo, dr.DisableFlag, dr.CreateUser, dr.CreateTime, dr.UpdateUser, dr.UpdateTime,
-    dr.Version, cl.name
+    dr.Version, cl.name as drName, cl.phone , cl.IdNo,dr.type,dr.City
     from drinfo dr,cloudpassinfo cl where dr.CloudPassNo = cl.CloudPassNo
-    <if test="chiefNo != null">
+    <if test="chiefNo != null and chiefNo !=''">
       and dr.ChiefNo = #{chiefNo,jdbcType=VARCHAR}
     </if>
-    <if test="title != null">
+    <if test="title != null and title !=''">
       and dr.Title = #{title,jdbcType=VARCHAR}
     </if>
     <if test="disableFlag != null">
       and dr.DisableFlag = #{disableFlag,jdbcType=INTEGER}
     </if>
-    <if test="drName != null">
+    <if test="drName != null and drName !=''">
       and cl.Name like "%"#{drName,jdbcType=VARCHAR}"%"
     </if>
   </select>
@@ -330,7 +355,7 @@
     dr.Signature, dr.Introducer, dr.Company, dr.Title, dr.DrTitleCert, dr.DrPracticeRegCert,
     dr.ConsultingHour,
     dr.leaderDrNo, dr.DisableFlag, dr.CreateUser, dr.CreateTime, dr.UpdateUser, dr.UpdateTime,
-    dr.Version, cl.name
+    dr.Version, cl.name,dr.type,dr.City
     from drinfo dr,cloudpassinfo cl where dr.CloudPassNo = cl.CloudPassNo
     and cl.CloudPassNo = #{cloudPassNo,jdbcType=BIGINT}
   </select>
@@ -341,8 +366,40 @@
     dr.Signature, dr.Introducer, dr.Company, dr.Title, dr.DrTitleCert, dr.DrPracticeRegCert,
     dr.ConsultingHour,
     dr.leaderDrNo, dr.DisableFlag, dr.CreateUser, dr.CreateTime, dr.UpdateUser, dr.UpdateTime,
-    dr.Version, cl.name
+    dr.Version, cl.name as drName, cl.IdNo as idNo ,cl.phone,dr.type,dr.City
     from drinfo dr,cloudpassinfo cl where dr.CloudPassNo = cl.CloudPassNo
     and dr.DrNo = #{drNo,jdbcType=BIGINT}
+  </select>
+  <select id="selectByPtOpenId" resultType="com.ecard.pojo.queryResult.DrInfoQr" parameterType="java.lang.String">
+    select
+    dr.DrNo, dr.CloudPassNo, dr.Hospital, dr.DivNo, dr.Province, dr.ChiefNo, dr.Age,
+    dr.Address, dr.PracticeProfile,
+    dr.Signature, dr.Introducer, dr.Company, dr.Title, dr.DrTitleCert, dr.DrPracticeRegCert,
+    dr.ConsultingHour,
+    dr.leaderDrNo, dr.DisableFlag, dr.CreateUser, dr.CreateTime, dr.UpdateUser, dr.UpdateTime,
+    dr.Version, cl.name as drName, cl.IdNo as idNo ,cl.phone,dr.type,dr.City
+    from drinfo dr,ptopen pt,cloudpassinfo cl
+    where pt.DrNo=dr.DrNo and dr.CloudPassNo = cl.CloudPassNo
+    and pt.OpenId = #{openId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectDepartment" parameterType="java.lang.String" resultType="com.ecard.pojo.queryResult.DrInfoQr">
+    select
+    dr.DrNo, dr.CloudPassNo, dr.Hospital, dr.DivNo, dr.Province, dr.ChiefNo, dr.Age,
+    dr.Address, dr.PracticeProfile,
+    dr.Signature, dr.Introducer, dr.Company, dr.Title, dr.DrTitleCert, dr.DrPracticeRegCert,
+    dr.ConsultingHour,
+    dr.leaderDrNo, dr.DisableFlag, dr.CreateUser, dr.CreateTime, dr.UpdateUser, dr.UpdateTime,
+    dr.Version, cl.name as drName, cl.IdNo as idNo ,cl.phone,dr.type,dr.City
+    from drinfo dr,cloudpassinfo cl
+    where dr.CloudPassNo = cl.CloudPassNo
+    <if test="deptName != null and deptName !='全部'">
+      and dr.ChiefNo = #{deptName,jdbcType=VARCHAR}
+    </if>
+    <if test="drName != null and drName !=''">
+      and cl.Name like "%"#{drName,jdbcType=VARCHAR}"%"
+    </if>
+    <if test="city != null and city !=''">
+      and dr.City = #{city,jdbcType=VARCHAR}
+    </if>
   </select>
 </mapper>

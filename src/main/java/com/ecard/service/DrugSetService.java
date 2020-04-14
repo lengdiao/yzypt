@@ -9,5 +9,11 @@ public interface DrugSetService {
 
     Response update(DrugSet drugSet);
 
-    Response select(Integer category, String keyword1, Integer disableFlag, Integer page, Integer rows);
+    Response selectInfo(Long drugSetNo);
+
+    Response selectPostage(Long drugSetNo);
+
+    Response selectZZXDList(Long drugNo, Integer page, Integer rows);
+
+    Response select(String departmentName, Integer category, String keyword1, Integer version, Integer disableFlag, Long drugNo, Integer page, Integer rows);
 }

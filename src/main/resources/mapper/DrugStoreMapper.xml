@@ -214,12 +214,20 @@
   	select * from drugstore where CloudPassNo = #{cloudPassNo,jdbcType=BIGINT}
   </select>
   <select id="findDrugStore" resultType="com.ecard.entity.DrugStore">
-    select * from drugstore where 1=1
+    select d.*,ur.RoleNo as type from drugstore d,cloudpassinfo cpi,userrole ur where
+    d.CloudPassNo = cpi.CloudPassNo
+    and ur.CloudPassNo = cpi.CloudPassNo
     <if test="drugStoreName != null and drugStoreName !=''">
       and DrugStoreName like CONCAT('%',#{drugStoreName,jdbcType=VARCHAR},'%')
     </if>
     <if test="disableFlag != null">
       and DisableFlag = #{disableFlag,jdbcType=INTEGER}
+    </if>
+    <if test="address != null" >
+      and Address like #{address,jdbcType=VARCHAR}"%"
+    </if>
+    <if test="type != null and type != 0" >
+      and ur.RoleNo = #{type,jdbcType=INTEGER}
     </if>
   </select>
 </mapper>

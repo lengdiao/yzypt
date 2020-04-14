@@ -141,11 +141,17 @@
   </update>
   <select id="selectByNameFlag" resultType="com.ecard.entity.Department">
     select * from department where 1=1
-    <if test="deptName != null" >
+    <if test="deptName != null and deptName !=''" >
       and DeptName like "%"#{deptName,jdbcType=VARCHAR}"%"
     </if>
     <if test="disableFlag != null" >
       and DisableFlag = #{disableFlag,jdbcType=INTEGER}
+    </if>
+  </select>
+  <select id="selectAll" resultType="com.ecard.entity.Department">
+    select * from department where 1=1
+    <if test="deptName != null and deptName !=''" >
+      and DeptName = #{deptName,jdbcType=VARCHAR}
     </if>
   </select>
 </mapper>

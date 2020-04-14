@@ -25,6 +25,11 @@
     <result column="UpdateUser" property="updateUser" jdbcType="VARCHAR" />
     <result column="UpdateTime" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="Version" property="version" jdbcType="INTEGER" />
+    <result column="Rental" property="rental" jdbcType="DECIMAL" />
+    <result column="ActivityDetail" property="activityDetail" jdbcType="VARCHAR" />
+    <result column="OffMoney" property="offMoney" jdbcType="DECIMAL" />
+    <result column="Remark" property="remark" jdbcType="VARCHAR" />
+    <result column="PacketId" property="packetId" jdbcType="BIGINT" />
   </resultMap>
   <resultMap id="MedOrderMap" type="com.ecard.entity.MedOrder">
     <id column="OrderNo" jdbcType="BIGINT" property="orderNo" />
@@ -93,13 +98,19 @@
     <result column="UpdateUser" property="updateUser" jdbcType="VARCHAR" />
     <result column="UpdateTime" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="Version" property="version" jdbcType="INTEGER" />
+    <result column="Rental" property="rental" jdbcType="DECIMAL" />
+    <result column="ActivityDetail" property="activityDetail" jdbcType="VARCHAR" />
+    <result column="OffMoney" property="offMoney" jdbcType="DECIMAL" />
+    <result column="Remark" property="remark" jdbcType="VARCHAR" />
+    <result column="PacketId" property="packetId" jdbcType="BIGINT" />
     <association property="medOrder" column="OrderNo" resultMap="MedOrderMap" />
     <association property="medRecord" column="MedRecordNo" resultMap="MedRecordMap" />
   </resultMap>
   <sql id="Base_Column_List" >
     MallNo, PtNo, DrNo, DisNo, DrugStoreNo, MedOrderNo, OrderStatus, OrderTime, Phone, 
     Address, PayStatus, PayTime, ShippingStatus, ShippingCompany, ShippingContext, ShippingNo, 
-    ShippingTime, OrderAmount, CreateUser, CreateTime, UpdateUser, UpdateTime, Version
+    ShippingTime, OrderAmount, CreateUser, CreateTime, UpdateUser, UpdateTime, Version,
+    Rental,ActivityDetail,OffMoney,Remark,PacketId
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
@@ -119,7 +130,7 @@
       ShippingStatus, ShippingCompany, ShippingContext, 
       ShippingNo, ShippingTime, OrderAmount, 
       CreateUser, CreateTime, UpdateUser, 
-      UpdateTime, Version)
+      UpdateTime, Version,Rental,ActivityDetail,OffMoney,Remark,PacketId)
     values (#{mallNo,jdbcType=BIGINT}, #{ptNo,jdbcType=BIGINT}, #{drNo,jdbcType=BIGINT}, 
       #{disNo,jdbcType=BIGINT}, #{drugStoreNo,jdbcType=BIGINT}, #{medOrderNo,jdbcType=BIGINT}, 
       #{orderStatus,jdbcType=INTEGER}, #{orderTime,jdbcType=TIMESTAMP}, #{phone,jdbcType=VARCHAR}, 
@@ -127,7 +138,10 @@
       #{shippingStatus,jdbcType=INTEGER}, #{shippingCompany,jdbcType=VARCHAR}, #{shippingContext,jdbcType=VARCHAR}, 
       #{shippingNo,jdbcType=VARCHAR}, #{shippingTime,jdbcType=TIMESTAMP}, #{orderAmount,jdbcType=DECIMAL}, 
       #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{version,jdbcType=INTEGER})
+      #{updateTime,jdbcType=TIMESTAMP}, #{version,jdbcType=INTEGER},
+      #{rental,jdbcType=DECIMAL}, #{activityDetail,jdbcType=VARCHAR},
+      #{offMoney,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR},#{packetId,jdbcType=BIGINT}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.ecard.entity.MallOrder" >
     insert into mallorder
@@ -201,6 +215,21 @@
       <if test="version != null" >
         Version,
       </if>
+      <if test="rental != null" >
+        Rental,
+      </if>
+      <if test="activityDetail != null" >
+        ActivityDetail,
+      </if>
+      <if test="offMoney != null" >
+        OffMoney,
+      </if>
+      <if test="remark != null" >
+        Remark,
+      </if>
+      <if test="packetId != null" >
+        PacketId,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="mallNo != null" >
@@ -271,6 +300,21 @@
       </if>
       <if test="version != null" >
         #{version,jdbcType=INTEGER},
+      </if>
+      <if test="rental != null" >
+        #{rental,jdbcType=DECIMAL},
+      </if>
+      <if test="activityDetail != null" >
+        #{activityDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="offMoney != null" >
+        #{offMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="packetId != null" >
+        #{packetId,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>
@@ -343,6 +387,21 @@
       <if test="version != null" >
         Version = #{version,jdbcType=INTEGER},
       </if>
+      <if test="rental != null" >
+        Rental = #{rental,jdbcType=DECIMAL},
+      </if>
+      <if test="activityDetail != null" >
+        ActivityDetail = #{activityDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="offMoney != null" >
+        OffMoney = #{offMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null" >
+        Remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="packetId != null" >
+        PacketId = #{packetId,jdbcType=BIGINT},
+      </if>
     </set>
     where MallNo = #{mallNo,jdbcType=BIGINT}
   </update>
@@ -369,7 +428,12 @@
       CreateTime = #{createTime,jdbcType=TIMESTAMP},
       UpdateUser = #{updateUser,jdbcType=VARCHAR},
       UpdateTime = #{updateTime,jdbcType=TIMESTAMP},
-      Version = #{version,jdbcType=INTEGER}
+      Version = #{version,jdbcType=INTEGER},
+      Rental = #{rental,jdbcType=DECIMAL},
+      ActivityDetail = #{activityDetail,jdbcType=VARCHAR},
+      OffMoney = #{offMoney,jdbcType=DECIMAL},
+      Remark = #{remark,jdbcType=VARCHAR},
+      PacketId = #{packetID,jdbcType=BIGINT}
     where MallNo = #{mallNo,jdbcType=BIGINT}
   </update>
   <select id="selectByDrNo" parameterType="java.lang.Long" resultType="com.ecard.entity.MallOrder">
@@ -379,7 +443,8 @@
     mao.Address, mao.PayStatus, mao.PayTime, mao.ShippingStatus, mao.ShippingCompany,
     mao.ShippingContext, mao.ShippingNo,
     mao.ShippingTime, mao.OrderAmount, mao.CreateUser, mao.CreateTime, mao.UpdateUser,
-    mao.UpdateTime, mao.Version
+    mao.UpdateTime, mao.Version, mao.Rental, mao.ActivityDetail, mao.OffMoney, mao.Remark,
+    mao.PacketId
      from mallorder mao,medorder meo
     where mao.MedOrderNo = meo.OrderNo and DrNo = #{drNo,jdbcType=BIGINT}
     and meo.OrderStatus = 0
@@ -388,25 +453,396 @@
     select * from mallorder where PtNo = #{ptNo,jdbcType=BIGINT} and PayStatus is not null
   </select>
   <select id="selectByMnOsPnDn" resultType="com.ecard.entity.MallOrder">
-    select <include refid="Base_Column_List" /> from mallorder mao,medorder meo
+    select
+    mao.MallNo, mao.PtNo, mao.DrNo, mao.DisNo, mao.DrugStoreNo, mao.MedOrderNo, mao.OrderStatus, mao.OrderTime, mao.Phone,
+    mao.Address, mao.PayStatus, mao.PayTime, mao.ShippingStatus, mao.ShippingCompany, mao.ShippingContext, mao.ShippingNo,
+    mao.ShippingTime, mao.OrderAmount, mao.CreateUser, mao.CreateTime, mao.UpdateUser, mao.UpdateTime, mao.Version,
+    mao.Rental, mao.ActivityDetail, mao.OffMoney, mao.Remark,mao.PacketId
+    from mallorder mao,medorder meo
     where mao.MedOrderNo = meo.OrderNo
     <if test="ptNo != null" >
-      and PtNo = #{ptNo,jdbcType=BIGINT}
+      and mao.PtNo = #{ptNo,jdbcType=BIGINT}
     </if>
     <if test="drNo != null" >
-      and DrNo = #{drNo,jdbcType=BIGINT}
+      and mao.DrNo = #{drNo,jdbcType=BIGINT}
     </if>
     <if test="mallNo != null" >
-      and MallNo = #{mallNo,jdbcType=BIGINT}
+      and mao.MallNo = #{mallNo,jdbcType=BIGINT}
     </if>
     <if test="orderStatus != null" >
-      and OrderStatus = #{orderStatus,jdbcType=INTEGER}
+      and mao.OrderStatus = #{orderStatus,jdbcType=INTEGER}
     </if>
   </select>
   <select id="selectId" resultType="java.lang.Long">
     call generate_mallNo(@a)
   </select>
   <select id="selectByMedOrderNo" resultType="com.ecard.entity.MallOrder" parameterType="java.lang.Long">
-    select * from malorder where MallNo = #{mallNo,jdbcType=BIGINT}
+    select
+    mao.MallNo, mao.PtNo, mao.DrNo, mao.DisNo, mao.DrugStoreNo, mao.MedOrderNo, mao.OrderStatus, mao.OrderTime, mao.Phone,
+    mao.Address, mao.PayStatus, mao.PayTime, mao.ShippingStatus, mao.ShippingCompany, mao.ShippingContext,
+    mao.ShippingNo,
+    mao.ShippingTime, mao.OrderAmount, mao.CreateUser, mao.CreateTime, mao.UpdateUser, mao.UpdateTime, mao.Version,
+    mao.Rental, mao.ActivityDetail, mao.OffMoney, mao.Remark,mao.PacketId
+    from mallorder mao,medorder meo where
+    mao.MedOrderNo = meo.OrderNo
+    and
+    meo.OrderNo = #{medOrderNo,jdbcType=BIGINT}
+  </select>
+  <select id="selectByMedOrderNo1" resultType="com.ecard.entity.MallOrder" parameterType="java.lang.Long">
+    select
+    mao.MallNo, mao.PtNo, mao.DrNo, mao.DisNo, mao.DrugStoreNo, mao.MedOrderNo, mao.OrderStatus, mao.OrderTime, mao.Phone,
+    mao.Address, mao.PayStatus, mao.PayTime, mao.ShippingStatus, mao.ShippingCompany, mao.ShippingContext,
+    mao.ShippingNo,
+    mao.ShippingTime, mao.OrderAmount, mao.CreateUser, mao.CreateTime, mao.UpdateUser, mao.UpdateTime, mao.Version
+    , mao.Rental, mao.ActivityDetail, mao.OffMoney, mao.Remark,mao.PacketId
+    from mallorder mao,medorder meo where
+    mao.MedOrderNo = meo.OrderNo
+    and
+    mao.PayStatus = 0
+    and
+    meo.OrderNo = #{medOrderNo,jdbcType=BIGINT}
+  </select>
+  <select id="selectByMedOAndMedR" resultType="com.ecard.entity.MallOrder">
+    select
+    mao.MallNo, mao.PtNo, mao.DrNo, mao.DisNo, mao.DrugStoreNo, mao.MedOrderNo, mao.OrderStatus, mao.OrderTime, mao.Phone,
+    mao.Address, mao.PayStatus, mao.PayTime, mao.ShippingStatus, mao.ShippingCompany, mao.ShippingContext,
+    mao.ShippingNo,
+    mao.ShippingTime, mao.OrderAmount, mao.CreateUser, mao.CreateTime, mao.UpdateUser, mao.UpdateTime, mao.Version
+    , mao.Rental, mao.ActivityDetail, mao.OffMoney, mao.Remark,mao.PacketId
+    from mallorder mao,medorder meo,medrecord mer where
+    mao.MedOrderNo = meo.OrderNo and mer.MedRecordNo = meo.MedRecordNo
+    <if test="medOrderNo != null and medOrderNo !=''" >
+      and meo.OrderNo = #{medOrderNo,jdbcType=BIGINT}
+    </if>
+    <if test="medRecordNo != null and medRecordNo !=''" >
+      and mer.MedRecordNo = #{medRecordNo,jdbcType=BIGINT}
+    </if>
+
+  </select>
+  <select id="selectByOrderStatus" resultType="com.ecard.entity.MallOrder">
+    select * from mallorder
+    where OrderStatus !=3
+    and PayStatus = 0
+    and (Version = 1 or Version = 3 or Version = 4 or Version = 5   )
+    and PtNo = #{ptNo,jdbcType=BIGINT}
+    <if test="orderStatus == 0 or orderStatus ==1" >
+      and OrderStatus = #{orderStatus,jdbcType=INTEGER}
+    </if>
+  </select>
+  <select id="selectByMnOsPnDns" resultType="com.ecard.entity.MallOrder">
+    select
+    mao.MallNo, mao.PtNo, mao.DrNo, mao.DisNo, mao.DrugStoreNo, mao.MedOrderNo, mao.OrderStatus, mao.OrderTime, mao.Phone,
+    mao.Address, mao.PayStatus, mao.PayTime, mao.ShippingStatus, mao.ShippingCompany, mao.ShippingContext, mao.ShippingNo,
+    mao.ShippingTime, mao.OrderAmount, mao.CreateUser, mao.CreateTime, mao.UpdateUser, mao.UpdateTime, mao.Version
+    , mao.Rental, mao.ActivityDetail, mao.OffMoney, mao.Remark,mao.PacketId
+    from mallorder mao,medorder meo
+    where mao.MedOrderNo = meo.OrderNo and mao.OrderStatus !=3
+    <if test="ptNo != null and ptNo !=''" >
+      and mao.PtNo = #{ptNo,jdbcType=BIGINT}
+    </if>
+    <if test="drNo != null and drNo !=''" >
+      and mao.DrNo = #{drNo,jdbcType=BIGINT}
+    </if>
+    <if test="mallNo != null and mallNo !=''" >
+      and mao.MallNo = #{mallNo,jdbcType=BIGINT}
+    </if>
+    <if test="orderStatus != null and orderStatus !=''" >
+      and mao.OrderStatus = #{orderStatus,jdbcType=INTEGER}
+    </if>
+    <if test="startDate != null and startDate !='' and endDate != null and endDate !=''" >
+      and OrderTime between #{startDate,jdbcType=VARCHAR} and #{endDate,jdbcType=VARCHAR}
+    </if>
+  </select>
+  <select id="selectByDrugStoreNo" resultType="com.ecard.entity.MallOrder">
+    select
+    mao.MallNo, mao.PtNo, mao.DrNo, mao.DisNo, mao.DrugStoreNo, mao.MedOrderNo, mao.OrderStatus, mao.OrderTime, mao.Phone,
+    mao.Address, mao.PayStatus, mao.PayTime, mao.ShippingStatus, mao.ShippingCompany, mao.ShippingContext, mao.ShippingNo,
+    mao.ShippingTime, mao.OrderAmount, mao.CreateUser, mao.CreateTime, mao.UpdateUser, mao.UpdateTime, mao.Version
+    , mao.Rental, mao.ActivityDetail, mao.OffMoney, mao.Remark,mao.PacketId
+    from mallorder mao,medorder meo
+    where mao.MedOrderNo = meo.OrderNo and mao.OrderStatus !=3 and mao.DrugStoreNo = #{drugStoreNo,jdbcType=INTEGER}
+    <if test="startDate != null and endDate != null" >
+      and OrderTime between #{startDate,jdbcType=VARCHAR} and #{endDate,jdbcType=VARCHAR}
+    </if>
+  </select>
+  <select id="selectByMoOsSdEd" resultType="com.ecard.entity.MallOrder">
+    select
+    mao.MallNo, mao.PtNo, mao.DrNo, mao.DisNo, mao.DrugStoreNo, mao.MedOrderNo, mao.OrderStatus, mao.OrderTime, mao.Phone,
+    mao.Address, mao.PayStatus, mao.PayTime, mao.ShippingStatus, mao.ShippingCompany, mao.ShippingContext, mao.ShippingNo,
+    mao.ShippingTime, mao.OrderAmount, mao.CreateUser, mao.CreateTime, mao.UpdateUser, mao.UpdateTime, mao.Version
+    , mao.Rental, mao.ActivityDetail, mao.OffMoney, mao.Remark,mao.PacketId
+    from mallorder mao,medorder meo,disinfo dis,drdisrelation drdis
+    where mao.MedOrderNo = meo.OrderNo
+    and mao.DrNo = drdis.DrNo
+    and dis.DisNo = drdis.DisNo
+    and mao.OrderStatus !=3
+    and mao.PayStatus = 0
+    <if test="disNo1 != null" >
+    and
+    (select disNo from disinfo where CloudPassNo =
+    (select DisLeader from disinfo where disNo = dis.DisNo)) = #{disNo1,jdbcType=BIGINT}
+    </if>
+    <if test="disNo2 != null" >
+    and
+    dis.DisNo = #{disNo2,jdbcType=BIGINT}
+    </if>
+    <if test="mallNo != null" >
+      and mao.MallNo = #{mallNo,jdbcType=BIGINT}
+    </if>
+    <if test="drugStoreNo != null" >
+      and mao.DrugStoreNo = #{drugStoreNo,jdbcType=BIGINT}
+    </if>
+    <if test="orderStatus != null and orderStatus !=''" >
+      and meo.OrderStatus = #{orderStatus,jdbcType=INTEGER}
+    </if>
+    <if test="startDate != null and startDate !='' and endDate != null and endDate !=''" >
+      and date_format(mao.OrderTime,'%Y-%m') between #{startDate,jdbcType=VARCHAR} and #{endDate,jdbcType=VARCHAR}
+    </if>
+  </select>
+  <select id="selectByPtNo1" resultType="com.ecard.entity.MallOrder">
+    select
+    mao.MallNo, mao.PtNo, mao.DrNo, mao.DisNo, mao.DrugStoreNo, mao.MedOrderNo, mao.OrderStatus, mao.OrderTime, mao.Phone,
+    mao.Address, mao.PayStatus, mao.PayTime, mao.ShippingStatus, mao.ShippingCompany, mao.ShippingContext, mao.ShippingNo,
+    mao.ShippingTime, mao.OrderAmount, mao.CreateUser, mao.CreateTime, mao.UpdateUser, mao.UpdateTime, mao.Version
+    , mao.Rental, mao.ActivityDetail, mao.OffMoney, mao.Remark,mao.PacketId
+    from
+    mallorder mao left join ptinfo pt on mao.PtNo = pt.PtNo
+    left join medorder meo on mao.MedOrderNo = meo.OrderNo
+    left join medrecord mer on meo.MedRecordNo = mer.MedRecordNo
+    left join drinfo dr on mao.drNo = dr.drNo
+    where
+    mao.orderStatus !=3
+    and mer.MedRecordStatus=0
+    and pt.PtNo = #{ptNo,jdbcType=INTEGER}
+    and dr.drNo = #{drNo,jdbcType=INTEGER}
+  </select>
+  <select id="selectByPtNoAndMallNo" resultType="com.ecard.entity.MallOrder">
+    select
+    mao.MallNo, mao.PtNo, mao.DrNo, mao.DisNo, mao.DrugStoreNo, mao.MedOrderNo, mao.OrderStatus, mao.OrderTime, mao.Phone,
+    mao.Address, mao.PayStatus, mao.PayTime, mao.ShippingStatus, mao.ShippingCompany, mao.ShippingContext, mao.ShippingNo,
+    mao.ShippingTime, mao.OrderAmount, mao.CreateUser, mao.CreateTime, mao.UpdateUser, mao.UpdateTime, mao.Version
+    , mao.Rental, mao.ActivityDetail, mao.OffMoney, mao.Remark,mao.PacketId
+    from mallorder mao,ptinfo pt,medorder meo,medrecord mer
+    where mao.PtNo = pt.PtNo and mao.orderStatus !=3 and mao.MedOrderNo = meo.OrderNo and meo.MedRecordNo = mer.MedRecordNo
+    and mao.PayStatus = 0
+    and pt.PtNo = #{ptNo,jdbcType=INTEGER}
+    and mao.MallNo != #{mallNo,jdbcType=INTEGER}
+  </select>
+  <select id="selectByPtNoAndPayStatus1" resultType="com.ecard.entity.MallOrder">
+    select
+     mao.MallNo, mao.PtNo, mao.DrNo, mao.DisNo, mao.DrugStoreNo, mao.MedOrderNo, mao.OrderStatus, mao.OrderTime, mao.Phone,
+    mao.Address, mao.PayStatus, mao.PayTime, mao.ShippingStatus, mao.ShippingCompany, mao.ShippingContext, mao.ShippingNo,
+    mao.ShippingTime, mao.OrderAmount, mao.CreateUser, mao.CreateTime, mao.UpdateUser, mao.UpdateTime, mao.Version
+    , mao.Rental, mao.ActivityDetail, mao.OffMoney, mao.Remark,mao.PacketId
+    from mallorder mao,ptinfo pt,medorder meo,medrecord mer
+     where mao.PtNo = pt.PtNo and mao.MedOrderNo = meo.OrderNo and mer.MedRecordNo = meo.MedRecordNo
+     and mao.orderStatus !=3
+     and mer.MedRecordStatus = 0
+     and pt.ptNo = #{ptNo,jdbcType=INTEGER}
+    <if test="payStatus != null" >
+      and mao.PayStatus = #{payStatus,jdbcType=INTEGER}
+    </if>
+  </select>
+  <select id="selectByDrNoMedRecordStatus" resultType="com.ecard.entity.MallOrder" parameterType="java.lang.Long">
+    select
+    mao.MallNo, mao.PtNo, mao.DrNo, mao.DisNo, mao.DrugStoreNo, mao.MedOrderNo, mao.OrderStatus, mao.OrderTime, mao.Phone,
+    mao.Address, mao.PayStatus, mao.PayTime, mao.ShippingStatus, mao.ShippingCompany, mao.ShippingContext, mao.ShippingNo,
+    mao.ShippingTime, mao.OrderAmount, mao.CreateUser, mao.CreateTime, mao.UpdateUser, mao.UpdateTime, mao.Version
+    , mao.Rental, mao.ActivityDetail, mao.OffMoney, mao.Remark,mao.PacketId
+    from mallorder mao,medorder meo,medrecord mer
+    where mao.MedOrderNo = meo.OrderNo and mer.MedRecordNo = meo.MedRecordNo
+    and mer.MedRecordStatus = 1
+    and mao.DrNo = #{drNo,jdbcType=INTEGER}
+  </select>
+  <select id="selectByMedRecordNo" resultType="com.ecard.entity.MallOrder" parameterType="java.lang.Long">
+    select
+    mao.MallNo, mao.PtNo, mao.DrNo, mao.DisNo, mao.DrugStoreNo, mao.MedOrderNo, mao.OrderStatus, mao.OrderTime, mao.Phone,
+    mao.Address, mao.PayStatus, mao.PayTime, mao.ShippingStatus, mao.ShippingCompany, mao.ShippingContext, mao.ShippingNo,
+    mao.ShippingTime, mao.OrderAmount, mao.CreateUser, mao.CreateTime, mao.UpdateUser, mao.UpdateTime, mao.Version
+    , mao.Rental, mao.ActivityDetail, mao.OffMoney, mao.Remark,mao.PacketId
+    from mallorder mao,medorder meo,medrecord mer
+    where mao.MedOrderNo = meo.OrderNo and mer.MedRecordNo = meo.MedRecordNo
+    and mer.MedRecordNo = #{medRecordNo,jdbcType=INTEGER}
+  </select>
+  <select id="selectByDrNoPtNamePhone" resultType="com.ecard.entity.MallOrder">
+    select distinct
+    mao.PtNo
+    from mallorder mao,cloudpassinfo cpi,ptinfo pt
+    where mao.PtNo = pt.PtNo and cpi.CloudPassNo = pt.CloudPassNo
+    <if test="drNo != null and drNo !=''" >
+      and mao.DrNo = #{drNo,jdbcType=BIGINT}
+    </if>
+    <if test="phone != null and phone !=''" >
+      and cpi.phone = #{phone,jdbcType=VARCHAR}
+    </if>
+    <if test="name != null and name !=''" >
+      and cpi.Name = #{name,jdbcType=VARCHAR}
+    </if>
+  </select>
+  <select id="selectByNamePhoneDrNoDate" resultType="com.ecard.entity.MallOrder">
+    select
+    mao.MallNo, mao.PtNo, mao.DrNo, mao.DisNo, mao.DrugStoreNo, mao.MedOrderNo, mao.OrderStatus, mao.OrderTime, mao.Phone,
+    mao.Address, mao.PayStatus, mao.PayTime, mao.ShippingStatus, mao.ShippingCompany, mao.ShippingContext, mao.ShippingNo,
+    mao.ShippingTime, mao.OrderAmount, mao.CreateUser, mao.CreateTime, mao.UpdateUser, mao.UpdateTime, mao.Version
+    , mao.Rental, mao.ActivityDetail, mao.OffMoney, mao.Remark,mao.PacketId
+    from mallorder mao,cloudpassinfo cpi,ptinfo pt
+    where mao.PtNo = pt.PtNo and cpi.CloudPassNo = pt.CloudPassNo
+    <if test="drNo != null and drNo !=''" >
+      and mao.DrNo = #{drNo,jdbcType=BIGINT}
+    </if>
+    <if test="name != null and name !=''" >
+      and (cpi.phone = #{name,jdbcType=VARCHAR} or cpi.name = #{name,jdbcType=VARCHAR})
+    </if>
+    <if test="startDate != null and startDate !='' and endDate != null and endDate !=''" >
+      and mao.OrderTime between #{startDate,jdbcType=VARCHAR} and #{endDate,jdbcType=VARCHAR}
+    </if>
+  </select>
+  <select id="selectByNamePhoneDrNoDateType2" resultType="com.ecard.pojo.queryResult.PcCountQr">
+    select
+    cpi.Name as drName,
+    ds.CommonName as drugName,
+    sum(mei.number) as sum,
+    sum(meo.OrderAmount) as amountSum
+    from mallorder mao,cloudpassinfo cpi,ptinfo pt,medorder meo,meditem mei,drugset ds
+    where mao.PtNo = pt.PtNo
+    and cpi.CloudPassNo = pt.CloudPassNo
+    and meo.OrderNo = mao.MedOrderNo
+    and mei.MedOrderNo = meo.OrderNo
+    and mao.PayStatus = 0
+    and ds.DrugSetNo = mei.drugNo
+    and meo.orderType = 2
+    <if test="drNo != null and drNo !=''" >
+      and mao.DrNo = #{drNo,jdbcType=BIGINT}
+    </if>
+    <if test="name != null and name !=''" >
+      and (cpi.phone = #{name,jdbcType=VARCHAR} or cpi.name = #{name,jdbcType=VARCHAR})
+    </if>
+    <if test="startDate != null and startDate !=''" >
+      and date_format(meo.UpdateTime,'%Y-%m') = #{startDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="drugNo != null" >
+      and mei.drugNo = #{drugNo,jdbcType=BIGINT}
+    </if>
+    group by cpi.Name,drugName
+  </select>
+  <select id="selectByNamePhoneDrNoDateType1" resultType="com.ecard.pojo.queryResult.PcCountQr">
+    select
+    cpi.Name as drName,
+    ds.CommonName as drugName,
+    sum(meo.PrescriptionNum) as sum,
+    sum(meo.OrderAmount) as amountSum
+    from mallorder mao,cloudpassinfo cpi,ptinfo pt,medorder meo,meditem mei,drugset ds
+    where mao.PtNo = pt.PtNo
+    and cpi.CloudPassNo = pt.CloudPassNo
+    and meo.OrderNo = mao.MedOrderNo
+    and mei.MedOrderNo = meo.OrderNo
+    and mao.PayStatus = 0
+    and ds.DrugSetNo = mei.drugNo
+    and meo.orderType = 1
+    <if test="drNo != null and drNo !=''" >
+      and mao.DrNo = #{drNo,jdbcType=BIGINT}
+    </if>
+    <if test="name != null and name !=''" >
+      and (cpi.phone = #{name,jdbcType=VARCHAR} or cpi.name = #{name,jdbcType=VARCHAR})
+    </if>
+    <if test="startDate != null and startDate !=''" >
+      and date_format(meo.UpdateTime,'%Y-%m') = #{startDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="drugNo != null" >
+      and meo.drugNo = #{drugNo,jdbcType=BIGINT}
+    </if>
+    group by cpi.Name,drugName
+  </select>
+  <select id="findShippingStatusIs1" resultType="com.ecard.entity.MallOrder">
+    select *
+    from mallorder
+    where
+    ShippingStatus = 1
+    and
+    PayStatus = 0
+    and
+    DrugStoreNo is null
+  </select>
+  <select id="selectByDate" resultType="com.ecard.pojo.queryResult.MallOrderCount">
+    select
+    meo.OrderNo as medOrderNo,meo.UpdateTime as orderTime,
+    cpi.Name as name,meo.ExecUser as contact,meo.DrugStoreNo as drugStoreName,
+    mao.ShippingStatus as shippingStatus,meo.OrderAmount as orderAmount
+    from mallorder mao,medorder meo,ptinfo pti,cloudpassinfo cpi
+    where
+    mao.MedOrderNo = meo.OrderNo
+    and
+    mao.PtNo = pti.PtNo
+    and
+    pti.CloudPassNo = cpi.CloudPassNo
+    and
+    mao.PayStatus = 0
+  </select>
+  <select id="selectMaxOrderTime" parameterType="java.lang.Long" resultType="com.ecard.entity.MallOrder">
+    SELECT * from (SELECT
+     mao.MallNo, mao.PtNo, mao.DrNo, mao.DisNo, mao.DrugStoreNo, mao.MedOrderNo, mao.OrderStatus, mao.OrderTime, mao.Phone,
+    mao.Address, mao.PayStatus, mao.PayTime, mao.ShippingStatus, mao.ShippingCompany, mao.ShippingContext, mao.ShippingNo,
+    mao.ShippingTime, mao.OrderAmount, mao.CreateUser, mao.CreateTime, mao.UpdateUser, mao.UpdateTime, mao.Version
+    , mao.Rental, mao.ActivityDetail, mao.OffMoney, mao.Remark,mao.PacketId
+     FROM mallorder mao,medorder meo where mao.MedOrderNo = meo.OrderNo and mao.ptNo = #{ptNo,jdbcType=INTEGER} and mao.drNo = #{drNo,jdbcType=INTEGER} and mao.payStatus = 0 ORDER BY meo.updateTime desc LIMIT 0,1) a GROUP BY a.MallNo
+  </select>
+  <select id="selectByPtNoAndUpdateTime" parameterType="java.lang.Long" resultType="com.ecard.entity.MallOrder">
+    select
+    mao.MallNo, mao.PtNo, mao.DrNo, mao.DisNo, mao.DrugStoreNo, mao.MedOrderNo, mao.OrderStatus, mao.OrderTime, mao.Phone,
+    mao.Address, mao.PayStatus, mao.PayTime, mao.ShippingStatus, mao.ShippingCompany, mao.ShippingContext, mao.ShippingNo,
+    mao.ShippingTime, mao.OrderAmount, mao.CreateUser, mao.CreateTime, mao.UpdateUser, mao.UpdateTime, mao.Version
+    , mao.Rental, mao.ActivityDetail, mao.OffMoney, mao.Remark,mao.PacketId
+    FROM mallorder mao,medorder meo
+    where mao.MedOrderNo = meo.OrderNo and mao.ptNo = #{ptNo,jdbcType=INTEGER} and mao.payStatus = 0 ORDER BY meo.updateTime LIMIT 0,1
+  </select>
+  <select id="selectByTypeDrNameDrugNoDate" resultType="com.ecard.pojo.queryResult.PcCountQr">
+    select *
+    from
+    mallorder mao
+    LEFT JOIN
+    medorder meo on mao.MedOrderNo = meo.OrderNo
+    LEFT JOIN
+    drinfo dr on dr.drNo = mao.drNo
+    LEFT JOIN
+    drdisrelation drdis on dr.DrNo = drdis.DrNo
+    LEFT JOIN
+    cloudpassinfo cpi on cpi.CloudPassNo = dr.CloudPassNo
+    where
+    meo.OrderType = 1
+    and
+    mao.PayStatus = 0
+    <if test="drPhone != null and drPhone !=''" >
+      and cpi.Phone = #{drPhone,jdbcType=VARCHAR}
+    </if>
+    <if test="drName != null and drName !=''" >
+      and cpi.Name = #{drName,jdbcType=VARCHAR}
+    </if>
+    <if test="drNo != null" >
+      and dr.DrNo = #{drNo,jdbcType=VARCHAR}
+    </if>
+    and
+    meo.UpdateTime between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP}
+    <choose>
+      <when test="disNo1 != null and disNo2 = null" >
+        and drdis.disNo in
+        (select disNo from disinfo where disLeader = (select CloudPassNo from disinfo where disNo = #{disNo1,jdbcType=BIGINT}))
+      </when>
+      <when test="disNo1 != null and disNo2 != null" >
+        and drdis.disNo in
+        (select disNo from disinfo where disLeader = (select CloudPassNo from disinfo where disNo = #{disNo1,jdbcType=BIGINT}))
+        and drdis.disNo = #{disNo2,jdbcType=BIGINT}
+      </when>
+      <when test="disNo2 != null">
+        and drdis.disNo = #{disNo2,jdbcType=BIGINT}
+      </when>
+    </choose>
+  </select>
+  <select id="selectByPtNoAndPayStatusPacketId" resultType="com.ecard.entity.MallOrder">
+    select mao.* from
+    mallorder mao,redpacketrecord d,redpacketrule e
+    where mao.PacketId = d.PacketId and e.PacketId = d.PacketRuleId
+    and mao.PacketId = #{packetId,jdbcType=BIGINT}
+    and mao.PayStatus = #{payStatus,jdbcType=INTEGER}
+    and mao.PtNo = #{ptNo,jdbcType=BIGINT}
   </select>
 </mapper>

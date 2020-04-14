@@ -26,6 +26,7 @@ public class DrugStoreController {
             @ApiImplicitParam(paramType="query", name = "contact", value = "负责人", dataType = "String"),
             @ApiImplicitParam(paramType="query", name = "contactPhone", value = "负责人手机号", dataType = "String"),
             @ApiImplicitParam(paramType="query", name = "address", value = "地址", dataType = "String"),
+            @ApiImplicitParam(paramType="query", name = "type", value = "类型", dataType = "String"),
             @ApiImplicitParam(paramType="query", name = "disableFlag", value = "停用标志", dataType = "Integer")
     })
     @PostMapping("/addDrugStore")
@@ -34,8 +35,9 @@ public class DrugStoreController {
             @RequestParam(value = "contact") String contact,
             @RequestParam(value = "contactPhone") String contactPhone,
             @RequestParam(value="address") String address,
+            @RequestParam(value="type") String type,
             @RequestParam(value="disableFlag") Integer disableFlag) {
-        Response response = drugStoreService.addDrugStore(drugStoreName,contact,contactPhone,address,disableFlag);
+        Response response = drugStoreService.addDrugStore(drugStoreName,contact,contactPhone,address,type,disableFlag);
         return response;
     }
 
@@ -47,8 +49,8 @@ public class DrugStoreController {
             @ApiImplicitParam(paramType="query", name = "drugStoreName", value = "药店名称", dataType = "String"),
             @ApiImplicitParam(paramType="query", name = "contact", value = "负责人", dataType = "String"),
             @ApiImplicitParam(paramType="query", name = "phone", value = "负责人手机号", dataType = "String"),
-            @ApiImplicitParam(paramType="query", name = "oldCode", value = "原手机号", dataType = "String"),
             @ApiImplicitParam(paramType="query", name = "address", value = "地址", dataType = "String"),
+            @ApiImplicitParam(paramType="query", name = "type", value = "类型", dataType = "String"),
             @ApiImplicitParam(paramType="query", name = "disableFlag", value = "停用标志", dataType = "Integer")
     })
     @PostMapping("/updateDrugStore")
@@ -57,10 +59,10 @@ public class DrugStoreController {
             @RequestParam(value = "drugStoreName") String drugStoreName,
             @RequestParam(value = "contact") String contact,
             @RequestParam(value = "phone") String contactPhone,
-            @RequestParam(value = "oldCode") String oldCode,
             @RequestParam(value="address") String address,
+            @RequestParam(value="type") String type,
             @RequestParam(value="disableFlag") Integer disableFlag) {
-        Response response = drugStoreService.updateDrugStore(drugStoreNo,drugStoreName,contact,contactPhone,address,disableFlag,oldCode);
+        Response response = drugStoreService.updateDrugStore(drugStoreNo,drugStoreName,contact,contactPhone,address,type,disableFlag);
         return response;
     }
 
@@ -70,6 +72,8 @@ public class DrugStoreController {
     @ApiImplicitParams({
             @ApiImplicitParam(paramType="query", name = "drugStoreName", value = "药店名称", dataType = "String"),
             @ApiImplicitParam(paramType="query", name = "disableFlag", value = "停用标志", dataType = "Integer"),
+            @ApiImplicitParam(paramType="query", name = "address", value = "地址", dataType = "String"),
+            @ApiImplicitParam(paramType="query", name = "type", value = "类型", dataType = "String"),
             @ApiImplicitParam(paramType="query", name = "page", value = "当前页", dataType = "Integer"),
             @ApiImplicitParam(paramType="query", name = "rows", value = "显示个数", dataType = "Integer")
     })
@@ -77,47 +81,61 @@ public class DrugStoreController {
     public Response findDrugStore(
             @RequestParam(value = "drugStoreName", required=false) String drugStoreName,
             @RequestParam(value="disableFlag", required=false) Integer disableFlag,
+            @RequestParam(value = "address", required=false) String address,
+            @RequestParam(value="type", required=false) String type,
             @RequestParam(value="page", required=false, defaultValue="1") Integer page,
             @RequestParam(value="rows", required=false, defaultValue="10") Integer rows) {
-        Response response = drugStoreService.findDrugStore(drugStoreName,disableFlag,page,rows);
+        Response response = drugStoreService.findDrugStore(drugStoreName,disableFlag,address,type,page,rows);
         return response;
     }
 
     //药店查询处方单
     @ApiOperation(value="药店查询处方单")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType="query", name = "mallNo", value = "订单编号", dataType = "Long")
+            @ApiImplicitParam(paramType="query", name = "medOrderNo", value = "处方单编号", dataType = "Long")
     })
     @PostMapping("/findMallOrder")
     public Response findMallOrder(
-            @RequestParam(value = "mallNo", required=false) Long mallNo) {
-        Response response = drugStoreService.findMallOrder(mallNo);
+            @RequestParam(value = "medOrderNo") Long medOrderNo) {
+        Response response = drugStoreService.findMallOrder(medOrderNo);
         return response;
     }
+
+
 
     //药店修改处方单状态
     @ApiOperation(value="药店修改处方单状态")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType="query", name = "mallNo", value = "订单编号", dataType = "Long"),
             @ApiImplicitParam(paramType="query", name = "drugStoreNo", value = "发货药店编号", dataType = "Long"),
-            @ApiImplicitParam(paramType="query", name = "orderStatus", value = "订单状态(0为已完成，1为未完成,", dataType = "Integer"),
-            @ApiImplicitParam(paramType="query", name = "payStatus", value = "支付状态（0为成功，1为失败）", dataType = "Integer"),
-            @ApiImplicitParam(paramType="query", name = "payTime", value = "支付时间", dataType = "Date"),
-            @ApiImplicitParam(paramType="query", name = "execLoc", value = "药店名称", dataType = "String"),
-            @ApiImplicitParam(paramType="query", name = "status", value = "处方单状态\t 参见区分表0.未完成处方 \\r\\n1:未付款 \\r\\n2:未取药\\r\\n 3.已取药4：处方单驳回5：没药\\r\\n6：处方单失效", dataType = "Integer"),
+            @ApiImplicitParam(paramType="query", name = "shippingStatus", value = "配送状态(1.未发货，0.已发货 , 2.未自提 ，3.已自提)", dataType = "int"),
+            @ApiImplicitParam(paramType="query", name = "shippingCompany", value = "配送公司", dataType = "String"),
+            @ApiImplicitParam(paramType="query", name = "shippingNo", value = "快递单号", dataType = "String")
     })
     @PostMapping("/updateMedOrderStatus")
     public Response updateMedOrderStatus(
-            @RequestParam(value = "mallNo", required=false) Long mallNo,
-            @RequestParam(value = "drugStoreNo", required=false) Long drugStoreNo,
-            @RequestParam(value = "orderStatus", required=false) Integer orderStatus,
-            @RequestParam(value = "payStatus", required=false) Integer payStatus,
-            @RequestParam(value = "payTime", required=false) Date payTime,
-            @RequestParam(value = "execLoc", required=false) String execLoc,
-            @RequestParam(value = "status", required=false) Integer status) {
-        Response response = drugStoreService.updateMedOrderStatus(mallNo,drugStoreNo,orderStatus,payStatus,payTime,execLoc,status);
+            @RequestParam(value = "mallNo") Long mallNo,
+            @RequestParam(value = "drugStoreNo") Long drugStoreNo,
+            @RequestParam(value = "shippingStatus", required=false) int shippingStatus,
+            @RequestParam(value = "shippingCompany", required=false) String shippingCompany,
+            @RequestParam(value = "shippingNo", required=false) String shippingNo) {
+        Response response = drugStoreService.updateMedOrderStatus(mallNo,drugStoreNo
+                ,shippingStatus,shippingCompany,shippingNo);
         return response;
     }
+
+
+    //药店查询未发货订单
+    @ApiOperation(value="药店查询未发货订单")
+    @PostMapping("/findShippingStatusIs1")
+    public Response findShippingStatusIs1() {
+        Response response = drugStoreService.findShippingStatusIs1();
+        return response;
+    }
+
+
+
+
 
 
 }

@@ -1,6 +1,7 @@
 package com.ecard.service.serviceImpl;
 
 import com.ecard.dao.CommonMasterMapper;
+import com.ecard.entity.CommonMaster;
 import com.ecard.pojo.Response;
 import com.ecard.pojo.ResponseHasData;
 import com.ecard.service.CommonMasterService;
@@ -17,60 +18,12 @@ public class CommonMasterServiceImpl implements CommonMasterService {
     private CommonMasterMapper commonMasterMapper;
 
     @Override
-    public Response selectUsage() {
+    public Response select(Integer bigCategoryNo) {
         ResponseHasData response = new ResponseHasData();
         try {
-            List<String> smallCategoryNames = commonMasterMapper.selectByNo(7);
+            List<CommonMaster> smallCategoryNames = commonMasterMapper.selectByNo(bigCategoryNo);
             response.setMsg("查询成功");
             response.setData(smallCategoryNames);
-            response.setStatus(0);
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.setMsg("查询失败");
-            response.setStatus(1);
-        }
-        return response;
-    }
-
-    @Override
-    public Response selectWay() {
-        ResponseHasData response = new ResponseHasData();
-        try {
-            List<String> ways = commonMasterMapper.selectByNo(8);
-            response.setMsg("查询成功");
-            response.setData(ways);
-            response.setStatus(0);
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.setMsg("查询失败");
-            response.setStatus(1);;
-        }
-        return response;
-    }
-
-    @Override
-    public Response selectExecWhen() {
-        ResponseHasData response = new ResponseHasData();
-        try {
-            List<String> execWhens = commonMasterMapper.selectByNo(21);
-            response.setMsg("查询成功");
-            response.setData(execWhens);
-            response.setStatus(0);
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.setMsg("查询失败");
-            response.setStatus(1);
-        }
-        return response;
-    }
-
-    @Override
-    public Response selectDecoctionWay() {
-        ResponseHasData response = new ResponseHasData();
-        try {
-            List<String> decoctionWays = commonMasterMapper.selectByNo(31);
-            response.setMsg("查询成功");
-            response.setData(decoctionWays);
             response.setStatus(0);
         } catch (Exception e) {
             e.printStackTrace();

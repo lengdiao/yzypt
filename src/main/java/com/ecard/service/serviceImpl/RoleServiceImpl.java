@@ -78,9 +78,9 @@ public class RoleServiceImpl implements RoleService {
 
             RoleQr roleQr = roleMapper.selectByNo(Integer.parseInt(roleNo+""));
             List<Authoritys> authoritys = authorityMapper.selectByRoleno(roleNo);
-            List<Authoritys> allAuthoritys = authorityMapper.selectAllauths();
+            //List<Authoritys> allAuthoritys = authorityMapper.selectAllauths();
             roleQr.setAuthoritys(authoritys);
-            roleQr.setAllAuthoritys(allAuthoritys);
+            roleQr.setAllAuthoritys(authoritys);
 
             response.setStatus(0);
             response.setMsg("查询成功");

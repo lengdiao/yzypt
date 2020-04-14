@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ecard.mapper.MessageMapper">
+<mapper namespace="com.ecard.dao.MessageMapper">
   <resultMap id="BaseResultMap" type="com.ecard.entity.Message">
     <id column="MessageNo" jdbcType="BIGINT" property="messageNo" />
     <result column="MessageKind" jdbcType="VARCHAR" property="messageKind" />

@@ -24,5 +24,5 @@ public interface MessageMapper {
 
 	List<Message> selectMsgByDrNo(@Param("drNo") long drNo, @Param("ptNo") long ptNo);
 
-	Message[] selectDrNewMessage(@Param("ptNo") Long ptNo, @Param("drNo") long drNo);
+    List<Message> selectDrNewMessage(@Param("ptNo") Long ptNo, @Param("drNo") long drNo);
 }

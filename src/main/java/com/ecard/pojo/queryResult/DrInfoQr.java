@@ -53,14 +53,74 @@ public class DrInfoQr {
 
     private Integer version;
 
-    private String name;
+    private String drName;
 
-    public String getName() {
-        return name;
+    private String idNo;
+
+    private String phone;
+
+    private String department;
+
+    private int type;
+
+    private int newMessage;
+
+    private String city;
+
+    public String getCity() {
+        return city;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public int getNewMessage() {
+        return newMessage;
+    }
+
+    public void setNewMessage(int newMessage) {
+        this.newMessage = newMessage;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
+    public String getIdNo() {
+        return idNo;
+    }
+
+    public void setIdNo(String idNo) {
+        this.idNo = idNo;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getDrName() {
+        return drName;
+    }
+
+    public void setDrName(String drName) {
+        this.drName = drName;
     }
 
     public Long getDrNo() {

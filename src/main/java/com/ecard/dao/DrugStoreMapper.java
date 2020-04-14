@@ -22,5 +22,8 @@ public interface DrugStoreMapper {
 
     List<DrugStore> findDrugStore(
             @Param("drugStoreName") String drugStoreName,
-            @Param("disableFlag") Integer disableFlag);
+            @Param("disableFlag") Integer disableFlag,
+            @Param("address") String address,
+            @Param("type") Integer type);
+
 }

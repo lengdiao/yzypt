@@ -18,50 +18,18 @@ public class CommonMasterController {
     private CommonMasterService commonMasterService;
 
     /**
-     * 给药频率下拉框选项
+     * 通用数据
      *
      * @return
      */
-    @PostMapping("/selectUsage")
-    @ApiOperation(value = "给药频率下拉框选项", httpMethod = "POST")
-    public Response selectUsage() {
-        Response response = commonMasterService.selectUsage();
-        return response;
-    }
-
-    /**
-     * 给药途径下拉框选项
-     *
-     * @return
-     */
-    @PostMapping("/selectWay")
-    @ApiOperation(value = "给药途径下拉框选项", httpMethod = "POST")
-    public Response selectWay() {
-        Response response = commonMasterService.selectWay();
-        return response;
-    }
-
-    /**
-     * 给药时机下拉框选项
-     *
-     * @return
-     */
-    @PostMapping("/selectExecWhen")
-    @ApiOperation(value = "给药时机下拉框选项", httpMethod = "POST")
-    public Response selectExecWhen() {
-        Response response = commonMasterService.selectExecWhen();
-        return response;
-    }
-
-    /**
-     * 代煎方式下拉框选项
-     *
-     * @return
-     */
-    @PostMapping("/selectDecoctionWay")
-    @ApiOperation(value = "代煎方式下拉框选项", httpMethod = "POST")
-    public Response selectDecoctionWay() {
-        Response response = commonMasterService.selectDecoctionWay();
+    @PostMapping("/select")
+    @ApiOperation(value = "1:费用分类2:药物大分类3:基本药物分类4:管制药品5:高警讯药品7:给药频率8:给药途径13:剂型21:给药时机22:给药目的26:特殊给药时机30:中药特殊用法31:代煎方法80:医保分类", httpMethod = "POST")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name = "bigCategoryNo", value = "通用数据编号", dataType = "Integer")
+    })
+    public Response select(
+            @RequestParam(value = "bigCategoryNo") Integer bigCategoryNo) {
+        Response response = commonMasterService.select(bigCategoryNo);
         return response;
     }
 }

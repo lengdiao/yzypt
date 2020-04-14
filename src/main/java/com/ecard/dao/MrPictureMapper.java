@@ -14,4 +14,6 @@ public interface MrPictureMapper {
     int updateByPrimaryKeySelective(MrPicture record);
 
     int updateByPrimaryKey(MrPicture record);
+
+    MrPicture[] selectByMedRecordNo(String medRecordNo);
 }

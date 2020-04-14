@@ -94,4 +94,8 @@
   <select id="selectBtOpenId" parameterType="java.lang.String" resultType="com.ecard.entity.PtOpen">
     select * from ptopen where OpenId = #{openId,jdbcType=VARCHAR}
   </select>
+  <select id="selectByDrNoAndOpenId" resultType="com.ecard.entity.PtOpen">
+    select * from ptopen where OpenId = #{openId,jdbcType=VARCHAR} and
+      DrNo = #{drNo,jdbcType=BIGINT}
+  </select>
 </mapper>

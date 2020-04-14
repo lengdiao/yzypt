@@ -52,6 +52,26 @@ public class DrInfo {
 
     private Integer version;
 
+    private int type;
+
+    private String city;
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
     public Long getDrNo() {
         return drNo;
     }

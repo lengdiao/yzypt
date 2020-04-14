@@ -181,10 +181,20 @@
     ds.drugSetNo,ds.hisDrugCode,ds.commonName,ds.itemName,
     ds.nhiType,ds.manufactory,ds.category,ds.essentialDrug,
     ds.ctrlDrug,ds.highAlert,ds.dividend,ds.saleUnit,ds.divisor,
-    ds.doseUnit as doseUnit1,ds.form,ds.material,ds.dosege,ds.dosegeUnit,
+    ds.doseUnit as doseUnit1,ds.form,ds.material,ds.dosege,ds.dosegeUnit,ds.saleGenPrice,
     ds.volume,ds.unit
     from meditem mei,drugset ds
     where mei.drugNo = ds.drugSetNo
     and mei.medOrderNo = #{orderNo,jdbcType=BIGINT}
+  </select>
+  <select id="selectByMallNo" parameterType="java.lang.Long" resultType="com.ecard.entity.MedItem">
+    select mei.*
+    from mallorder mao,medorder meo,meditem mei
+    where
+    mao.MedOrderNo = meo.OrderNo
+    and
+    mei.MedOrderNo = meo.OrderNo
+    and
+    mao.MallNo = #{orderNo,jdbcType=BIGINT}
   </select>
 </mapper>

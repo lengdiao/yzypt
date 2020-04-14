@@ -3,6 +3,8 @@ package com.ecard.dao;
 import com.ecard.entity.CloudPassInfo;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 public interface CloudPassInfoMapper {
     int deleteByPrimaryKey(Long cloudPassNo);
 
@@ -32,4 +34,30 @@ public interface CloudPassInfoMapper {
     CloudPassInfo selectByIdNo(String idNo);
 
     CloudPassInfo selectByPhone(String phone);
+
+    CloudPassInfo selectByPhoneIdNoPtNo(
+            @Param("ptNo") Long ptNo,
+            @Param("phone") String phone,
+            @Param("idNo") String idNo);
+
+    CloudPassInfo selectByPhoneIdNoDrNo(
+            @Param("drNo") Long drNo,
+            @Param("phone") String phone,
+            @Param("idCard") String idCard);
+
+    CloudPassInfo selectByPtNo(Long ptNo);
+
+    CloudPassInfo selectByDrugStoreNo(Long drugStoreNo);
+
+    CloudPassInfo findByPhoneDisRole(String phone);
+
+    List<CloudPassInfo> findByPhoneDis(
+            @Param("disNo") Long disNo,
+            @Param("phone") String phone);
+
+    List<CloudPassInfo> findByPhoneRole(String phone);
+
+    CloudPassInfo selectByPhoneDrugStore(String phone);
+
+    CloudPassInfo selectByPhoneAndPasswordNull(String phone);
 }

@@ -19,4 +19,6 @@ public interface MedItemMapper {
     int updateByPrimaryKey(MedItem record);
 
     List<MedItemQr> selectByMedOrderNo(Long orderNo);
+
+    List<MedItem> selectByMallNo(Long mallNo);
 }

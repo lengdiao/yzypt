@@ -21,4 +21,6 @@ public interface DepartmentMapper {
     List<Department> selectByNameFlag(
             @Param("deptName") String deptName,
             @Param("disableFlag") Integer disableFlag);
+
+    List<Department> selectAll(String deptName);
 }

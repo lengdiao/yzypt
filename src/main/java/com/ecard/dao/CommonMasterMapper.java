@@ -18,5 +18,5 @@ public interface CommonMasterMapper {
 
     int updateByPrimaryKey(CommonMaster record);
 
-    List<String> selectByNo(int i);
+    List<CommonMaster> selectByNo(int i);
 }

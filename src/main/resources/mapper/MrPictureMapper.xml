@@ -1,31 +1,38 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.ecard.dao.MrPictureMapper" >
-  <resultMap id="BaseResultMap" type="com.ecard.entity.MrPicture" >
-    <id column="MrPictureNo" property="mrPictureNo" jdbcType="BIGINT" />
-    <result column="MrPictureAddress" property="mrPictureAddress" jdbcType="VARCHAR" />
-    <result column="MedRecordNo" property="medRecordNo" jdbcType="VARCHAR" />
-    <result column="CreateUser" property="createUser" jdbcType="BIGINT" />
-    <result column="CreateTime" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="UpdateUser" property="updateUser" jdbcType="BIGINT" />
-    <result column="UpdateTime" property="updateTime" jdbcType="TIMESTAMP" />
-    <result column="Version" property="version" jdbcType="INTEGER" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ecard.dao.MrPictureMapper">
+  <resultMap id="BaseResultMap" type="com.ecard.entity.MrPicture">
+    <id column="MrPictureNo" jdbcType="BIGINT" property="mrPictureNo" />
+    <result column="MrPictureAddress" jdbcType="VARCHAR" property="mrPictureAddress" />
+    <result column="MedRecordNo" jdbcType="VARCHAR" property="medRecordNo" />
+    <result column="CreateUser" jdbcType="BIGINT" property="createUser" />
+    <result column="CreateTime" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UpdateUser" jdbcType="BIGINT" property="updateUser" />
+    <result column="UpdateTime" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="Version" jdbcType="INTEGER" property="version" />
   </resultMap>
-  <sql id="Base_Column_List" >
+  <sql id="Base_Column_List">
     MrPictureNo, MrPictureAddress, MedRecordNo, CreateUser, CreateTime, UpdateUser, UpdateTime, 
     Version
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select 
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
     <include refid="Base_Column_List" />
     from mrpicture
     where MrPictureNo = #{mrPictureNo,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+  <select id="selectByMedRecordNo" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mrpicture
+    where MedRecordNo = #{medRecordNo,jdbcType=VARCHAR}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from mrpicture
     where MrPictureNo = #{mrPictureNo,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.ecard.entity.MrPicture" >
+  <insert id="insert" parameterType="com.ecard.entity.MrPicture">
     insert into mrpicture (MrPictureNo, MrPictureAddress, MedRecordNo, 
       CreateUser, CreateTime, UpdateUser, 
       UpdateTime, Version)
@@ -33,89 +40,89 @@
       #{createUser,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=BIGINT}, 
       #{updateTime,jdbcType=TIMESTAMP}, #{version,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.ecard.entity.MrPicture" >
+  <insert id="insertSelective" parameterType="com.ecard.entity.MrPicture">
     insert into mrpicture
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="mrPictureNo != null" >
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="mrPictureNo != null">
         MrPictureNo,
       </if>
-      <if test="mrPictureAddress != null" >
+      <if test="mrPictureAddress != null">
         MrPictureAddress,
       </if>
-      <if test="medRecordNo != null" >
+      <if test="medRecordNo != null">
         MedRecordNo,
       </if>
-      <if test="createUser != null" >
+      <if test="createUser != null">
         CreateUser,
       </if>
-      <if test="createTime != null" >
+      <if test="createTime != null">
         CreateTime,
       </if>
-      <if test="updateUser != null" >
+      <if test="updateUser != null">
         UpdateUser,
       </if>
-      <if test="updateTime != null" >
+      <if test="updateTime != null">
         UpdateTime,
       </if>
-      <if test="version != null" >
+      <if test="version != null">
         Version,
       </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="mrPictureNo != null" >
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="mrPictureNo != null">
         #{mrPictureNo,jdbcType=BIGINT},
       </if>
-      <if test="mrPictureAddress != null" >
+      <if test="mrPictureAddress != null">
         #{mrPictureAddress,jdbcType=VARCHAR},
       </if>
-      <if test="medRecordNo != null" >
+      <if test="medRecordNo != null">
         #{medRecordNo,jdbcType=VARCHAR},
       </if>
-      <if test="createUser != null" >
+      <if test="createUser != null">
         #{createUser,jdbcType=BIGINT},
       </if>
-      <if test="createTime != null" >
+      <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="updateUser != null" >
+      <if test="updateUser != null">
         #{updateUser,jdbcType=BIGINT},
       </if>
-      <if test="updateTime != null" >
+      <if test="updateTime != null">
         #{updateTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="version != null" >
+      <if test="version != null">
         #{version,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.ecard.entity.MrPicture" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecard.entity.MrPicture">
     update mrpicture
-    <set >
-      <if test="mrPictureAddress != null" >
+    <set>
+      <if test="mrPictureAddress != null">
         MrPictureAddress = #{mrPictureAddress,jdbcType=VARCHAR},
       </if>
-      <if test="medRecordNo != null" >
+      <if test="medRecordNo != null">
         MedRecordNo = #{medRecordNo,jdbcType=VARCHAR},
       </if>
-      <if test="createUser != null" >
+      <if test="createUser != null">
         CreateUser = #{createUser,jdbcType=BIGINT},
       </if>
-      <if test="createTime != null" >
+      <if test="createTime != null">
         CreateTime = #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="updateUser != null" >
+      <if test="updateUser != null">
         UpdateUser = #{updateUser,jdbcType=BIGINT},
       </if>
-      <if test="updateTime != null" >
+      <if test="updateTime != null">
         UpdateTime = #{updateTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="version != null" >
+      <if test="version != null">
         Version = #{version,jdbcType=INTEGER},
       </if>
     </set>
     where MrPictureNo = #{mrPictureNo,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.ecard.entity.MrPicture" >
+  <update id="updateByPrimaryKey" parameterType="com.ecard.entity.MrPicture">
     update mrpicture
     set MrPictureAddress = #{mrPictureAddress,jdbcType=VARCHAR},
       MedRecordNo = #{medRecordNo,jdbcType=VARCHAR},

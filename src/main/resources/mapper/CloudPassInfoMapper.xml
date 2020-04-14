@@ -48,19 +48,19 @@
       <if test="cloudPassNo != null">
         CloudPassNo,
       </if>
-      <if test="password != null">
+      <if test="password != null and password !='' and password !='null'">
         Password,
       </if>
-      <if test="name != null">
+      <if test="name != null and name !='' and name !='null'">
         Name,
       </if>
-      <if test="cloudPassKind != null">
+      <if test="cloudPassKind != null and cloudPassKind !='' and cloudPassKind !='null'">
         CloudPassKind,
       </if>
-      <if test="phone != null">
+      <if test="phone != null and phone !='' and phone !='null'">
         Phone,
       </if>
-      <if test="idNo != null">
+      <if test="idNo != null and idNo !='' and idNo != 'null'">
         IdNo,
       </if>
       <if test="disableFlag != null">
@@ -86,19 +86,19 @@
       <if test="cloudPassNo != null">
         #{cloudPassNo,jdbcType=BIGINT},
       </if>
-      <if test="password != null">
+      <if test="password != null and password !='' and password != 'null'">
         #{password,jdbcType=VARCHAR},
       </if>
-      <if test="name != null">
+      <if test="name != null and name !='' and name != 'null'">
         #{name,jdbcType=VARCHAR},
       </if>
-      <if test="cloudPassKind != null">
+      <if test="cloudPassKind != null and cloudPassKind !='' and cloudPassKind != 'null'">
         #{cloudPassKind,jdbcType=VARCHAR},
       </if>
-      <if test="phone != null">
+      <if test="phone != null and phone !='' and phone != 'null'">
         #{phone,jdbcType=VARCHAR},
       </if>
-      <if test="idNo != null">
+      <if test="idNo != null and idNo !='' and idNo != 'null'">
         #{idNo,jdbcType=VARCHAR},
       </if>
       <if test="disableFlag != null">
@@ -124,19 +124,19 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.ecard.entity.CloudPassInfo">
     update cloudpassinfo
     <set>
-      <if test="password != null">
+      <if test="password != null and password !='' and password !='null'">
         Password = #{password,jdbcType=VARCHAR},
       </if>
-      <if test="name != null">
+      <if test="name != null and name !='' and name !='null'">
         Name = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="cloudPassKind != null">
+      <if test="cloudPassKind != null and cloudPassKind !='' and cloudPassKind !='null'">
         CloudPassKind = #{cloudPassKind,jdbcType=VARCHAR},
       </if>
-      <if test="phone != null">
+      <if test="phone != null and phone !='' and phone !='null'">
         Phone = #{phone,jdbcType=VARCHAR},
       </if>
-      <if test="idNo != null">
+      <if test="idNo != null and idNo !='' and idNo !='null'">
         IdNo = #{idNo,jdbcType=VARCHAR},
       </if>
       <if test="disableFlag != null">
@@ -180,7 +180,7 @@
     cloud.CloudPassNo, cloud.Password, cloud.Name, cloud.CloudPassKind, cloud.Phone,
     cloud.IdNo, cloud.DisableFlag, cloud.CreateUser,
     cloud.CreateTime, cloud.UpdateUser, cloud.UpdateTime, cloud.Version
-    from cloudpassinfo cloud right join userrole ur on cloud.CloudPassNo = ur.CloudPassNo
+    from cloudpassinfo cloud join userrole ur on cloud.CloudPassNo = ur.CloudPassNo
     and ur.RoleNo = #{roleNo,jdbcType=BIGINT}
     and cloud.Phone = #{phone,jdbcType=VARCHAR}
     and cloud.Password = #{password,jdbcType=VARCHAR}
@@ -194,7 +194,7 @@
     and
     c.Phone = #{phone,jdbcType=VARCHAR}
     and
-    d.DrugStoreNo = #{drugStoreNo,jdbcType=BIGINT}
+    d.DrugStoreNo != #{drugStoreNo,jdbcType=BIGINT}
   </select>
   <select id="selectByPhoneAndDoctor" parameterType="java.lang.String" resultType="com.ecard.entity.CloudPassInfo">
     select * from cloudpassinfo cpi right join userrole ur on cpi.CloudPassNo = ur.CloudPassNo
@@ -206,5 +206,60 @@
   </select>
   <select id="selectByPhone" parameterType="java.lang.String" resultType="com.ecard.entity.CloudPassInfo">
     select  * from cloudpassinfo where Phone = #{phone,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByPhoneAndPasswordNull" parameterType="java.lang.String" resultType="com.ecard.entity.CloudPassInfo">
+    select  * from cloudpassinfo where Phone = #{phone,jdbcType=VARCHAR} and Password is not null
+  </select>
+  <select id="selectByPhoneIdNoPtNo" resultType="com.ecard.entity.CloudPassInfo">
+    select * from cloudpassinfo cpi, ptinfo pt where cpi.CloudPassNo = pt.CloudPassNo
+    <if test="phone != null">
+      and cpi.Phone = #{phone,jdbcType=VARCHAR}
+    </if>
+    <if test="idNo != null">
+      and cpi.IdNo = #{idNo,jdbcType=VARCHAR}
+    </if>
+    and pt.PtNo != #{ptNo,jdbcType=BIGINT}
+  </select>
+  <select id="selectByPhoneIdNoDrNo" resultType="com.ecard.entity.CloudPassInfo">
+    select * from cloudpassinfo cpi, drinfo dr ,userrole ur where cpi.CloudPassNo = dr.CloudPassNo
+    and ur.CloudPassNo = cpi.CloudPassNo
+    <if test="phone != null and phone !='null' and phone = ''">
+      and cpi.Phone = #{phone,jdbcType=VARCHAR}
+    </if>
+    <if test="idCard != null and idCard !='null' and idCard = ''">
+      and cpi.IdNo = #{idCard,jdbcType=VARCHAR}
+    </if>
+    and dr.drNo !=  #{drNo,jdbcType=BIGINT}
+  </select>
+  <select id="selectByPtNo" resultType="com.ecard.entity.CloudPassInfo" parameterType="java.lang.Long">
+    select * from cloudpassinfo cpi,ptinfo pi where cpi.CloudPassNo = pi.CloudPassNo
+    and pi.PtNo = #{ptNo,jdbcType=BIGINT}
+  </select>
+  <select id="selectByDrugStoreNo" parameterType="java.lang.Long" resultType="com.ecard.entity.CloudPassInfo">
+    select * from cloudpassinfo cpi,drugstore ds
+    where ds.CloudPassNo = cpi.CloudPassNo
+    and ds.DrugStoreNo = #{drugStoreNo,jdbcType=BIGINT}
+  </select>
+  <select id="findByPhoneDisRole" parameterType="java.lang.String" resultType="com.ecard.entity.CloudPassInfo">
+    select * from cloudpassinfo cpi,userrole ur where cpi.CloudPassNo = ur.CloudPassNo
+    and (ur.roleNo = 5 or ur.roleNo = 7) and cpi.Phone = #{phone,jdbcType=VARCHAR}
+  </select>
+  <select id="findByPhoneDis" resultType="com.ecard.entity.CloudPassInfo">
+    select * from cloudpassinfo cpi,userrole ur,disinfo dis where cpi.CloudPassNo = ur.CloudPassNo
+    and dis.CloudPassNo = cpi.CloudPassNo
+    and (ur.roleNo = 5 or ur.roleNo = 7)
+    <if test="disNo !=null and disNo !=''">
+      and dis.disNo != #{disNo,jdbcType=BIGINT}
+    </if>
+    and cpi.Phone = #{phone,jdbcType=VARCHAR}
+  </select>
+  <select id="findByPhoneRole" parameterType="java.lang.String" resultType="com.ecard.entity.CloudPassInfo">
+    select cpi.* from cloudpassinfo cpi right join userrole ur on cpi.CloudPassNo = ur.CloudPassNo
+    where
+    cpi.Phone = #{phone,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByPhoneDrugStore" parameterType="java.lang.String" resultType="com.ecard.entity.CloudPassInfo">
+    select * from cloudpassinfo cpi,userrole ur where cpi.CloudPassNo = ur.CloudPassNo
+    and (ur.roleNo = 3 or ur.roleNo = 4 or ur.roleNo = 6) and cpi.Phone = #{phone,jdbcType=VARCHAR}
   </select>
 </mapper>

@@ -25,12 +25,13 @@
     <result column="UpdateUser" jdbcType="BIGINT" property="updateUser" />
     <result column="UpdateTime" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="Version" jdbcType="INTEGER" property="version" />
+    <result column="Remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
   <sql id="Base_Column_List">
     OrderNo, MedRecordNo, DrugStoreNo, ExecUser, ExecTime, ExecLoc, ExecRefuseReason, 
     OrderStatus, OrderAmount, DiagContent, OrderType, PrescriptionNum, PrescriptionName, 
     DecoctionWay, DecoctionNum, UseTimes, SpecialUsage, DisableFlag, CreateUser, CreateTime, 
-    UpdateUser, UpdateTime, Version
+    UpdateUser, UpdateTime, Version,Remark
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -50,7 +51,7 @@
       PrescriptionName, DecoctionWay, DecoctionNum, 
       UseTimes, SpecialUsage, DisableFlag, 
       CreateUser, CreateTime, UpdateUser, 
-      UpdateTime, Version)
+      UpdateTime, Version,Remark)
     values (#{orderNo,jdbcType=BIGINT}, #{medRecordNo,jdbcType=VARCHAR}, #{drugStoreNo,jdbcType=VARCHAR}, 
       #{execUser,jdbcType=VARCHAR}, #{execTime,jdbcType=TIMESTAMP}, #{execLoc,jdbcType=VARCHAR}, 
       #{execRefuseReason,jdbcType=VARCHAR}, #{orderStatus,jdbcType=INTEGER}, #{orderAmount,jdbcType=DECIMAL}, 
@@ -58,7 +59,7 @@
       #{prescriptionName,jdbcType=VARCHAR}, #{decoctionWay,jdbcType=INTEGER}, #{decoctionNum,jdbcType=INTEGER}, 
       #{useTimes,jdbcType=VARCHAR}, #{specialUsage,jdbcType=VARCHAR}, #{disableFlag,jdbcType=INTEGER}, 
       #{createUser,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=BIGINT}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{version,jdbcType=INTEGER})
+      #{updateTime,jdbcType=TIMESTAMP}, #{version,jdbcType=INTEGER},#{remark,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.ecard.entity.MedOrder"
           useGeneratedKeys="true" keyProperty="orderNo" keyColumn="OrderNo">
@@ -133,6 +134,9 @@
       <if test="version != null">
         Version,
       </if>
+      <if test="remark != null">
+        Remark,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="orderNo != null">
@@ -203,6 +207,9 @@
       </if>
       <if test="version != null">
         #{version,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -275,6 +282,9 @@
       <if test="version != null">
         Version = #{version,jdbcType=INTEGER},
       </if>
+      <if test="remark != null">
+        Remark = #{remark,jdbcType=INTEGER},
+      </if>
     </set>
     where OrderNo = #{orderNo,jdbcType=BIGINT}
   </update>
@@ -301,7 +311,8 @@
       CreateTime = #{createTime,jdbcType=TIMESTAMP},
       UpdateUser = #{updateUser,jdbcType=BIGINT},
       UpdateTime = #{updateTime,jdbcType=TIMESTAMP},
-      Version = #{version,jdbcType=INTEGER}
+      Version = #{version,jdbcType=INTEGER},
+      Remark = #{remark,jdbcType=VARCHAR}
     where OrderNo = #{orderNo,jdbcType=BIGINT}
   </update>
   <select id="selectByMedRecordNo" parameterType="java.lang.Long" resultType="com.ecard.entity.MedOrder">

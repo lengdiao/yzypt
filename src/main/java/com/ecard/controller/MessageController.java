@@ -4,9 +4,7 @@ import com.ecard.dao.MessageMapper;
 import com.ecard.pojo.Response;
 import com.ecard.pojo.ResponseHasData;
 import com.ecard.service.MessageService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,9 +25,13 @@ public class MessageController {
      * @return
      */
     @GetMapping(value = "/selectMsgByPtNo")
-    @ApiOperation(value = "根据医生编号和病人编号查询留言，发起人医生", httpMethod = "GET")
-    public Response selectMsgByPtNo(@ApiParam(name = "drNo", value = "医生编号", required = true) String drNo,
-                                    @ApiParam(name = "ptNo", value = "病人编号", required = true) String ptNo) {
+    @ApiOperation(value = "根据医生编号和病人编号查询留言，发起人患者", httpMethod = "GET")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name = "drNo", value = "医生编号", dataType = "String"),
+            @ApiImplicitParam(paramType="query", name = "ptNo", value = "病人编号", dataType = "String")
+    })
+    public Response selectMsgByPtNo( @RequestParam(value = "drNo") String drNo,
+                                    @RequestParam(value = "ptNo") String ptNo) {
         ResponseHasData response = messageService.selectMsgByPtNo(drNo, ptNo);
         return response;
     }
@@ -44,9 +46,14 @@ public class MessageController {
      */
     @PostMapping(value = "/insertMsgByPtNo")
     @ApiOperation(value = "医生留言给指定病人", httpMethod = "POST")
-    public Response insertMsgByPtNo(@ApiParam(name = "drNo", value = "医生编号", required = true) String drNo,
-                                    @ApiParam(name = "ptNo", value = "病人编号", required = true) String ptNo,
-                                    @ApiParam(name = "messageContent", value = "消息内容", required = true) @RequestParam(value = "messageContent") String messageContent) {
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name = "drNo", value = "医生编号", dataType = "String"),
+            @ApiImplicitParam(paramType="query", name = "ptNo", value = "病人编号", dataType = "String"),
+            @ApiImplicitParam(paramType="query", name = "messageContent", value = "留言内容", dataType = "String")
+    })
+    public Response insertMsgByPtNo(@RequestParam(value = "drNo") String drNo,
+                                    @RequestParam(value = "ptNo") String ptNo,
+                                    @RequestParam(value = "messageContent") String messageContent) {
         ResponseHasData response = messageService.insertMsgByPtNo(drNo, ptNo, messageContent);
         return response;
     }
@@ -61,8 +68,12 @@ public class MessageController {
      */
     @GetMapping(value = "/selectMsgByDrNo")
     @ApiOperation(value = "根据医生编号和病人编号查询留言，发起人医生", httpMethod = "GET")
-    public Response selectMsgByDrNo(@ApiParam(name = "drNo", value = "医生编号", required = true) String drNo,
-                                    @ApiParam(name = "ptNo", value = "病人编号", required = true) String ptNo) {
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name = "drNo", value = "医生编号", dataType = "String"),
+            @ApiImplicitParam(paramType="query", name = "ptNo", value = "病人编号", dataType = "String")
+    })
+    public Response selectMsgByDrNo(@RequestParam(value = "drNo") String drNo,
+                                    @RequestParam(value = "ptNo") String ptNo) {
         ResponseHasData response = messageService.selectMsgByDrNo(drNo, ptNo);
         return response;
     }
@@ -77,9 +88,14 @@ public class MessageController {
      */
     @PostMapping(value = "/insertMsgByDrNo")
     @ApiOperation(value = "医生留言给指定病人", httpMethod = "POST")
-    public Response insertMsgByDrNo(@ApiParam(name = "drNo", value = "医生编号", required = true) String drNo,
-                                    @ApiParam(name = "ptNo", value = "病人编号", required = true) String ptNo,
-                                    @ApiParam(name = "messageContent", value = "消息内容", required = true) @RequestParam(value = "messageContent") String messageContent) {
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType="query", name = "drNo", value = "医生编号", dataType = "String"),
+            @ApiImplicitParam(paramType="query", name = "ptNo", value = "病人编号", dataType = "String"),
+            @ApiImplicitParam(paramType="query", name = "messageContent", value = "留言内容", dataType = "String")
+    })
+    public Response insertMsgByDrNo(@RequestParam(value = "drNo") String drNo,
+                                    @RequestParam(value = "ptNo") String ptNo,
+                                    @RequestParam(value = "messageContent") String messageContent) {
         ResponseHasData response = messageService.insertMsgByDrNo(drNo, ptNo, messageContent);
         return response;
     }

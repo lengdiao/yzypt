@@ -1,5 +1,9 @@
 package com.ecard.entity;
 
+import com.ecard.pojo.queryResult.DrInfoQr;
+import com.ecard.pojo.queryResult.PtInfoQr;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class Message {
@@ -22,14 +26,34 @@ public class Message {
     private Integer readStatus;
 
     private String createUser;
-
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date createTime;
 
     private String updateUser;
-
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date updateTime;
 
     private Integer version;
+
+    private PtInfoQr ptInfoQr;
+
+    private DrInfoQr drInfoQr;
+
+    public DrInfoQr getDrInfoQr() {
+        return drInfoQr;
+    }
+
+    public void setDrInfoQr(DrInfoQr drInfoQr) {
+        this.drInfoQr = drInfoQr;
+    }
+
+    public PtInfoQr getPtInfoQr() {
+        return ptInfoQr;
+    }
+
+    public void setPtInfoQr(PtInfoQr ptInfoQr) {
+        this.ptInfoQr = ptInfoQr;
+    }
 
     public Long getMessageNo() {
         return messageNo;

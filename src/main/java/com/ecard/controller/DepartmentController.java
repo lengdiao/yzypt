@@ -99,7 +99,7 @@ public class DepartmentController {
             @RequestParam(value = "deptName", required = false) String deptName,
             @RequestParam(value = "disableFlag", required = false) Integer disableFlag,
             @RequestParam(value="page", required=false, defaultValue="1") Integer page,
-            @RequestParam(value="rows", required=false, defaultValue="10") Integer rows) {
+            @RequestParam(value="rows", required=false, defaultValue="9999") Integer rows) {
         Response response = departmentService.select(deptName,disableFlag,page,rows);
         return response;
     }

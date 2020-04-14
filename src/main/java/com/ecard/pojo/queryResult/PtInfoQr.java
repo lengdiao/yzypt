@@ -1,16 +1,26 @@
 package com.ecard.pojo.queryResult;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class PtInfoQr {
-    private String Name;
+    private String name;
 
     private Long ptNo;
 
     private Long cloudPassNo;
 
-    private String sex;
+    private String ybType;
 
+    private String ybCardNo;
+
+    private String ybIntCardNo;
+
+    private String ybCardString;
+
+    private String sex;
+    @JsonFormat(pattern="yyyy-MM-dd",timezone="GMT+8")
     private Date birthDay;
 
     private Double height;
@@ -20,21 +30,93 @@ public class PtInfoQr {
     private Integer disableFlag;
 
     private String createUser;
-
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date createTime;
 
     private String updateUser;
-
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date updateTime;
 
     private Integer version;
 
+    private String phone;
+
+    private String idNo;
+
+    private int age;
+
+    private int newMessage;
+
+    public int getNewMessage() {
+        return newMessage;
+    }
+
+    public void setNewMessage(int newMessage) {
+        this.newMessage = newMessage;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String getIdNo() {
+        return idNo;
+    }
+
+    public void setIdNo(String idNo) {
+        this.idNo = idNo;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getYbType() {
+        return ybType;
+    }
+
+    public void setYbType(String ybType) {
+        this.ybType = ybType;
+    }
+
+    public String getYbCardNo() {
+        return ybCardNo;
+    }
+
+    public void setYbCardNo(String ybCardNo) {
+        this.ybCardNo = ybCardNo;
+    }
+
+    public String getYbIntCardNo() {
+        return ybIntCardNo;
+    }
+
+    public void setYbIntCardNo(String ybIntCardNo) {
+        this.ybIntCardNo = ybIntCardNo;
+    }
+
+    public String getYbCardString() {
+        return ybCardString;
+    }
+
+    public void setYbCardString(String ybCardString) {
+        this.ybCardString = ybCardString;
+    }
+
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String name) {
-        Name = name;
+        this.name = name;
     }
 
     public Long getPtNo() {

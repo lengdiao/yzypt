@@ -1,9 +1,7 @@
 package com.ecard.pojo.queryResult;
 
-import com.ecard.entity.CloudPassInfo;
-import com.ecard.entity.MallOrder;
-import com.ecard.entity.MedOrder;
-import com.ecard.entity.MedRecord;
+import com.ecard.entity.*;
+import com.ngari.his.recipe.mode.RecipeAuditAiReasonReqTO;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -15,6 +13,60 @@ public class MallOrderQr {
     private MedRecord medRecord;
     private List<MedItemQr> medItemQr;
     private PtInfoQr ptInfoQr;
+    private MrPicture[] mrPictures;
+    private ReceiptAddress receiptAddress;
+    private DrInfoQr drInfoQr;
+    private BigDecimal postage;
+    private String dis1Name;
+    private String dis2Name;
+
+    public String getDis1Name() {
+        return dis1Name;
+    }
+
+    public void setDis1Name(String dis1Name) {
+        this.dis1Name = dis1Name;
+    }
+
+    public String getDis2Name() {
+        return dis2Name;
+    }
+
+    public void setDis2Name(String dis2Name) {
+        this.dis2Name = dis2Name;
+    }
+
+    public BigDecimal getPostage() {
+        return postage;
+    }
+
+    public void setPostage(BigDecimal postage) {
+        this.postage = postage;
+    }
+
+    public DrInfoQr getDrInfoQr() {
+        return drInfoQr;
+    }
+
+    public void setDrInfoQr(DrInfoQr drInfoQr) {
+        this.drInfoQr = drInfoQr;
+    }
+
+    public ReceiptAddress getReceiptAddress() {
+        return receiptAddress;
+    }
+
+    public void setReceiptAddress(ReceiptAddress receiptAddress) {
+        this.receiptAddress = receiptAddress;
+    }
+
+    public MrPicture[] getMrPictures() {
+        return mrPictures;
+    }
+
+    public void setMrPictures(MrPicture[] mrPictures) {
+        this.mrPictures = mrPictures;
+    }
 
     public MallOrder getMallOrder() {
         return mallOrder;

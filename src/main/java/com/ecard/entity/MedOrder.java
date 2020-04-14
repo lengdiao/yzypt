@@ -1,5 +1,7 @@
 package com.ecard.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -11,7 +13,7 @@ public class MedOrder {
     private String drugStoreNo;
 
     private String execUser;
-
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date execTime;
 
     private String execLoc;
@@ -41,14 +43,44 @@ public class MedOrder {
     private Integer disableFlag;
 
     private Long createUser;
-
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date createTime;
 
     private Long updateUser;
-
+    @JsonFormat(pattern="yyyy-MM-dd",timezone="GMT+8")
     private Date updateTime;
 
     private Integer version;
+
+    private String remark;
+
+    private BigDecimal unitPrice;
+
+    private int addStatus;
+
+    public int getAddStatus() {
+        return addStatus;
+    }
+
+    public void setAddStatus(int addStatus) {
+        this.addStatus = addStatus;
+    }
+
+    public BigDecimal getUnitPrice() {
+        return unitPrice;
+    }
+
+    public void setUnitPrice(BigDecimal unitPrice) {
+        this.unitPrice = unitPrice;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
 
     public Long getOrderNo() {
         return orderNo;
