@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecard.dao.PostageMapper" >
+  <resultMap id="BaseResultMap" type="com.ecard.entity.Postage" >
+    <id column="CommonNo" property="commonNo" jdbcType="BIGINT" />
+    <result column="DrugSetNo" property="drugSetNo" jdbcType="BIGINT" />
+    <result column="Condition" property="condition" jdbcType="VARCHAR" />
+    <result column="Postage" property="postage" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    CommonNo, DrugSetNo, Condition, Postage
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from postage
+    where CommonNo = #{commonNo,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from postage
+    where CommonNo = #{commonNo,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.ecard.entity.Postage" >
+    insert into postage (CommonNo, DrugSetNo, Condition, 
+      Postage)
+    values (#{commonNo,jdbcType=BIGINT}, #{drugSetNo,jdbcType=BIGINT}, #{condition,jdbcType=VARCHAR}, 
+      #{postage,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecard.entity.Postage" >
+    insert into postage
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="commonNo != null" >
+        CommonNo,
+      </if>
+      <if test="drugSetNo != null" >
+        DrugSetNo,
+      </if>
+      <if test="condition != null" >
+        Condition,
+      </if>
+      <if test="postage != null" >
+        Postage,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="commonNo != null" >
+        #{commonNo,jdbcType=BIGINT},
+      </if>
+      <if test="drugSetNo != null" >
+        #{drugSetNo,jdbcType=BIGINT},
+      </if>
+      <if test="condition != null" >
+        #{condition,jdbcType=VARCHAR},
+      </if>
+      <if test="postage != null" >
+        #{postage,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecard.entity.Postage" >
+    update postage
+    <set >
+      <if test="drugSetNo != null" >
+        DrugSetNo = #{drugSetNo,jdbcType=BIGINT},
+      </if>
+      <if test="condition != null" >
+        Condition = #{condition,jdbcType=VARCHAR},
+      </if>
+      <if test="postage != null" >
+        Postage = #{postage,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where CommonNo = #{commonNo,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecard.entity.Postage" >
+    update postage
+    set DrugSetNo = #{drugSetNo,jdbcType=BIGINT},
+      Condition = #{condition,jdbcType=VARCHAR},
+      Postage = #{postage,jdbcType=DECIMAL}
+    where CommonNo = #{commonNo,jdbcType=BIGINT}
+  </update>
+  <select id="selectByNo" resultType="com.ecard.entity.Postage" parameterType="java.lang.Long">
+    select * from postage where DrugSetNo = #{drugSetNo,jdbcType=BIGINT}
+  </select>
+</mapper>

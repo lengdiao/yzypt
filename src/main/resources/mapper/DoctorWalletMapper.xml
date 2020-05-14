@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecard.dao.DoctorWalletMapper" >
+  <resultMap id="BaseResultMap" type="com.ecard.entity.DoctorWallet" >
+    <id column="WalletId" property="walletId" jdbcType="BIGINT" />
+    <result column="DrNo" property="drNo" jdbcType="BIGINT" />
+    <result column="Amount" property="amount" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    WalletId, DrNo, Amount
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from doctorwallet
+    where WalletId = #{walletId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from doctorwallet
+    where WalletId = #{walletId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.ecard.entity.DoctorWallet" >
+    insert into doctorwallet (WalletId, DrNo, Amount
+      )
+    values (#{walletId,jdbcType=BIGINT}, #{drNo,jdbcType=BIGINT}, #{amount,jdbcType=DECIMAL}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecard.entity.DoctorWallet" >
+    insert into doctorwallet
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="walletId != null" >
+        WalletId,
+      </if>
+      <if test="drNo != null" >
+        DrNo,
+      </if>
+      <if test="amount != null" >
+        Amount,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="walletId != null" >
+        #{walletId,jdbcType=BIGINT},
+      </if>
+      <if test="drNo != null" >
+        #{drNo,jdbcType=BIGINT},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecard.entity.DoctorWallet" >
+    update doctorwallet
+    <set >
+      <if test="drNo != null" >
+        DrNo = #{drNo,jdbcType=BIGINT},
+      </if>
+      <if test="amount != null" >
+        Amount = #{amount,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where WalletId = #{walletId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecard.entity.DoctorWallet" >
+    update doctorwallet
+    set DrNo = #{drNo,jdbcType=BIGINT},
+      Amount = #{amount,jdbcType=DECIMAL}
+    where WalletId = #{walletId,jdbcType=BIGINT}
+  </update>
+  <select id="selectByDrNo" parameterType="java.lang.Long" resultType="com.ecard.entity.DoctorWallet">
+    select * from doctorwallet where DrNo = #{drNo,jdbcType=BIGINT}
+  </select>
+</mapper>

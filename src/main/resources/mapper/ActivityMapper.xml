@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecard.dao.ActivityMapper" >
+  <resultMap id="BaseResultMap" type="com.ecard.entity.Activity" >
+    <id column="ActivityNo" property="activityNo" jdbcType="BIGINT" />
+    <result column="GoodsNo" property="goodsNo" jdbcType="BIGINT" />
+    <result column="ActivityName" property="activityName" jdbcType="VARCHAR" />
+    <result column="ActivityDetail" property="activityDetail" jdbcType="VARCHAR" />
+    <result column="ActivityType" property="activityType" jdbcType="VARCHAR" />
+    <result column="LeftNumber" property="leftNumber" jdbcType="INTEGER" />
+    <result column="RightNumber" property="rightNumber" jdbcType="INTEGER" />
+    <result column="OriginalPrice" property="originalPrice" jdbcType="DECIMAL" />
+    <result column="PresentPrice" property="presentPrice" jdbcType="DECIMAL" />
+    <result column="DisableFlag" property="disableFlag" jdbcType="INTEGER" />
+    <result column="GoodsStatus" property="goodsStatus" jdbcType="INTEGER" />
+    <result column="IsRecipe" property="isRecipe" jdbcType="INTEGER" />
+    <result column="IsUpload" property="isUpload" jdbcType="INTEGER" />
+    <result column="Subjective" property="subjective" jdbcType="VARCHAR" />
+    <result column="DiagContent" property="diagContent" jdbcType="VARCHAR" />
+    <result column="WayNo" property="wayNo" jdbcType="VARCHAR" />
+    <result column="UsageNo" property="usageNo" jdbcType="VARCHAR" />
+    <result column="MoneyFull" property="moneyFull" jdbcType="DECIMAL" />
+    <result column="MoneyOff" property="moneyOff" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ActivityNo, GoodsNo, ActivityName, ActivityDetail, ActivityType, LeftNumber, RightNumber, 
+    OriginalPrice, PresentPrice, DisableFlag,GoodsStatus,IsRecipe,IsUpload, Subjective, DiagContent,
+    WayNo,UsageNo,MoneyFull,MoneyOff
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from activity
+    where ActivityNo = #{activityNo,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from activity
+    where ActivityNo = #{activityNo,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.ecard.entity.Activity" >
+    insert into activity (ActivityNo, GoodsNo, ActivityName, 
+      ActivityDetail, ActivityType, LeftNumber, 
+      RightNumber, OriginalPrice, PresentPrice, 
+      DisableFlag,GoodsStatus,IsRecipe,IsUpload, Subjective, DiagContent,WayNo,UsageNo,
+      MoneyFull,MoneyOff)
+    values (#{activityNo,jdbcType=BIGINT}, #{goodsNo,jdbcType=BIGINT}, #{activityName,jdbcType=VARCHAR}, 
+      #{activityDetail,jdbcType=VARCHAR}, #{activityType,jdbcType=VARCHAR}, #{leftNumber,jdbcType=INTEGER},
+      #{rightNumber,jdbcType=INTEGER}, #{originalPrice,jdbcType=DECIMAL}, #{presentPrice,jdbcType=DECIMAL}, 
+      #{disableFlag,jdbcType=INTEGER},#{goodsStatus,jdbcType=INTEGER},#{isRecipe,jdbcType=INTEGER},#{isUpload,jdbcType=INTEGER},
+      #{subjective,jdbcType=VARCHAR}, #{diagContent,jdbcType=VARCHAR},#{wayNo,jdbcType=VARCHAR},
+      #{usageNo,jdbcType=VARCHAR}, #{moneyFull,jdbcType=DECIMAL}, #{moneyOff,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecard.entity.Activity"
+          useGeneratedKeys="true" keyProperty="activityNo" keyColumn="ActivityNo">
+    insert into activity
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="activityNo != null" >
+        ActivityNo,
+      </if>
+      <if test="goodsNo != null" >
+        GoodsNo,
+      </if>
+      <if test="activityName != null" >
+        ActivityName,
+      </if>
+      <if test="activityDetail != null" >
+        ActivityDetail,
+      </if>
+      <if test="activityType != null" >
+        ActivityType,
+      </if>
+      <if test="leftNumber != null" >
+        LeftNumber,
+      </if>
+      <if test="rightNumber != null" >
+        RightNumber,
+      </if>
+      <if test="originalPrice != null" >
+        OriginalPrice,
+      </if>
+      <if test="presentPrice != null" >
+        PresentPrice,
+      </if>
+      <if test="disableFlag != null" >
+        DisableFlag,
+      </if>
+      <if test="goodsStatus != null" >
+        GoodsStatus,
+      </if>
+      <if test="isUpload != null" >
+        IsUpload,
+      </if>
+      <if test="isRecipe != null" >
+        IsRecipe,
+      </if>
+      <if test="subjective != null" >
+        Subjective,
+      </if>
+      <if test="diagContent != null" >
+        DiagContent,
+      </if>
+      <if test="wayNo != null" >
+        WayNo,
+      </if>
+      <if test="usageNo != null" >
+        UsageNo,
+      </if>
+      <if test="moneyFull != null" >
+        MoneyFull,
+      </if>
+      <if test="moneyOff != null" >
+        MoneyOff,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="activityNo != null" >
+        #{activityNo,jdbcType=BIGINT},
+      </if>
+      <if test="goodsNo != null" >
+        #{goodsNo,jdbcType=BIGINT},
+      </if>
+      <if test="activityName != null" >
+        #{activityName,jdbcType=VARCHAR},
+      </if>
+      <if test="activityDetail != null" >
+        #{activityDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="activityType != null" >
+        #{activityType,jdbcType=VARCHAR},
+      </if>
+      <if test="leftNumber != null" >
+        #{leftNumber,jdbcType=INTEGER},
+      </if>
+      <if test="rightNumber != null" >
+        #{rightNumber,jdbcType=INTEGER},
+      </if>
+      <if test="originalPrice != null" >
+        #{originalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="presentPrice != null" >
+        #{presentPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="disableFlag != null" >
+        #{disableFlag,jdbcType=INTEGER},
+      </if>
+      <if test="goodsStatus != null" >
+        #{goodsStatus,jdbcType=INTEGER},
+      </if>
+      <if test="isUpload != null" >
+        #{isUpload,jdbcType=INTEGER},
+      </if>
+      <if test="isRecipe != null" >
+        #{isRecipe,jdbcType=INTEGER},
+      </if>
+      <if test="subjective != null" >
+        #{subjective,jdbcType=VARCHAR},
+      </if>
+      <if test="diagContent != null" >
+        #{diagContent,jdbcType=VARCHAR},
+      </if>
+      <if test="wayNo != null" >
+        #{wayNo,jdbcType=VARCHAR},
+      </if>
+      <if test="usageNo != null" >
+        #{usageNo,jdbcType=VARCHAR},
+      </if>
+      <if test="moneyFull != null" >
+        #{moneyFull,jdbcType=DECIMAL},
+      </if>
+      <if test="moneyOff != null" >
+        #{moneyOff,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecard.entity.Activity" >
+    update activity
+    <set >
+      <if test="goodsNo != null" >
+        GoodsNo = #{goodsNo,jdbcType=BIGINT},
+      </if>
+      <if test="activityName != null" >
+        ActivityName = #{activityName,jdbcType=VARCHAR},
+      </if>
+      <if test="activityDetail != null" >
+        ActivityDetail = #{activityDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="activityType != null" >
+        ActivityType = #{activityType,jdbcType=VARCHAR},
+      </if>
+      <if test="leftNumber != null" >
+        LeftNumber = #{leftNumber,jdbcType=INTEGER},
+      </if>
+      <if test="rightNumber != null" >
+        RightNumber = #{rightNumber,jdbcType=INTEGER},
+      </if>
+      <if test="originalPrice != null" >
+        OriginalPrice = #{originalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="presentPrice != null" >
+        PresentPrice = #{presentPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="disableFlag != null" >
+        DisableFlag = #{disableFlag,jdbcType=INTEGER},
+      </if>
+      <if test="goodsStatus != null" >
+        GoodsStatus = #{goodsStatus,jdbcType=INTEGER},
+      </if>
+      <if test="isUpload != null" >
+        IsUpload = #{isUpload,jdbcType=INTEGER},
+      </if>
+      <if test="isRecipe != null" >
+        IsRecipe = #{isRecipe,jdbcType=INTEGER},
+      </if>
+      <if test="subjective != null" >
+        Subjective = #{subjective,jdbcType=VARCHAR},
+      </if>
+      <if test="diagContent != null" >
+        DiagContent = #{diagContent,jdbcType=VARCHAR},
+      </if>
+      <if test="wayNo != null" >
+        WayNo = #{wayNo,jdbcType=VARCHAR},
+      </if>
+      <if test="usageNo != null" >
+        UsageNo = #{usageNo,jdbcType=VARCHAR},
+      </if>
+      <if test="moneyFull != null" >
+        MoneyFull = #{moneyFull,jdbcType=DECIMAL},
+      </if>
+      <if test="moneyOff != null" >
+        MoneyOff = #{moneyOff,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where ActivityNo = #{activityNo,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecard.entity.Activity" >
+    update activity
+    set GoodsNo = #{goodsNo,jdbcType=BIGINT},
+      ActivityName = #{activityName,jdbcType=VARCHAR},
+      ActivityDetail = #{activityDetail,jdbcType=VARCHAR},
+      ActivityType = #{activityType,jdbcType=VARCHAR},
+      LeftNumber = #{leftNumber,jdbcType=INTEGER},
+      RightNumber = #{rightNumber,jdbcType=INTEGER},
+      OriginalPrice = #{originalPrice,jdbcType=DECIMAL},
+      PresentPrice = #{presentPrice,jdbcType=DECIMAL},
+      DisableFlag = #{disableFlag,jdbcType=INTEGER},
+      GoodsStatus = #{goodsStatus,jdbcType=INTEGER},
+      IsUpload = #{isUpload,jdbcType=INTEGER},
+      IsRecipe = #{isRecipe,jdbcType=INTEGER},
+      Subjective = #{subjective,jdbcType=VARCHAR},
+      DiagContent = #{diagContent,jdbcType=VARCHAR},
+      WayNo = #{wayNo,jdbcType=VARCHAR},
+      UsageNo = #{usageNo,jdbcType=VARCHAR},
+      MoneyFull = #{moneyFull,jdbcType=DECIMAL},
+      MoneyOff = #{moneyOff,jdbcType=DECIMAL}
+    where ActivityNo = #{activityNo,jdbcType=BIGINT}
+  </update>
+  <select id="selectByGoodsNoFlag" resultType="com.ecard.entity.Activity">
+    select * from activity where
+    GoodsNo = #{goodsNo,jdbcType=BIGINT}
+    <if test="disableFlag != null" >
+     and DisableFlag = #{disableFlag,jdbcType=INTEGER}
+    </if>
+  </select>
+</mapper>

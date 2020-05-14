@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecard.dao.CountMapper" >
+  <resultMap id="BaseResultMap" type="com.ecard.entity.Count" >
+    <id column="CountId" property="countId" jdbcType="BIGINT" />
+    <result column="DrNo" property="drNo" jdbcType="BIGINT" />
+    <result column="DrugNo" property="drugNo" jdbcType="BIGINT" />
+    <result column="YearMonth" property="yearMonth" jdbcType="TIMESTAMP" />
+    <result column="AddAmount" property="addAmount" jdbcType="DECIMAL" />
+    <result column="AddSum" property="addSum" jdbcType="DOUBLE" />
+    <result column="SaveAmount" property="saveAmount" jdbcType="DECIMAL" />
+    <result column="SaveSum" property="saveSum" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    CountId, DrNo, DrugNo, YearMonth, AddAmount, AddSum, SaveAmount, SaveSum
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from count
+    where CountId = #{countId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from count
+    where CountId = #{countId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.ecard.entity.Count" >
+    insert into count (CountId, DrNo, DrugNo, 
+      YearMonth, AddAmount, AddSum, 
+      SaveAmount, SaveSum)
+    values (#{countId,jdbcType=BIGINT}, #{drNo,jdbcType=BIGINT}, #{drugNo,jdbcType=BIGINT}, 
+      #{yearMonth,jdbcType=TIMESTAMP}, #{addAmount,jdbcType=DECIMAL}, #{addSum,jdbcType=DOUBLE}, 
+      #{saveAmount,jdbcType=DECIMAL}, #{saveSum,jdbcType=DOUBLE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecard.entity.Count" >
+    insert into count
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="countId != null" >
+        CountId,
+      </if>
+      <if test="drNo != null" >
+        DrNo,
+      </if>
+      <if test="drugNo != null" >
+        DrugNo,
+      </if>
+      <if test="yearMonth != null" >
+        YearMonth,
+      </if>
+      <if test="addAmount != null" >
+        AddAmount,
+      </if>
+      <if test="addSum != null" >
+        AddSum,
+      </if>
+      <if test="saveAmount != null" >
+        SaveAmount,
+      </if>
+      <if test="saveSum != null" >
+        SaveSum,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="countId != null" >
+        #{countId,jdbcType=BIGINT},
+      </if>
+      <if test="drNo != null" >
+        #{drNo,jdbcType=BIGINT},
+      </if>
+      <if test="drugNo != null" >
+        #{drugNo,jdbcType=BIGINT},
+      </if>
+      <if test="yearMonth != null" >
+        #{yearMonth,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addAmount != null" >
+        #{addAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="addSum != null" >
+        #{addSum,jdbcType=DOUBLE},
+      </if>
+      <if test="saveAmount != null" >
+        #{saveAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="saveSum != null" >
+        #{saveSum,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecard.entity.Count" >
+    update count
+    <set >
+      <if test="drNo != null" >
+        DrNo = #{drNo,jdbcType=BIGINT},
+      </if>
+      <if test="drugNo != null" >
+        DrugNo = #{drugNo,jdbcType=BIGINT},
+      </if>
+      <if test="yearMonth != null" >
+        YearMonth = #{yearMonth,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addAmount != null" >
+        AddAmount = #{addAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="addSum != null" >
+        AddSum = #{addSum,jdbcType=DOUBLE},
+      </if>
+      <if test="saveAmount != null" >
+        SaveAmount = #{saveAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="saveSum != null" >
+        SaveSum = #{saveSum,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where CountId = #{countId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecard.entity.Count" >
+    update count
+    set DrNo = #{drNo,jdbcType=BIGINT},
+      DrugNo = #{drugNo,jdbcType=BIGINT},
+      YearMonth = #{yearMonth,jdbcType=TIMESTAMP},
+      AddAmount = #{addAmount,jdbcType=DECIMAL},
+      AddSum = #{addSum,jdbcType=DOUBLE},
+      SaveAmount = #{saveAmount,jdbcType=DECIMAL},
+      SaveSum = #{saveSum,jdbcType=DOUBLE}
+    where CountId = #{countId,jdbcType=BIGINT}
+  </update>
+  <select id="selectByDrNoDrugNoDate" resultType="com.ecard.entity.Count">
+    select * from count
+    where
+    DrNo = #{drNo,jdbcType=BIGINT}
+    and
+    DrugNo = #{drugNo,jdbcType=BIGINT}
+    and
+    date_format(c.YearMonth,'%Y-%m') = #{date,jdbcType=TIMESTAMP}
+  </select>
+  <select id="count1" resultType="com.ecard.pojo.queryResult.PcCountQr">
+    select ds.CommonName as drugName,cpi.Name as drName,c.saveAmount,c.saveSum,c.addAmount,c.addSum,c.YearMonth as date,
+    (select cpi1.Name from cloudpassinfo cpi1,drdisrelation drdis1,drinfo dr1,disinfo dis1
+    where dr1.DrNo = drdis1.DrNo and dis1.CloudPassNo =
+    cpi1.CloudPassNo and dis1.DisNo = drdis1.DisNo and drdis1.drNo = c.DrNo limit 0,1) as disName,
+    (select cpi3.Name from cloudpassinfo cpi3
+    LEFT JOIN disinfo dis3 on dis3.CloudPassNo = cpi3.CloudPassNo where cpi3.CloudPassNo =
+    (select dis2.DisLeader
+    from cloudpassinfo cpi2,drdisrelation drdis2,drinfo dr2,disinfo dis2
+    where dr2.DrNo = drdis2.DrNo and dis2.CloudPassNo =
+    cpi2.CloudPassNo and dis2.DisNo = drdis2.DisNo and drdis2.drNo = c.DrNo limit 0,1)) as disLeaderName
+    from drinfo dr right join count c on dr.drNo = c.drNo left join drugset ds on ds.DrugSetNo = c.DrugNo
+    left join cloudpassinfo cpi on cpi.CloudPassNo = dr.CloudPassNo left join drdisrelation drdis on
+    dr.DrNo = drdis.DrNo
+    where 1=1
+    <if test="drName != null and drName !=''" >
+      and cpi.Name = #{drName,jdbcType=VARCHAR}
+    </if>
+    <if test="drPhone != null and drPhone !=''" >
+      and cpi.Phone = #{drPhone,jdbcType=VARCHAR}
+    </if>
+    <if test="drNo != null" >
+      and dr.DrNo = #{drNo,jdbcType=BIGINT}
+    </if>
+    <if test="startDate != null and startDate !='' and endDate != null and endDate !=''" >
+      and date_format(c.YearMonth,'%Y-%m') between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="drugNo != null" >
+      and c.DrugNo = #{drugNo,jdbcType=VARCHAR}
+    </if>
+    <choose>
+      <when test="disNo1 != null and disNo2 == null" >
+        and drdis.disNo in
+        (select disNo from disinfo where disLeader = (select CloudPassNo from disinfo where disNo = #{disNo1,jdbcType=BIGINT}))
+      </when>
+      <when test="disNo1 != null and disNo2 != null" >
+        and drdis.disNo in
+        (select disNo from disinfo where disLeader = (select CloudPassNo from disinfo where disNo = #{disNo1,jdbcType=BIGINT}))
+        and drdis.disNo = #{disNo2,jdbcType=BIGINT}
+      </when>
+      <when test="disNo2 != null">
+      and drdis.disNo = #{disNo2,jdbcType=BIGINT}
+    </when>
+    </choose>
+  </select>
+
+  <select id="count2" resultType="com.ecard.pojo.queryResult.PcCountQr">
+    select ds.CommonName as drugName,cpi.Name as drName,sum(c.saveAmount) as saveAmount,
+    sum(c.saveSum) as saveSum,sum(c.addAmount) as addAmount,
+    sum(c.addSum) as addSum,sum(addSum+saveSum) as sum,
+    sum(addAmount+saveAmount) as amountSum
+    from drinfo dr right join count c on dr.drNo = c.drNo left join drugset ds on ds.DrugSetNo = c.DrugNo
+    left join cloudpassinfo cpi on cpi.CloudPassNo = dr.CloudPassNo left join drdisrelation drdis on
+    dr.DrNo = drdis.DrNo
+    where 1=1
+    <if test="drName != null and drName !=''" >
+      and cpi.Name = #{drName,jdbcType=VARCHAR}
+    </if>
+    <if test="drPhone != null and drPhone !=''" >
+      and cpi.Phone = #{drPhone,jdbcType=VARCHAR}
+    </if>
+    <if test="drNo != null" >
+      and dr.DrNo = #{drNo,jdbcType=VARCHAR}
+    </if>
+    <if test="startDate != null and startDate !='' and endDate != null and endDate !=''" >
+      and date_format(c.YearMonth,'%Y-%m') between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP}
+    </if>
+    <if test="drugNo != null" >
+      and c.DrugNo = #{drugNo,jdbcType=VARCHAR}
+    </if>
+    <choose>
+      <when test="disNo1 != null and disNo2 = null" >
+        and drdis.disNo in
+        (select disNo from disinfo where disLeader = (select CloudPassNo from disinfo where disNo = #{disNo1,jdbcType=BIGINT}))
+      </when>
+      <when test="disNo1 != null and disNo2 != null" >
+        and drdis.disNo in
+        (select disNo from disinfo where disLeader = (select CloudPassNo from disinfo where disNo = #{disNo1,jdbcType=BIGINT}))
+        and drdis.disNo = #{disNo2,jdbcType=BIGINT}
+      </when>
+      <when test="disNo2 != null">
+        and drdis.disNo = #{disNo2,jdbcType=BIGINT}
+      </when>
+    </choose>
+    GROUP BY drugName,drName
+  </select>
+</mapper>

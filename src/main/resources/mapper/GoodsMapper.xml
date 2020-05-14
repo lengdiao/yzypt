@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecard.dao.GoodsMapper" >
+  <resultMap id="BaseResultMap" type="com.ecard.entity.Goods" >
+    <id column="GoodsNo" property="goodsNo" jdbcType="BIGINT" />
+    <result column="GoodsName" property="goodsName" jdbcType="VARCHAR" />
+    <result column="Price" property="price" jdbcType="DECIMAL" />
+    <result column="Describe" property="describe" jdbcType="VARCHAR" />
+    <result column="Remark" property="remark" jdbcType="VARCHAR" />
+    <result column="Specification" property="specification" jdbcType="VARCHAR" />
+    <result column="Subjective" property="subjective" jdbcType="VARCHAR" />
+    <result column="DiagContent" property="diagContent" jdbcType="VARCHAR" />
+    <result column="WayNo" property="wayNo" jdbcType="VARCHAR" />
+    <result column="UsageNo" property="usageNo" jdbcType="VARCHAR" />
+    <result column="GoodsStatus" property="goodsStatus" jdbcType="INTEGER" />
+    <result column="IsUpload" property="isUpload" jdbcType="INTEGER" />
+    <result column="IsRecipe" property="isRecipe" jdbcType="INTEGER" />
+    <result column="Status" property="status" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    GoodsNo, GoodsName, Price, `Describe`, Remark, Specification, Subjective, DiagContent,
+    WayNo,UsageNo,GoodsStatus,IsUpload,IsRecipe,Status
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from goods
+    where GoodsNo = #{goodsNo,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from goods
+    where GoodsNo = #{goodsNo,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.ecard.entity.Goods" >
+    insert into goods (GoodsNo, GoodsName, Price,
+      `Describe`, Remark, Specification,
+      Subjective, DiagContent, WayNo, UsageNo,GoodsStatus,IsUpload,IsRecipe,Status
+      )
+    values (#{goodsNo,jdbcType=BIGINT}, #{goodsName,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL},
+      #{describe,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{specification,jdbcType=VARCHAR},
+      #{subjective,jdbcType=VARCHAR}, #{diagContent,jdbcType=VARCHAR}, #{wayNo,jdbcType=VARCHAR},
+      #{usageNo,jdbcType=VARCHAR},
+       #{goodsStatus,jdbcType=INTEGER},#{isUpload,jdbcType=INTEGER},#{isRecipe,jdbcType=INTEGER},
+       #{status,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecard.entity.Goods"
+          useGeneratedKeys="true" keyProperty="goodsNo" keyColumn="GoodsNo">
+    insert into goods
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="goodsNo != null" >
+        GoodsNo,
+      </if>
+      <if test="goodsName != null" >
+        GoodsName,
+      </if>
+      <if test="price != null" >
+        Price,
+      </if>
+      <if test="describe != null" >
+        `Describe`,
+      </if>
+      <if test="remark != null" >
+        Remark,
+      </if>
+      <if test="specification != null" >
+        Specification,
+      </if>
+      <if test="subjective != null" >
+        Subjective,
+      </if>
+      <if test="diagContent != null" >
+        DiagContent,
+      </if>
+      <if test="wayNo != null" >
+        WayNo,
+      </if>
+      <if test="usageNo != null" >
+        UsageNo,
+      </if>
+      <if test="goodsStatus != null" >
+        GoodsStatus,
+      </if>
+      <if test="isUpload != null" >
+        IsUpload,
+      </if>
+      <if test="isRecipe != null" >
+        IsRecipe,
+      </if>
+      <if test="status != null " >
+        Status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="goodsNo != null" >
+        #{goodsNo,jdbcType=BIGINT},
+      </if>
+      <if test="goodsName != null" >
+        #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="describe != null" >
+        #{describe,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="specification != null" >
+        #{specification,jdbcType=VARCHAR},
+      </if>
+      <if test="subjective != null" >
+        #{subjective,jdbcType=VARCHAR},
+      </if>
+      <if test="diagContent != null" >
+        #{diagContent,jdbcType=VARCHAR},
+      </if>
+      <if test="wayNo != null" >
+        #{wayNo,jdbcType=VARCHAR},
+      </if>
+      <if test="usageNo != null" >
+        #{usageNo,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsStatus != null" >
+        #{goodsStatus,jdbcType=INTEGER},
+      </if>
+      <if test="isUpload != null" >
+        #{isUpload,jdbcType=INTEGER},
+      </if>
+      <if test="isRecipe != null" >
+        #{isRecipe,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecard.entity.Goods" >
+    update goods
+    <set >
+      <if test="goodsName != null" >
+        GoodsName = #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        Price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="describe != null" >
+        `Describe` = #{describe,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        Remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="specification != null" >
+        Specification = #{specification,jdbcType=VARCHAR},
+      </if>
+      <if test="subjective != null" >
+        Subjective = #{subjective,jdbcType=VARCHAR},
+      </if>
+      <if test="diagContent != null" >
+        DiagContent = #{diagContent,jdbcType=VARCHAR},
+      </if>
+      <if test="wayNo != null" >
+        WayNo = #{wayNo,jdbcType=VARCHAR},
+      </if>
+      <if test="usageNo != null" >
+        UsageNo = #{usageNo,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsStatus != null" >
+        GoodsStatus = #{goodsStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="isUpload != null" >
+        IsUpload = #{isUpload,jdbcType=VARCHAR},
+      </if>
+      <if test="isRecipe != null" >
+        IsRecipe = #{isRecipe,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        Status = #{status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where GoodsNo = #{goodsNo,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecard.entity.Goods" >
+    update goods
+    set GoodsName = #{goodsName,jdbcType=VARCHAR},
+      Price = #{price,jdbcType=DECIMAL},
+      `Describe` = #{describe,jdbcType=VARCHAR},
+      Remark = #{remark,jdbcType=VARCHAR},
+      Specification = #{specification,jdbcType=VARCHAR},
+      Subjective = #{subjective,jdbcType=VARCHAR},
+      DiagContent = #{diagContent,jdbcType=VARCHAR},
+      WayNo = #{wayNo,jdbcType=VARCHAR},
+      UsageNo = #{usageNo,jdbcType=VARCHAR},
+      GoodsStatus = #{goodsStatus,jdbcType=INTEGER},
+      IsUpload = #{isUpload,jdbcType=INTEGER},
+      IsRecipe = #{isRecipe,jdbcType=INTEGER},
+      Status = #{status,jdbcType=INTEGER}
+    where GoodsNo = #{goodsNo,jdbcType=BIGINT}
+  </update>
+  <select id="selectByNameAndSpecification" resultType="com.ecard.entity.Goods" parameterType="java.lang.String">
+    select * from goods where GoodsName = #{goodsName,jdbcType=VARCHAR}
+    and Specification = #{specification,jdbcType=VARCHAR}
+  </select>
+</mapper>

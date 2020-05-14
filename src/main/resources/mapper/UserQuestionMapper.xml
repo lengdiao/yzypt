@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecard.dao.UserQuestionMapper" >
+  <resultMap id="BaseResultMap" type="com.ecard.entity.UserQuestion" >
+    <id column="Id" property="id" jdbcType="BIGINT" />
+    <result column="PtNo" property="ptNo" jdbcType="BIGINT" />
+    <result column="TemplateNo" property="templateNo" jdbcType="BIGINT" />
+    <result column="QuestionNo" property="questionNo" jdbcType="BIGINT" />
+    <result column="Options" property="options" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, PtNo, TemplateNo, QuestionNo, Options
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from userquestion
+    where Id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from userquestion
+    where Id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.ecard.entity.UserQuestion" >
+    insert into userquestion (Id, PtNo, TemplateNo, 
+      QuestionNo, Options)
+    values (#{id,jdbcType=BIGINT}, #{ptNo,jdbcType=BIGINT}, #{templateNo,jdbcType=BIGINT}, 
+      #{questionNo,jdbcType=BIGINT}, #{options,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecard.entity.UserQuestion" >
+    insert into userquestion
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="ptNo != null" >
+        PtNo,
+      </if>
+      <if test="templateNo != null" >
+        TemplateNo,
+      </if>
+      <if test="questionNo != null" >
+        QuestionNo,
+      </if>
+      <if test="options != null" >
+        Options,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="ptNo != null" >
+        #{ptNo,jdbcType=BIGINT},
+      </if>
+      <if test="templateNo != null" >
+        #{templateNo,jdbcType=BIGINT},
+      </if>
+      <if test="questionNo != null" >
+        #{questionNo,jdbcType=BIGINT},
+      </if>
+      <if test="options != null" >
+        #{options,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecard.entity.UserQuestion" >
+    update userquestion
+    <set >
+      <if test="ptNo != null" >
+        PtNo = #{ptNo,jdbcType=BIGINT},
+      </if>
+      <if test="templateNo != null" >
+        TemplateNo = #{templateNo,jdbcType=BIGINT},
+      </if>
+      <if test="questionNo != null" >
+        QuestionNo = #{questionNo,jdbcType=BIGINT},
+      </if>
+      <if test="options != null" >
+        Options = #{options,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecard.entity.UserQuestion" >
+    update userquestion
+    set PtNo = #{ptNo,jdbcType=BIGINT},
+      TemplateNo = #{templateNo,jdbcType=BIGINT},
+      QuestionNo = #{questionNo,jdbcType=BIGINT},
+      Options = #{options,jdbcType=VARCHAR}
+    where Id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPtNoAndTemId" resultType="com.ecard.entity.UserQuestion">
+    select * from userquestion where PtNo = #{ptNo,jdbcType=BIGINT} and TemplateNo = #{templateNo,jdbcType=BIGINT}
+  </select>
+</mapper>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecard.dao.DoctorKitingMapper" >
+  <resultMap id="BaseResultMap" type="com.ecard.entity.DoctorKiting" >
+    <id column="KitingId" property="kitingId" jdbcType="BIGINT" />
+    <result column="DrNo" property="drNo" jdbcType="BIGINT" />
+    <result column="Amount" property="amount" jdbcType="DECIMAL" />
+    <result column="CreateDate" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="CardNo" property="cardNo" jdbcType="VARCHAR" />
+    <result column="IsSuccessful" property="isSuccessful" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    KitingId, DrNo, Amount, CreateDate, CardNo, IsSuccessful
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from doctorkiting
+    where KitingId = #{kitingId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from doctorkiting
+    where KitingId = #{kitingId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.ecard.entity.DoctorKiting" >
+    insert into doctorkiting (KitingId, DrNo, Amount, 
+      CreateDate, CardNo, IsSuccessful
+      )
+    values (#{kitingId,jdbcType=BIGINT}, #{drNo,jdbcType=BIGINT}, #{amount,jdbcType=DECIMAL}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{cardNo,jdbcType=VARCHAR}, #{isSuccessful,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecard.entity.DoctorKiting" >
+    insert into doctorkiting
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="kitingId != null" >
+        KitingId,
+      </if>
+      <if test="drNo != null" >
+        DrNo,
+      </if>
+      <if test="amount != null" >
+        Amount,
+      </if>
+      <if test="createDate != null" >
+        CreateDate,
+      </if>
+      <if test="cardNo != null" >
+        CardNo,
+      </if>
+      <if test="isSuccessful != null" >
+        IsSuccessful,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="kitingId != null" >
+        #{kitingId,jdbcType=BIGINT},
+      </if>
+      <if test="drNo != null" >
+        #{drNo,jdbcType=BIGINT},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cardNo != null" >
+        #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="isSuccessful != null" >
+        #{isSuccessful,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecard.entity.DoctorKiting" >
+    update doctorkiting
+    <set >
+      <if test="drNo != null" >
+        DrNo = #{drNo,jdbcType=BIGINT},
+      </if>
+      <if test="amount != null" >
+        Amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="createDate != null" >
+        CreateDate = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cardNo != null" >
+        CardNo = #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="isSuccessful != null" >
+        IsSuccessful = #{isSuccessful,jdbcType=BIGINT},
+      </if>
+    </set>
+    where KitingId = #{kitingId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecard.entity.DoctorKiting" >
+    update doctorkiting
+    set DrNo = #{drNo,jdbcType=BIGINT},
+      Amount = #{amount,jdbcType=DECIMAL},
+      CreateDate = #{createDate,jdbcType=TIMESTAMP},
+      CardNo = #{cardNo,jdbcType=VARCHAR},
+      IsSuccessful = #{isSuccessful,jdbcType=BIGINT}
+    where KitingId = #{kitingId,jdbcType=BIGINT}
+  </update>
+  <select id="selectAmountByDrNo" parameterType="java.lang.Long" resultType="java.math.BigDecimal">
+    select sum(Amount) from doctorkiting where DrNo = #{drNo,jdbcType=BIGINT}
+    and IsSuccessful = 0
+  </select>
+</mapper>

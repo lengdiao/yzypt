@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecard.dao.TemplateMapper" >
+  <resultMap id="BaseResultMap" type="com.ecard.entity.Template" >
+    <id column="TemplateId" property="templateId" jdbcType="BIGINT" />
+    <result column="TemplateNo" property="templateNo" jdbcType="BIGINT" />
+    <result column="DrNo" property="drNo" jdbcType="BIGINT" />
+    <result column="DNo" property="dNo" jdbcType="VARCHAR" />
+    <result column="TemplateName" property="templateName" jdbcType="VARCHAR" />
+    <result column="TemplateType" property="templateType" jdbcType="INTEGER" />
+    <result column="DrugSetNo" property="drugSetNo" jdbcType="BIGINT" />
+    <result column="Number" property="number" jdbcType="DOUBLE" />
+    <result column="ExecDay" property="execDay" jdbcType="INTEGER" />
+    <result column="WayNo" property="wayNo" jdbcType="VARCHAR" />
+    <result column="ExecWhen" property="execWhen" jdbcType="VARCHAR" />
+    <result column="ExecAim" property="execAim" jdbcType="VARCHAR" />
+    <result column="DayDose" property="dayDose" jdbcType="DECIMAL" />
+    <result column="Dose" property="dose" jdbcType="DECIMAL" />
+    <result column="DoseUnit" property="doseUnit" jdbcType="VARCHAR" />
+    <result column="UsageNo" property="usageNo" jdbcType="VARCHAR" />
+    <result column="PrescriptionNum" property="prescriptionNum" jdbcType="INTEGER" />
+    <result column="SpecialUsage" property="specialUsage" jdbcType="VARCHAR" />
+    <result column="CreateTime" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="TemplateDrugSetQrMap" type="com.ecard.pojo.queryResult.TemplateDrugSetQr" >
+    <id column="DrugSetNo" property="drugSetNo" jdbcType="BIGINT" />
+    <result column="ExecDay" property="execDay" jdbcType="INTEGER" />
+    <result column="WayNo" property="wayNo" jdbcType="VARCHAR" />
+    <result column="ExecWhen" property="execWhen" jdbcType="VARCHAR" />
+    <result column="ExecAim" property="execAim" jdbcType="VARCHAR" />
+    <result column="DayDose" property="dayDose" jdbcType="DECIMAL" />
+    <result column="Dose" property="dose" jdbcType="DECIMAL" />
+    <result column="DoseUnit" property="doseUnit" jdbcType="VARCHAR" />
+    <result column="UsageNo" property="usageNo" jdbcType="VARCHAR" />
+    <result column="Number" property="number" jdbcType="DOUBLE" />
+  </resultMap>
+  <resultMap id="TemplateQrMap" type="com.ecard.pojo.queryResult.TemplateQr" >
+    <id column="TemplateNo" property="templateNo" jdbcType="BIGINT" />
+    <result column="TemplateId" property="templateId" jdbcType="INTEGER" />
+    <result column="DrNo" property="drNo" jdbcType="VARCHAR" />
+    <result column="TemplateName" property="templateName" jdbcType="VARCHAR" />
+    <result column="TemplateType" property="templateType" jdbcType="INTEGER" />
+    <result column="DNo" property="dNo" jdbcType="VARCHAR" />
+    <result column="PrescriptionNum" property="prescriptionNum" jdbcType="INTEGER" />
+    <result column="SpecialUsage" property="specialUsage" jdbcType="VARCHAR" />
+    <result column="Remark" property="remark" jdbcType="VARCHAR" />
+    <collection property="list" ofType="com.ecard.pojo.queryResult.TemplateDrugSetQr" resultMap="TemplateDrugSetQrMap"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    TemplateId, TemplateNo, DrNo, DNo, TemplateName, TemplateType, DrugSetNo, `Number`,
+    ExecDay, WayNo, ExecWhen, ExecAim, DayDose, Dose, DoseUnit, UsageNo, PrescriptionNum, 
+    SpecialUsage, CreateTime, Remark
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from template
+    where TemplateId = #{templateId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from template
+    where TemplateId = #{templateId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByTemplateNo" parameterType="java.lang.Long" >
+    delete from template
+    where TemplateNo = #{templateNo,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.ecard.entity.Template" >
+    insert into template (TemplateId, TemplateNo, DrNo, 
+      DNo, TemplateName, TemplateType, 
+      DrugSetNo, `Number`, ExecDay,
+      WayNo, ExecWhen, ExecAim, 
+      DayDose, Dose, DoseUnit, 
+      UsageNo, PrescriptionNum, SpecialUsage, 
+      CreateTime,Remark)
+    values (#{templateId,jdbcType=BIGINT}, #{templateNo,jdbcType=BIGINT}, #{drNo,jdbcType=BIGINT}, 
+      #{DNo,jdbcType=VARCHAR}, #{templateName,jdbcType=VARCHAR}, #{templateType,jdbcType=INTEGER},
+      #{drugSetNo,jdbcType=BIGINT}, #{number,jdbcType=DOUBLE}, #{execDay,jdbcType=INTEGER},
+      #{wayNo,jdbcType=VARCHAR}, #{execWhen,jdbcType=VARCHAR}, #{execAim,jdbcType=VARCHAR}, 
+      #{dayDose,jdbcType=DECIMAL}, #{dose,jdbcType=DECIMAL}, #{doseUnit,jdbcType=VARCHAR}, 
+      #{usageNo,jdbcType=VARCHAR}, #{prescriptionNum,jdbcType=INTEGER}, #{specialUsage,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP},#{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecard.entity.Template"
+          useGeneratedKeys="true" keyProperty="templateId" keyColumn="TemplateId">
+    insert into template
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="templateId != null" >
+        TemplateId,
+      </if>
+      <if test="templateNo != null" >
+        TemplateNo,
+      </if>
+      <if test="drNo != null" >
+        DrNo,
+      </if>
+      <if test="DNo != null" >
+        DNo,
+      </if>
+      <if test="templateName != null" >
+        TemplateName,
+      </if>
+      <if test="templateType != null" >
+        TemplateType,
+      </if>
+      <if test="drugSetNo != null" >
+        DrugSetNo,
+      </if>
+      <if test="number != null" >
+        `Number`,
+      </if>
+      <if test="execDay != null" >
+        ExecDay,
+      </if>
+      <if test="wayNo != null" >
+        WayNo,
+      </if>
+      <if test="execWhen != null" >
+        ExecWhen,
+      </if>
+      <if test="execAim != null" >
+        ExecAim,
+      </if>
+      <if test="dayDose != null" >
+        DayDose,
+      </if>
+      <if test="dose != null" >
+        Dose,
+      </if>
+      <if test="doseUnit != null" >
+        DoseUnit,
+      </if>
+      <if test="usageNo != null" >
+        UsageNo,
+      </if>
+      <if test="prescriptionNum != null" >
+        PrescriptionNum,
+      </if>
+      <if test="specialUsage != null" >
+        SpecialUsage,
+      </if>
+      <if test="createTime != null" >
+        CreateTime,
+      </if>
+      <if test="remark != null" >
+        Remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="templateId != null" >
+        #{templateId,jdbcType=BIGINT},
+      </if>
+      <if test="templateNo != null" >
+        #{templateNo,jdbcType=BIGINT},
+      </if>
+      <if test="drNo != null" >
+        #{drNo,jdbcType=BIGINT},
+      </if>
+      <if test="DNo != null" >
+        #{DNo,jdbcType=VARCHAR},
+      </if>
+      <if test="templateName != null" >
+        #{templateName,jdbcType=VARCHAR},
+      </if>
+      <if test="templateType != null" >
+        #{templateType,jdbcType=INTEGER},
+      </if>
+      <if test="drugSetNo != null" >
+        #{drugSetNo,jdbcType=BIGINT},
+      </if>
+      <if test="number != null" >
+        #{number,jdbcType=DOUBLE},
+      </if>
+      <if test="execDay != null" >
+        #{execDay,jdbcType=INTEGER},
+      </if>
+      <if test="wayNo != null" >
+        #{wayNo,jdbcType=VARCHAR},
+      </if>
+      <if test="execWhen != null" >
+        #{execWhen,jdbcType=VARCHAR},
+      </if>
+      <if test="execAim != null" >
+        #{execAim,jdbcType=VARCHAR},
+      </if>
+      <if test="dayDose != null" >
+        #{dayDose,jdbcType=DECIMAL},
+      </if>
+      <if test="dose != null" >
+        #{dose,jdbcType=DECIMAL},
+      </if>
+      <if test="doseUnit != null" >
+        #{doseUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="usageNo != null" >
+        #{usageNo,jdbcType=VARCHAR},
+      </if>
+      <if test="prescriptionNum != null" >
+        #{prescriptionNum,jdbcType=INTEGER},
+      </if>
+      <if test="specialUsage != null" >
+        #{specialUsage,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecard.entity.Template" >
+    update template
+    <set >
+      <if test="templateNo != null" >
+        TemplateNo = #{templateNo,jdbcType=BIGINT},
+      </if>
+      <if test="drNo != null" >
+        DrNo = #{drNo,jdbcType=BIGINT},
+      </if>
+      <if test="DNo != null" >
+        DNo = #{DNo,jdbcType=VARCHAR},
+      </if>
+      <if test="templateName != null" >
+        TemplateName = #{templateName,jdbcType=VARCHAR},
+      </if>
+      <if test="templateType != null" >
+        TemplateType = #{templateType,jdbcType=INTEGER},
+      </if>
+      <if test="drugSetNo != null" >
+        DrugSetNo = #{drugSetNo,jdbcType=BIGINT},
+      </if>
+      <if test="number != null" >
+        `Number` = #{number,jdbcType=DOUBLE},
+      </if>
+      <if test="execDay != null" >
+        ExecDay = #{execDay,jdbcType=INTEGER},
+      </if>
+      <if test="wayNo != null" >
+        WayNo = #{wayNo,jdbcType=VARCHAR},
+      </if>
+      <if test="execWhen != null" >
+        ExecWhen = #{execWhen,jdbcType=VARCHAR},
+      </if>
+      <if test="execAim != null" >
+        ExecAim = #{execAim,jdbcType=VARCHAR},
+      </if>
+      <if test="dayDose != null" >
+        DayDose = #{dayDose,jdbcType=DECIMAL},
+      </if>
+      <if test="dose != null" >
+        Dose = #{dose,jdbcType=DECIMAL},
+      </if>
+      <if test="doseUnit != null" >
+        DoseUnit = #{doseUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="usageNo != null" >
+        UsageNo = #{usageNo,jdbcType=VARCHAR},
+      </if>
+      <if test="prescriptionNum != null" >
+        PrescriptionNum = #{prescriptionNum,jdbcType=INTEGER},
+      </if>
+      <if test="specialUsage != null" >
+        SpecialUsage = #{specialUsage,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CreateTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        Remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where TemplateId = #{templateId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecard.entity.Template" >
+    update template
+    set TemplateNo = #{templateNo,jdbcType=BIGINT},
+      DrNo = #{drNo,jdbcType=BIGINT},
+      DNo = #{DNo,jdbcType=VARCHAR},
+      TemplateName = #{templateName,jdbcType=VARCHAR},
+      TemplateType = #{templateType,jdbcType=INTEGER},
+      DrugSetNo = #{drugSetNo,jdbcType=BIGINT},
+      `Number` = #{number,jdbcType=DOUBLE},
+      ExecDay = #{execDay,jdbcType=INTEGER},
+      WayNo = #{wayNo,jdbcType=VARCHAR},
+      ExecWhen = #{execWhen,jdbcType=VARCHAR},
+      ExecAim = #{execAim,jdbcType=VARCHAR},
+      DayDose = #{dayDose,jdbcType=DECIMAL},
+      Dose = #{dose,jdbcType=DECIMAL},
+      DoseUnit = #{doseUnit,jdbcType=VARCHAR},
+      UsageNo = #{usageNo,jdbcType=VARCHAR},
+      PrescriptionNum = #{prescriptionNum,jdbcType=INTEGER},
+      SpecialUsage = #{specialUsage,jdbcType=VARCHAR},
+      CreateTime = #{createTime,jdbcType=TIMESTAMP},
+      Remark = #{remark,jdbcType=VARCHAR}
+    where TemplateId = #{templateId,jdbcType=BIGINT}
+  </update>
+  <select id="selectByDrNoTypeName" resultMap="TemplateQrMap">
+    select
+    *
+     from template where
+     DrNo = #{drNo,jdbcType=BIGINT}
+    <if test="templateName != null and templateName !=''" >
+      and TemplateName like "%"#{templateName,jdbcType=VARCHAR}"%"
+    </if>
+    <if test="templateType != null and templateType !=''" >
+      and TemplateType = #{templateType,jdbcType=INTEGER}
+    </if>
+    <if test="dNo != null and dNo !=''" >
+      and DNo = #{dNo,jdbcType=VARCHAR}
+    </if>
+  </select>
+  <select id="selectByDrNoDNo" resultType="com.ecard.entity.Template">
+    select * from template where DrNo = #{drNo,jdbcType=BIGINT}
+    and DNo = #{dNo,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByTemplateNo" parameterType="java.lang.Long" resultMap="TemplateQrMap">
+    select * from template where TemplateNo = #{templateNo,jdbcType=INTEGER}
+  </select>
+  <select id="selectMaxTemplateNo" resultType="java.lang.Long">
+    select max(TemplateNo) from template
+  </select>
+</mapper>

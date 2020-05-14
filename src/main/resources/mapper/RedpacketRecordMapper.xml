@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecard.dao.RedpacketRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.ecard.entity.RedpacketRecord" >
+    <id column="PacketId" property="packetId" jdbcType="BIGINT" />
+    <result column="Amount" property="amount" jdbcType="DECIMAL" />
+    <result column="DrugNo" property="drugNo" jdbcType="BIGINT" />
+    <result column="PtNo" property="ptNo" jdbcType="BIGINT" />
+    <result column="ExpireDate" property="expireDate" jdbcType="TIMESTAMP" />
+    <result column="UseDate" property="useDate" jdbcType="TIMESTAMP" />
+    <result column="CreateDate" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="DisableFlag" property="disableFlag" jdbcType="INTEGER" />
+    <result column="PacketRuleId" property="packetRuleId" jdbcType="BIGINT" />
+    <result column="Details" property="details" jdbcType="VARCHAR" />
+    <result column="Title" property="title" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    PacketId, Amount, DrugNo, PtNo, ExpireDate, UseDate, CreateDate, DisableFlag, PacketRuleId, Details,Title
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from redpacketrecord
+    where PacketId = #{packetId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from redpacketrecord
+    where PacketId = #{packetId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.ecard.entity.RedpacketRecord" >
+    insert into redpacketrecord (PacketId, Amount, DrugNo, 
+      PtNo, ExpireDate, UseDate, 
+      CreateDate, DisableFlag, PacketRuleId,Details,Title)
+    values (#{packetId,jdbcType=BIGINT}, #{amount,jdbcType=DECIMAL}, #{drugNo,jdbcType=BIGINT}, 
+      #{ptNo,jdbcType=BIGINT}, #{expireDate,jdbcType=TIMESTAMP}, #{useDate,jdbcType=TIMESTAMP}, 
+      #{createDate,jdbcType=TIMESTAMP}, #{disableFlag,jdbcType=INTEGER},#{packetRuleId,jdbcType=BIGINT}
+      ,#{details,jdbcType=VARCHAR},#{title,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecard.entity.RedpacketRecord"
+          useGeneratedKeys="true" keyProperty="packetId" keyColumn="PacketId">
+    insert into redpacketrecord
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="packetId != null" >
+        PacketId,
+      </if>
+      <if test="amount != null" >
+        Amount,
+      </if>
+      <if test="drugNo != null" >
+        DrugNo,
+      </if>
+      <if test="ptNo != null" >
+        PtNo,
+      </if>
+      <if test="expireDate != null" >
+        ExpireDate,
+      </if>
+      <if test="useDate != null" >
+        UseDate,
+      </if>
+      <if test="createDate != null" >
+        CreateDate,
+      </if>
+      <if test="disableFlag != null" >
+        DisableFlag,
+      </if>
+      <if test="packetRuleId != null" >
+        PacketRuleId,
+      </if>
+      <if test="details != null" >
+        Details,
+      </if>
+      <if test="title != null" >
+        Title,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="packetId != null" >
+        #{packetId,jdbcType=BIGINT},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="drugNo != null" >
+        #{drugNo,jdbcType=BIGINT},
+      </if>
+      <if test="ptNo != null" >
+        #{ptNo,jdbcType=BIGINT},
+      </if>
+      <if test="expireDate != null" >
+        #{expireDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="useDate != null" >
+        #{useDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="disableFlag != null" >
+        #{disableFlag,jdbcType=INTEGER},
+      </if>
+      <if test="packetRuleId != null" >
+        #{packetRuleId,jdbcType=BIGINT},
+      </if>
+      <if test="details != null" >
+        Details = #{details,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecard.entity.RedpacketRecord" >
+    update redpacketrecord
+    <set >
+      <if test="amount != null" >
+        Amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="drugNo != null" >
+        DrugNo = #{drugNo,jdbcType=BIGINT},
+      </if>
+      <if test="ptNo != null" >
+        PtNo = #{ptNo,jdbcType=BIGINT},
+      </if>
+      <if test="expireDate != null" >
+        ExpireDate = #{expireDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="useDate != null" >
+        UseDate = #{useDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDate != null" >
+        CreateDate = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="disableFlag != null" >
+        DisableFlag = #{disableFlag,jdbcType=INTEGER},
+      </if>
+      <if test="packetRuleId != null" >
+        PacketRuleId = #{packetRuleId,jdbcType=BIGINT},
+      </if>
+      <if test="title != null" >
+        Title = #{title,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where PacketId = #{packetId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecard.entity.RedpacketRecord" >
+    update redpacketrecord
+    set Amount = #{amount,jdbcType=DECIMAL},
+      DrugNo = #{drugNo,jdbcType=BIGINT},
+      PtNo = #{ptNo,jdbcType=BIGINT},
+      ExpireDate = #{expireDate,jdbcType=TIMESTAMP},
+      UseDate = #{useDate,jdbcType=TIMESTAMP},
+      CreateDate = #{createDate,jdbcType=TIMESTAMP},
+      DisableFlag = #{disableFlag,jdbcType=INTEGER},
+      PacketRuleId = #{packetRuleId,jdbcType=BIGINT},
+      Details = #{details,jdbcType=VARCHAR},
+      Title = #{title,jdbcType=VARCHAR}
+    where PacketId = #{packetId,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPtNoAndDrugNo" resultType="com.ecard.entity.RedpacketRecord">
+    select * from redpacketrecord where DisableFlag = 0
+    <if test="drugNo != null" >
+      and DrugNo = #{drugNo,jdbcType=BIGINT}
+    </if>
+    <if test="ptNo != null" >
+      and PtNo = #{ptNo,jdbcType=BIGINT}
+    </if>
+  </select>
+  <select id="selectByDisableFlag" resultType="com.ecard.entity.RedpacketRecord">
+    select * from redpacketrecord where DisableFlag = 0
+  </select>
+</mapper>

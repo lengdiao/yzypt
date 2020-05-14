@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ecard.dao.RedpacketRuleMapper" >
+  <resultMap id="BaseResultMap" type="com.ecard.entity.RedpacketRule" >
+    <id column="PacketId" property="packetId" jdbcType="BIGINT" />
+    <result column="DrugNo" property="drugNo" jdbcType="BIGINT" />
+    <result column="Amount" property="amount" jdbcType="DECIMAL" />
+    <result column="ValidTime" property="validTime" jdbcType="INTEGER" />
+    <result column="Details" property="details" jdbcType="VARCHAR" />
+    <result column="Title" property="title" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    PacketId, DrugNo, Amount, ValidTime,Details,Title
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from redpacketrule
+    where PacketId = #{packetId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from redpacketrule
+    where PacketId = #{packetId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.ecard.entity.RedpacketRule" >
+    insert into redpacketrule (PacketId, DrugNo, Amount, 
+      ValidTime,Details,Title)
+    values (#{packetId,jdbcType=BIGINT}, #{drugNo,jdbcType=BIGINT}, #{amount,jdbcType=DECIMAL}, 
+      #{validTime,jdbcType=INTEGER},#{details,jdbcType=VARCHAR},#{title,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ecard.entity.RedpacketRule" >
+    insert into redpacketrule
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="packetId != null" >
+        PacketId,
+      </if>
+      <if test="drugNo != null" >
+        DrugNo,
+      </if>
+      <if test="amount != null" >
+        Amount,
+      </if>
+      <if test="validTime != null" >
+        ValidTime,
+      </if>
+      <if test="details != null" >
+        Details,
+      </if>
+      <if test="title != null" >
+        Title,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="packetId != null" >
+        #{packetId,jdbcType=BIGINT},
+      </if>
+      <if test="drugNo != null" >
+        #{drugNo,jdbcType=BIGINT},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="validTime != null" >
+        #{validTime,jdbcType=INTEGER},
+      </if>
+      <if test="details != null" >
+        #{details,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ecard.entity.RedpacketRule" >
+    update redpacketrule
+    <set >
+      <if test="drugNo != null" >
+        DrugNo = #{drugNo,jdbcType=BIGINT},
+      </if>
+      <if test="amount != null" >
+        Amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="validTime != null" >
+        ValidTime = #{validTime,jdbcType=INTEGER},
+      </if>
+      <if test="details != null" >
+        Details = #{details,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        Title = #{title,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where PacketId = #{packetId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ecard.entity.RedpacketRule" >
+    update redpacketrule
+    set DrugNo = #{drugNo,jdbcType=BIGINT},
+      Amount = #{amount,jdbcType=DECIMAL},
+      ValidTime = #{validTime,jdbcType=INTEGER},
+      Details = #{details,jdbcType=VARCHAR},
+      Title = #{title,jdbcType=VARCHAR}
+    where PacketId = #{packetId,jdbcType=BIGINT}
+  </update>
+  <select id="selectPacketByIdDrugNo" resultType="com.ecard.entity.RedpacketRule">
+    select * from redpacketrule where 1=1
+    <if test="drugNo != null" >
+      and DrugNo = #{drugNo,jdbcType=BIGINT}
+    </if>
+    <if test="packetId != null" >
+      and PacketId = #{packetId,jdbcType=BIGINT}
+    </if>
+  </select>
+  <select id="selectByDrugNo" resultType="com.ecard.entity.RedpacketRule" parameterType="java.lang.Long">
+    select * from redpacketrule where DrugNo = #{drugNo,jdbcType=BIGINT}
+  </select>
+</mapper>
