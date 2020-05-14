@@ -8,7 +8,7 @@ import com.ecard.pojo.queryResult.DisInfoQr;
 import java.util.Map;
 
 public interface YzyptService {
-    public void selectByOpenId(int status);
+    public void selectByOpenId(int status, int platform);
     public WeiXinUser getUserInfo(String accessToken, String openId);
     public Map<String, String> oauth2GetOpenid(String code);
     public Map<String , String> getAuthInfo(String code);
@@ -41,9 +41,9 @@ public interface YzyptService {
 
     Response getDisLeader(String disLevel);
 
-    Response insertDr(String disNo, String name, String hospital, String phone, String chiefNo, String practiceProfile, String title, String leaderDrNo, String drTitleCert, String drPracticeRegCert, String consultingHour, String idNo, int disableFlag, int type, String province, String city);
+    Response insertDr(String disNo, String name, String hospital, String phone, String chiefNo, String practiceProfile, String title, String leaderDrNo, String drTitleCert, String drPracticeRegCert, String consultingHour, String idNo, int disableFlag, int type, String province, String city, int platform);
 
-    Response updateDr(String drNo, String name, String hospital, String phone, String chiefNo, String practiceProfile, String title, String drTitleCert, String drPracticeRegCert, String consultingHour, String leaderDrNo, String idNo, int disableFlag, int type, String province, String city);
+    Response updateDr(String drNo, String name, String hospital, String phone, String chiefNo, String practiceProfile, String title, String drTitleCert, String drPracticeRegCert, String consultingHour, String leaderDrNo, String idNo, int disableFlag, int type, String province, String city, int platform);
 
     Response count(int medOrderType, String drName, Long drugNo, String drPhone, Long disNo, Long disNo2, String startDate, String endDate, Long drNo, Integer page, Integer rows);
 
@@ -54,4 +54,6 @@ public interface YzyptService {
     Response getDisList(String disNo);
 
     void test();
+
+    Map<String, String> getAuthInfo1(String code);
 }

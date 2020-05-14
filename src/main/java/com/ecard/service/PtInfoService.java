@@ -6,11 +6,11 @@ import com.ecard.pojo.ResponseHasData;
 
 public interface PtInfoService {
 
-    Response insertMedOrder(String medRecordNo, Long drNo, String diagContent, String subjective, String objective, String plan);
+    Response insertMedOrder(String medRecordNo, Long drNo, String diagContent, String subjective, String objective, String plan, String platform);
 
     Response start(Long drNo);
 
-    Response register(String name, String sex, String idNo, String height, String weight, String phone, String code);
+    Response register(String name, String sex, String idNo, String height, String weight, String phone, String code, String url, String drugSetNo, String goodsNo);
 
     Response ptInfoUpdate(Long ptNo, String name, String sex, String idNo, String height, String weight, String phone, String code);
 

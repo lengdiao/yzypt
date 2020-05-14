@@ -31,9 +31,9 @@ public interface DoctorService {
     
     Response wxQRCode(Long drNo);
 
-    Response insert(String drName, String phone, String idCard, String hospital, String chiefNo, Integer age, String practiceProfile, String signature, String title, String drTitleCert, String drPracticeRegCert, String consultingHour, Integer disableFlag, Integer type, String province, String city);
+    Response insert(String drName, String phone, String idCard, String hospital, String chiefNo, Integer age, String practiceProfile, String signature, String title, String drTitleCert, String drPracticeRegCert, String consultingHour, Integer disableFlag, Integer type, String province, String city, int platform, Long disNo);
 
-    Response update(Long drNo, String drName, String phone, String idNo, String hospital, String chiefNo, Integer age, String practiceProfile, String signature, String title, String drTitleCert, String drPracticeRegCert, String consultingHour, Integer disableFlag, Integer type, String province, String city);
+    Response update(Long drNo, String drName, String phone, String idNo, String hospital, String chiefNo, Integer age, String practiceProfile, String signature, String title, String drTitleCert, String drPracticeRegCert, String consultingHour, Integer disableFlag, Integer type, String province, String city, int platform, Long disNo);
 
 
     Response selectMedRecord(Long medRecordNo);
@@ -46,7 +46,7 @@ public interface DoctorService {
 
     Response selectPtRecordList(Long ptNo, Long drNo);
 
-    Response count(String name, Long drNo, String startDate, Long drugNo);
+    Response count(String name, Long drNo, String startDate, String endDate, Long drugNo);
 
     Response selectTemplatesByNo(Long templateNo);
 

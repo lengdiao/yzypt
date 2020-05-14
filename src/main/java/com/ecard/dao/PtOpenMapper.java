@@ -29,4 +29,9 @@ public interface PtOpenMapper {
     PtOpen selectByDrNoAndOpenId(
             @Param("drNo") Long drNo,
             @Param("openId") String openId);
+
+    List<PtOpen> selectBtOpenIdAndPlatform(String openId);
+
+    PtOpen selectByDrNoAndOpenId1(@Param("drNo") Long drNo,
+                                  @Param("openId") String openId);
 }

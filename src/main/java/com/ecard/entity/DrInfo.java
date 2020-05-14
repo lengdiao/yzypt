@@ -56,6 +56,26 @@ public class DrInfo {
 
     private String city;
 
+    private int platform;
+
+    private String headImg;
+
+    public String getHeadImg() {
+        return headImg;
+    }
+
+    public void setHeadImg(String headImg) {
+        this.headImg = headImg;
+    }
+
+    public int getPlatform() {
+        return platform;
+    }
+
+    public void setPlatform(int platform) {
+        this.platform = platform;
+    }
+
     public String getCity() {
         return city;
     }

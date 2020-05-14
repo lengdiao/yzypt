@@ -56,7 +56,8 @@ public class PtInfoController {
             @ApiImplicitParam(paramType="query", name = "diagContent", value = "诊断内容A", dataType = "String"),
             @ApiImplicitParam(paramType="query", name = "subjective", value = "主诉S", dataType = "String"),
             @ApiImplicitParam(paramType="query", name = "objective", value = "查体O", dataType = "String"),
-            @ApiImplicitParam(paramType="query", name = "plan", value = "计划P", dataType = "String")
+            @ApiImplicitParam(paramType="query", name = "plan", value = "计划P", dataType = "String"),
+            @ApiImplicitParam(paramType="query", name = "platform", value = "平台标识(1:易臻云2:视界)", dataType = "String")
     })
     public Response insertMedOrder(
             @RequestParam(value = "medRecordNo") String medRecordNo,
@@ -64,8 +65,9 @@ public class PtInfoController {
             @RequestParam(value = "diagContent", required = false) String diagContent,
             @RequestParam(value = "subjective", required = false) String subjective,
             @RequestParam(value = "objective", required = false) String objective,
-            @RequestParam(value = "plan", required = false) String plan) {
-        Response response = ptInfoService.insertMedOrder(medRecordNo, drNo, diagContent, subjective, objective, plan);
+            @RequestParam(value = "plan", required = false) String plan,
+            @RequestParam(value = "platform") String platform) {
+        Response response = ptInfoService.insertMedOrder(medRecordNo, drNo, diagContent, subjective, objective, plan,platform);
         return response;
     }
 
@@ -122,7 +124,10 @@ public class PtInfoController {
             @ApiImplicitParam(paramType="query", name = "height", value = "身高", dataType = "String"),
             @ApiImplicitParam(paramType="query", name = "weight", value = "体重", dataType = "String"),
             @ApiImplicitParam(paramType="query", name = "phone", value = "电话号码", dataType = "String"),
-            @ApiImplicitParam(paramType="query", name = "code", value = "验证码", dataType = "String")
+            @ApiImplicitParam(paramType="query", name = "code", value = "验证码", dataType = "String"),
+            @ApiImplicitParam(paramType="query", name = "url", value = "跳转地址", dataType = "String"),
+            @ApiImplicitParam(paramType="query", name = "drugSetNo", value = "药品编号", dataType = "Long"),
+            @ApiImplicitParam(paramType="query", name = "goodsNo", value = "商品编号", dataType = "Long")
     })
     @PostMapping("/register")
     public Response register(
@@ -132,8 +137,11 @@ public class PtInfoController {
             @RequestParam(value = "height" ,required = false) String height,
             @RequestParam(value = "weight" ,required = false) String weight,
             @RequestParam(value = "phone") String phone,
-            @RequestParam(value = "code") String code) {
-        Response response = ptInfoService.register(name,sex,idNo,height,weight,phone,code);
+            @RequestParam(value = "code") String code,
+            @RequestParam(value = "url" ,required = false) String url,
+            @RequestParam(value = "drugSetNo" ,required = false) String drugSetNo,
+            @RequestParam(value = "goodsNo" ,required = false) String goodsNo) {
+        Response response = ptInfoService.register(name,sex,idNo,height,weight,phone,code,url,drugSetNo,goodsNo);
         return response;
     }
 

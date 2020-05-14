@@ -98,6 +98,7 @@ public interface MallOrderMapper {
             @Param("name") String name,
             @Param("drNo") Long drNo,
             @Param("startDate") String startDate,
+            @Param("endDate") String endDate,
             @Param("drugNo") Long drugNo);
 
     List<MallOrder> findShippingStatusIs1();

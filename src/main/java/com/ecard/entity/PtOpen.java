@@ -9,6 +9,16 @@ public class PtOpen {
 
     private Long drNo;
 
+    private String sjOpenId;
+
+    public String getSjOpenId() {
+        return sjOpenId;
+    }
+
+    public void setSjOpenId(String sjOpenId) {
+        this.sjOpenId = sjOpenId;
+    }
+
     public Long getId() {
         return id;
     }

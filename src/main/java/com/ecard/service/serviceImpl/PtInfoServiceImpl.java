@@ -10,12 +10,12 @@ import com.ecard.service.PtInfoService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
@@ -72,18 +72,19 @@ public class PtInfoServiceImpl implements PtInfoService {
     @Autowired
     private RedpacketRuleMapper redpacketRuleMapper;
 
-    String openId = "oLkiUwbC5SFlF0oyN5dcs_-Ujz8s";
+    //String openId = "oLkiUwbC5SFlF0oyN5dcs_-Ujz8s";
+    //String sjOpenId = "oEaBztxZAXW5qe7wLhpVLQHX9-9M";
     private BigDecimal amount;
     private String openId1;
 
 
     @Override
     public Response start(Long drNo) {
-        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = servletRequestAttributes.getRequest();
         HttpSession session = request.getSession();
         WeiXinUser user = (WeiXinUser) session.getAttribute("currentUser");
-        //String openId = user.getOpenId();
+        String openId = user.getOpenId();
 
         ResponseHasData response = new ResponseHasData();
         try {
@@ -112,18 +113,20 @@ public class PtInfoServiceImpl implements PtInfoService {
 
     @Override
     public Response insertMedOrder(String medRecordNo, Long drNo, String diagContent,
-                                   String subjective, String objective, String plan) {
-        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
+                                   String subjective, String objective, String plan, String platform) {
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = servletRequestAttributes.getRequest();
         HttpSession session = request.getSession();
         WeiXinUser user = (WeiXinUser) session.getAttribute("currentUser");
-        //String openId = user.getOpenId();
+        String openId = user.getOpenId();
+        WeiXinUser sjUser = (WeiXinUser) session.getAttribute("sjCurrentUser");
+        String sjOpenId = user.getOpenId();
 
 
         ResponseHasData response = new ResponseHasData();
         try {
             List<PtOpen> ptOpen = ptOpenMapper.selectBtOpenId(openId);
-            List<MallOrder> mallOrder1 = mallOrderMapper.selectByPtNoAndPayStatus1(ptOpen.get(0).getPtNo(),0);
+            List<MallOrder> mallOrder1 = mallOrderMapper.selectByPtNoAndPayStatus1(ptOpen.get(0).getPtNo(), 0);
 
             MedRecord medRecord = medRecordMapper.selectByPrimaryKey(medRecordNo);
             medRecord.setDrNo(drNo);
@@ -143,7 +146,7 @@ public class PtInfoServiceImpl implements PtInfoService {
             medOrder.setOrderStatus(0);
             Long medOrderNo = medOrderMapper.selectId();
             medOrder.setOrderNo(medOrderNo);
-            medOrder.setAddStatus(mallOrder1.size()>0?2:1);
+            medOrder.setAddStatus(mallOrder1.size() > 0 ? 2 : 1);
             medOrderMapper.insertSelective(medOrder);
 
             MallOrder mallOrder = new MallOrder();
@@ -157,23 +160,29 @@ public class PtInfoServiceImpl implements PtInfoService {
             Long mallOrderNo = mallOrderMapper.selectId();
             mallOrder.setMallNo(mallOrderNo);
             mallOrder.setVersion(2);
+            mallOrder.setPlatform(Integer.parseInt(platform));
             mallOrderMapper.insertSelective(mallOrder);
 
-            if(mallOrder.getVersion()==2){
+            if (mallOrder.getVersion() == 2) {
                 List<PtOpen> ptOpenss = ptOpenMapper.selectByPtNo(mallOrder.getPtNo());
-                PtOpen ptOpen1 = ptOpenMapper.selectByDrNoAndOpenId(mallOrder.getDrNo(),ptOpen.get(0).getOpenId());
-                if(ptOpen1==null){
+                PtOpen ptOpen1 = ptOpenMapper.selectByDrNoAndOpenId(mallOrder.getDrNo(), ptOpen.get(0).getOpenId());
+                if (ptOpen1 == null) {
                     PtOpen ptOpen2 = new PtOpen();
                     ptOpen2.setDrNo(mallOrder.getDrNo());
                     ptOpen2.setPtNo(mallOrder.getPtNo());
                     ptOpen2.setOpenId(ptOpenss.get(0).getOpenId());
+                    ptOpen2.setSjOpenId(sjOpenId);
                     ptOpenMapper.insertSelective(ptOpen2);
+                }
+                for (PtOpen ptOpen2 : ptOpenss) {
+                    ptOpen2.setSjOpenId(sjOpenId);
                 }
             }
 
+
             response.setStatus(0);
             response.setMsg("保存成功");
-            response.setData("{\"medRecordNo\":"+medRecord.getMedRecordNo()+"\"mallNo\":"+mallOrder.getMallNo()+"}");
+            response.setData("{\"medRecordNo\":" + medRecord.getMedRecordNo() + "\"mallNo\":" + mallOrder.getMallNo() + "}");
         } catch (Exception e) {
             e.printStackTrace();
             response.setStatus(1);
@@ -184,14 +193,15 @@ public class PtInfoServiceImpl implements PtInfoService {
     }
 
 
-
     @Override
-    public Response register(String name, String sex, String idNo, String height, String weight, String phone, String code) {
-        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
+    public Response register(String name, String sex, String idNo, String height, String weight, String phone, String code, String url, String drugSetNo, String goodsNo) {
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = servletRequestAttributes.getRequest();
         HttpSession session = request.getSession();
         WeiXinUser user = (WeiXinUser) session.getAttribute("currentUser");
-        //String openId = user.getOpenId();
+        String openId = user.getOpenId();
+        WeiXinUser sjUser = (WeiXinUser) session.getAttribute("sjCurrentUser");
+        String sjOpenId = user.getOpenId();
 
         ResponseHasData response = new ResponseHasData();
         try {
@@ -207,9 +217,22 @@ public class PtInfoServiceImpl implements PtInfoService {
             }
 
             List<PtOpen> open = ptOpenMapper.selectBtOpenId(openId);
-            if(open.size()!=0){
+            if (open.size() != 0) {
+                for (PtOpen ptOpen : open) {
+                    ptOpen.setSjOpenId(sjOpenId);
+                    ptOpenMapper.updateByPrimaryKeySelective(ptOpen);
+                }
+            } else {
+                System.out.println("else:"+sjOpenId);
+                open = ptOpenMapper.selectBtOpenIdAndPlatform(sjOpenId);
+                for (PtOpen ptOpen : open) {
+                    ptOpen.setOpenId(openId);
+                    ptOpenMapper.updateByPrimaryKeySelective(ptOpen);
+                }
+            }
+            if (open.size() != 0) {
                 PtInfoQr ptInfo = ptInfoMapper.selectByPtNo(open.get(0).getPtNo());
-                if("".equals(ptInfo.getPhone())||ptInfo.getPhone()==null){
+                if ("".equals(ptInfo.getPhone()) || ptInfo.getPhone() == null) {
                     //需要补全信息
                     CloudPassInfo cloudPassInfo = cloudPassInfoMapper.selectByPrimaryKey(ptInfo.getCloudPassNo());
                     cloudPassInfo.setIdNo(idNo);
@@ -228,31 +251,40 @@ public class PtInfoServiceImpl implements PtInfoService {
                     ptInfo1.setBirthDay(new SimpleDateFormat("yyyy-MM-dd").parse(getBirthday(idNo)));
                     ptInfoMapper.updateByPrimaryKeySelective(ptInfo1);
                 }
-            }else{
-                //注册
-                CloudPassInfo cloudPassInfo = new CloudPassInfo();
-                cloudPassInfo.setIdNo(idNo);
-                cloudPassInfo.setCreateTime(new Date());
-                cloudPassInfo.setDisableFlag(0);
-                cloudPassInfo.setName(name);
-                cloudPassInfo.setPhone(phone);
-                cloudPassInfoMapper.insertSelective(cloudPassInfo);
-                PtInfo ptInfo1 = new PtInfo();
-                ptInfo1.setCloudPassNo(cloudPassInfo.getCloudPassNo());
-                ptInfo1.setCreateTime(new Date());
-                ptInfo1.setDisableFlag(0);
-                ptInfo1.setHeight(Double.valueOf(height));
-                ptInfo1.setWeight(Double.valueOf(weight));
-                ptInfo1.setSex(sex);
-                ptInfo1.setBirthDay(new SimpleDateFormat("yyyy-MM-dd").parse(getBirthday(idNo)));
-                ptInfoMapper.insertSelective(ptInfo1);
-                PtOpen ptOpen = new PtOpen();
-                ptOpen.setOpenId(openId);
-                ptOpen.setPtNo(ptInfo1.getPtNo());
-                ptOpenMapper.insertSelective(ptOpen);
+            } else {
+                List<CloudPassInfo> cloudPassInfos = cloudPassInfoMapper.selectByPhoneAndIDNo(phone, idNo);
+                if (cloudPassInfos.size() == 0) {
+                    //注册
+                    CloudPassInfo cloudPassInfo = new CloudPassInfo();
+                    cloudPassInfo.setIdNo(idNo);
+                    cloudPassInfo.setCreateTime(new Date());
+                    cloudPassInfo.setDisableFlag(0);
+                    cloudPassInfo.setName(name);
+                    cloudPassInfo.setPhone(phone);
+                    cloudPassInfoMapper.insertSelective(cloudPassInfo);
+                    PtInfo ptInfo1 = new PtInfo();
+                    ptInfo1.setCloudPassNo(cloudPassInfo.getCloudPassNo());
+                    ptInfo1.setCreateTime(new Date());
+                    ptInfo1.setDisableFlag(0);
+                    if(height!=null&&!"".equals(height))
+                    ptInfo1.setHeight(Double.valueOf(height));
+                    if(weight!=null&&!"".equals(weight))
+                    ptInfo1.setWeight(Double.valueOf(weight));
+                    ptInfo1.setSex(sex);
+                    if(idNo!=null&&!"".equals(idNo))
+                    ptInfo1.setBirthDay(new SimpleDateFormat("yyyy-MM-dd").parse(getBirthday(idNo)));
+                    ptInfoMapper.insertSelective(ptInfo1);
+                    PtOpen ptOpen = new PtOpen();
+
+                    ptOpen.setSjOpenId(sjOpenId);
+
+                    ptOpen.setOpenId(openId);
+
+                    ptOpen.setPtNo(ptInfo1.getPtNo());
+                    ptOpenMapper.insertSelective(ptOpen);
+                }
             }
-
-
+            response.setData(url+"&drugSetNo="+drugSetNo+"&goodsNo="+goodsNo);
             response.setStatus(0);
             response.setMsg("保存成功");
         } catch (Exception e) {
@@ -268,8 +300,8 @@ public class PtInfoServiceImpl implements PtInfoService {
         ResponseHasData response = new ResponseHasData();
 
         try {
-            CloudPassInfo info = cloudPassInfoMapper.selectByPhoneIdNoPtNo(ptNo,phone,idNo);
-            if(info!=null){
+            CloudPassInfo info = cloudPassInfoMapper.selectByPhoneIdNoPtNo(ptNo, phone, idNo);
+            if (info != null) {
                 response.setStatus(1);
                 response.setMsg("手机号码或身份证号码重复");
                 return response;
@@ -305,20 +337,36 @@ public class PtInfoServiceImpl implements PtInfoService {
     }
 
     @Override
-    public Response binging(String drNo, String openId) {
+    public Response binging(String str, String openId) {
         ResponseHasData response = new ResponseHasData();
-        List<PtOpen> ptOpen = ptOpenMapper.selectBtOpenId(openId);
-        if (ptOpen.size()!=0) {
+        String[] s = str.split(",");
+        String drNo = s[0];
+        String platform = s[1];
+        List<PtOpen> ptOpen = null;
+        if (Integer.parseInt(platform) == 1) {
+            ptOpen = ptOpenMapper.selectBtOpenId(openId);
+        } else if (Integer.parseInt(platform) == 2) {
+            ptOpen = ptOpenMapper.selectBtOpenIdAndPlatform(openId);
+        }
+        if (ptOpen.size() != 0) {
             PtOpen ptOpen1 = new PtOpen();
             ptOpen1.setPtNo(ptOpen.get(0).getPtNo());
             if (drNo == null || drNo.equals("")) {
             } else {
                 ptOpen1.setDrNo(Long.parseLong(drNo));
             }
-            ptOpen1.setOpenId(openId);
-            PtOpen ptOpen2=ptOpenMapper.selectByDrNoAndOpenId(Long.parseLong(drNo),openId);
-            if(ptOpen2==null||ptOpen2.equals("")) {
-                ptOpenMapper.insertSelective(ptOpen1);}
+            PtOpen ptOpen2 = null;
+            if (Integer.parseInt(platform) == 1) {
+                ptOpen1.setOpenId(openId);
+                ptOpen2 = ptOpenMapper.selectByDrNoAndOpenId(Long.parseLong(drNo), openId);
+            }
+            if (Integer.parseInt(platform) == 2) {
+                ptOpen1.setSjOpenId(openId);
+                ptOpen2 = ptOpenMapper.selectByDrNoAndOpenId1(Long.parseLong(drNo), openId);
+            }
+            if (ptOpen2 == null || ptOpen2.equals("")) {
+                ptOpenMapper.insertSelective(ptOpen1);
+            }
             response.setStatus(Constants.STATUS_SUCCESS);
             response.setMsg("此手机已有绑定关系，直接跳转");
             return response;
@@ -356,7 +404,11 @@ public class PtInfoServiceImpl implements PtInfoService {
             } else {
                 ptOpen1.setDrNo(Long.parseLong(drNo));
             }
-            ptOpen1.setOpenId(openId);
+            if (Integer.parseInt(platform) == 1) {
+                ptOpen1.setOpenId(openId);
+            } else if (Integer.parseInt(platform) == 2) {
+                ptOpen1.setSjOpenId(openId);
+            }
             ptOpenMapper.insertSelective(ptOpen1);
         } catch (NumberFormatException e) {
             System.out.println("PtOpen插入失败");
@@ -386,8 +438,8 @@ public class PtInfoServiceImpl implements PtInfoService {
                 return response;
             }
 
-            CloudPassInfo info = cloudPassInfoMapper.selectByPhoneIdNoPtNo(ptNo,phone,idNo);
-            if(info!=null){
+            CloudPassInfo info = cloudPassInfoMapper.selectByPhoneIdNoPtNo(ptNo, phone, idNo);
+            if (info != null) {
                 response.setStatus(1);
                 response.setMsg("手机号码或身份证号码重复");
                 return response;
@@ -427,13 +479,13 @@ public class PtInfoServiceImpl implements PtInfoService {
         ResponseHasData response = new ResponseHasData();
 
         try {
-            Page<?> pa =  PageHelper.startPage(page, rows);
+            Page<?> pa = PageHelper.startPage(page, rows);
             List<PtInfoQr> piq =
-                    ptInfoMapper.selectPtInfo(name,idNo);
+                    ptInfoMapper.selectPtInfo(name, idNo);
             //查询结果总数
             Long total = pa.getTotal();
             //创建分页条件
-            PageInfo<PtInfoQr> pageData = new PageInfo<PtInfoQr>(piq,total.intValue());
+            PageInfo<PtInfoQr> pageData = new PageInfo<PtInfoQr>(piq, total.intValue());
 
             response.setData(pageData);
             response.setStatus(0);
@@ -450,15 +502,30 @@ public class PtInfoServiceImpl implements PtInfoService {
     public Response selectDrList(Integer page, Integer rows) {
         ResponseHasData response = new ResponseHasData();
         try {
-            ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
+            ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
             HttpServletRequest request = servletRequestAttributes.getRequest();
             HttpSession session = request.getSession();
             WeiXinUser user = (WeiXinUser) session.getAttribute("currentUser");
-            //String openId = user.getOpenId();
+            String openId = user.getOpenId();
+            WeiXinUser sjUser = (WeiXinUser) session.getAttribute("sjCurrentUser");
+            System.out.println("sjOpenId" + sjUser);
+
             List<PtOpen> ptOpens = ptOpenMapper.selectBtOpenId(openId);
-            Page<?> pa =  PageHelper.startPage(page, rows);
+            if (ptOpens.size() == 0) {
+                ptOpens = ptOpenMapper.selectBtOpenIdAndPlatform(sjUser.getOpenId());
+                for (PtOpen ptOpen : ptOpens) {
+                    ptOpen.setOpenId(openId);
+                    ptOpenMapper.updateByPrimaryKeySelective(ptOpen);
+                }
+            } else {
+                for (PtOpen ptOpen : ptOpens) {
+                    ptOpen.setSjOpenId(sjUser.getOpenId());
+                    ptOpenMapper.updateByPrimaryKeySelective(ptOpen);
+                }
+            }
+            Page<?> pa = PageHelper.startPage(page, rows);
             List<DrInfoQr> drInfoQrs = drInfoMapper.selectByPtOpenId(openId);
-            for(DrInfoQr drInfoQr:drInfoQrs){
+            for (DrInfoQr drInfoQr : drInfoQrs) {
                 List<Message> msg = messageMapper.selectDrNewMessage(ptOpens.get(0).getPtNo(), drInfoQr.getDrNo()); // ReadStatus=0
                 if (msg.size() == 0) {
                     drInfoQr.setNewMessage(0);
@@ -469,7 +536,7 @@ public class PtInfoServiceImpl implements PtInfoService {
             //查询结果总数
             Long total = pa.getTotal();
             //创建分页条件
-            PageInfo<DrInfoQr> pageData = new PageInfo<DrInfoQr>(drInfoQrs,total.intValue());
+            PageInfo<DrInfoQr> pageData = new PageInfo<DrInfoQr>(drInfoQrs, total.intValue());
             response.setData(pageData);
             response.setMsg("查询成功");
             response.setStatus(0);
@@ -481,22 +548,22 @@ public class PtInfoServiceImpl implements PtInfoService {
         return response;
     }
 
-    public String getBirthday(String idNo){
+    public String getBirthday(String idNo) {
         String birthday = null;
-        if(idNo.length()==15){
-            birthday = "19"+idNo.substring(6,8)+"-"+idNo.substring(8,10)+"-"+idNo.substring(10,12);
-        }else if(idNo.length()==18){
-            birthday =idNo.substring(6,10)+"-"+idNo.substring(10,12)+"-"+idNo.substring(12,14);
+        if (idNo.length() == 15) {
+            birthday = "19" + idNo.substring(6, 8) + "-" + idNo.substring(8, 10) + "-" + idNo.substring(10, 12);
+        } else if (idNo.length() == 18) {
+            birthday = idNo.substring(6, 10) + "-" + idNo.substring(10, 12) + "-" + idNo.substring(12, 14);
         }
         return birthday;
     }
 
     public ResponseHasData insertReceiptAddress(ReceiptAddress ra) {
-        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = servletRequestAttributes.getRequest();
         HttpSession session = request.getSession();
         WeiXinUser user = (WeiXinUser) session.getAttribute("currentUser");
-        //String openId = user.getOpenId();
+        String openId = user.getOpenId();
 
         List<PtOpen> ptOpen = ptOpenMapper.selectBtOpenId(openId);
         Long ptNo = ptOpen.get(0).getPtNo();
@@ -553,11 +620,11 @@ public class PtInfoServiceImpl implements PtInfoService {
     public Response updateReceiptAddress(ReceiptAddress ra) {
         ResponseHasData response = new ResponseHasData();
         try {
-            ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
+            ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
             HttpServletRequest request = servletRequestAttributes.getRequest();
             HttpSession session = request.getSession();
             WeiXinUser user = (WeiXinUser) session.getAttribute("currentUser");
-            //String openId = user.getOpenId();
+            String openId = user.getOpenId();
 
             List<PtOpen> ptOpen = ptOpenMapper.selectBtOpenId(openId);
             Long ptNo = ptOpen.get(0).getPtNo();
@@ -581,7 +648,7 @@ public class PtInfoServiceImpl implements PtInfoService {
             return response;
         } catch (Exception e) {
             e.printStackTrace();
-            response.setMsg( "修改失败");
+            response.setMsg("修改失败");
             response.setStatus(Constants.STATUS_FAIL);
             return response;
         }
@@ -615,15 +682,15 @@ public class PtInfoServiceImpl implements PtInfoService {
     public Response selectReceiptAddress() {
         ResponseHasData response = new ResponseHasData();
         try {
-            ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
+            ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
             HttpServletRequest request = servletRequestAttributes.getRequest();
             HttpSession session = request.getSession();
             WeiXinUser user = (WeiXinUser) session.getAttribute("currentUser");
-            //String openId = user.getOpenId();
+            String openId = user.getOpenId();
 
             List<PtOpen> ptOpen = ptOpenMapper.selectBtOpenId(openId);
 
-            if (ptOpen.size()!=0) {
+            if (ptOpen.size() != 0) {
                 Long ptNo = ptOpen.get(0).getPtNo();
                 List<ReceiptAddress> list = receiptAddressMapper.selectByPtNo(ptNo);
                 response.setData(list);
@@ -640,15 +707,15 @@ public class PtInfoServiceImpl implements PtInfoService {
     public Response selectInfo() {
         ResponseHasData response = new ResponseHasData();
         try {
-            ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
+            ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
             HttpServletRequest request = servletRequestAttributes.getRequest();
             HttpSession session = request.getSession();
             WeiXinUser user = (WeiXinUser) session.getAttribute("currentUser");
-            //String openId = user.getOpenId();
+            String openId = user.getOpenId();
 
             List<PtOpen> ptOpen = ptOpenMapper.selectBtOpenId(openId);
 
-            if(ptOpen.size()!=0){
+            if (ptOpen.size() != 0) {
                 PtInfo ptInfo = ptInfoMapper.selectByPrimaryKey(ptOpen.get(0).getPtNo());
                 CloudPassInfo passInfo = cloudPassInfoMapper.selectByPtNo(ptInfo.getPtNo());
                 ptInfo.setName(passInfo.getName());
@@ -657,7 +724,7 @@ public class PtInfoServiceImpl implements PtInfoService {
                 response.setData(ptInfo);
                 response.setStatus(0);
                 response.setMsg("查询成功");
-            }else{
+            } else {
                 response.setMsg("未查询到该患者");
                 response.setStatus(1);
             }
@@ -673,11 +740,11 @@ public class PtInfoServiceImpl implements PtInfoService {
     public Response findMallOrder(int orderStatus) {
         ResponseHasData response = new ResponseHasData();
         try {
-            ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
+            ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
             HttpServletRequest request = servletRequestAttributes.getRequest();
             HttpSession session = request.getSession();
             WeiXinUser user = (WeiXinUser) session.getAttribute("currentUser");
-            //String openId = user.getOpenId();
+            String openId = user.getOpenId();
 
             List<PtOpen> ptOpen = ptOpenMapper.selectBtOpenId(openId);
             PtInfo ptInfo = ptInfoMapper.selectByPrimaryKey(ptOpen.get(0).getPtNo());
@@ -686,9 +753,9 @@ public class PtInfoServiceImpl implements PtInfoService {
             BigDecimal postage = new BigDecimal("0");
 
             List<MallOrderQr> mallOrderQrs = new ArrayList<MallOrderQr>();
-            List<MallOrder> mallOrders = mallOrderMapper.selectByOrderStatus(orderStatus,ptInfo.getPtNo());
-            if(mallOrders.size()!=0){
-                for(MallOrder mallOrder : mallOrders){
+            List<MallOrder> mallOrders = mallOrderMapper.selectByOrderStatus(orderStatus, ptInfo.getPtNo());
+            if (mallOrders.size() != 0) {
+                for (MallOrder mallOrder : mallOrders) {
                     MallOrderQr mallOrderQr = new MallOrderQr();
                     mallOrderQr.setMallOrder(mallOrder);
                     MedOrder medOrder = medOrderMapper.selectByPrimaryKey(mallOrder.getMedOrderNo());
@@ -697,42 +764,42 @@ public class PtInfoServiceImpl implements PtInfoService {
                     mallOrderQr.setMedRecord(medRecord);
                     MrPicture[] mrPictures = mrPictureMapper.selectByMedRecordNo(medOrder.getMedRecordNo());
                     mallOrderQr.setMrPictures(mrPictures);
-                    if(mallOrder.getAddress()!=null&&!"".equals(mallOrder.getAddress())){
+                    if (mallOrder.getAddress() != null && !"".equals(mallOrder.getAddress())) {
                         ReceiptAddress receiptAddress = mallAddressMapper.selectByPrimaryKey1(Long.valueOf(mallOrder.getAddress()));
                         mallOrderQr.setReceiptAddress(receiptAddress);
                     }
                     List<MedItemQr> medItemQrs = medItemMapper.selectByMedOrderNo(medOrder.getOrderNo());
-                    for(int i = 0 ; i <medItemQrs.size() ; i++){
+                    for (int i = 0; i < medItemQrs.size(); i++) {
                         DrugSet drugSet = drugSetMapper.selectByPrimaryKey(medItemQrs.get(i).getDrugNo());
-                        if (drugSet.getVersion()==2||drugSet.getVersion()==3){
+                        if (drugSet.getVersion() == 2 || drugSet.getVersion() == 3) {
                             Goods goods = goodsMapper.selectByPrimaryKey(drugSet.getDrugSetNo());
                             drugSet.setDescribe(goods.getDescribe());
                             drugSet.setIsRecipe(goods.getIsRecipe());
                             drugSet.setIsUpload(goods.getIsUpload());
                             List<DrugSetPicture> drugSetPictures = drugSetPictureMapper.selectByGoodsNo(drugSet.getDrugSetNo());
-                            if(drugSetPictures.size()!=0){
+                            if (drugSetPictures.size() != 0) {
                                 double d = Math.random();
-                                int q = (int)(d*100);
+                                int q = (int) (d * 100);
                                 drugSet.setTitleImg(drugSetPictures.get(0).getTitleImg());
                                 String img[] = new String[drugSetPictures.size()];
-                                for(int j=0;j<drugSetPictures.size();j++){
+                                for (int j = 0; j < drugSetPictures.size(); j++) {
                                     img[j] = drugSetPictures.get(j).getDetailsImg();
                                 }
                                 drugSet.setDetailsImg(img);
 
                             }
                             medItemQrs.get(i).setDrugSet(drugSet);
-                        }else if(drugSet.getVersion()==4){
-                            Activity activity = activityMapper.selectByGoodsNoFlag(drugSet.getDrugSetNo(),null);
+                        } else if (drugSet.getVersion() == 4) {
+                            Activity activity = activityMapper.selectByGoodsNoFlag(drugSet.getDrugSetNo(), null);
                             drugSet.setIsRecipe(activity.getIsRecipe());
                             drugSet.setIsUpload(activity.getIsUpload());
                             List<DrugSetPicture> drugSetPictures = drugSetPictureMapper.selectByGoodsNo(drugSet.getDrugSetNo());
-                            if(drugSetPictures.size()!=0){
+                            if (drugSetPictures.size() != 0) {
                                 double d = Math.random();
-                                int q = (int)(d*100);
+                                int q = (int) (d * 100);
                                 drugSet.setTitleImg(drugSetPictures.get(0).getTitleImg());
                                 String img[] = new String[drugSetPictures.size()];
-                                for(int j=0;j<drugSetPictures.size();j++){
+                                for (int j = 0; j < drugSetPictures.size(); j++) {
                                     img[j] = drugSetPictures.get(j).getDetailsImg();
                                 }
                                 drugSet.setDetailsImg(img);
@@ -741,19 +808,19 @@ public class PtInfoServiceImpl implements PtInfoService {
                             medItemQrs.get(i).setActivity(activity);
                         }
                         //--------------------------------------------------------
-                        if(mallOrder.getShippingStatus()==1){
+                        if (mallOrder.getShippingStatus() == 1) {
                             double number = medItemQrs.get(i).getNumber();
-                            String s = number+"";
+                            String s = number + "";
                             List<Postage> postages = postageMapper.selectByNo(medItemQrs.get(i).getDrugNo());
-                            if(postages.size()==0){
+                            if (postages.size() == 0) {
                                 postages = postageMapper.selectByNo(Long.valueOf("0"));
                             }
-                            System.out.println("购买数量："+number);
+                            System.out.println("购买数量：" + number);
                             String regex = postages.get(0).getCondition();
-                            System.out.println("正则表达式："+regex);
+                            System.out.println("正则表达式：" + regex);
                             boolean flag = s.matches(regex);
-                            System.out.println("flag:"+flag);
-                            if(flag){
+                            System.out.println("flag:" + flag);
+                            if (flag) {
                                 postage = postage.add(postages.get(0).getPostage());
                             }
                         }
@@ -763,10 +830,10 @@ public class PtInfoServiceImpl implements PtInfoService {
                     mallOrderQr.setPtInfoQr(ptInfo1);
                     mallOrderQr.setPostage(postage);
                     Long packetId = mallOrderQr.getMallOrder().getPacketId();
-                    if(packetId!=null){
+                    if (packetId != null) {
                         RedpacketRecord redpacketRecord = redpacketRecordMapper.selectByPrimaryKey(packetId);
                         mallOrderQr.getMallOrder().setPacketAmount(redpacketRecord.getAmount());
-                    }else{
+                    } else {
                         mallOrderQr.getMallOrder().setPacketAmount(new BigDecimal("0"));
                     }
 
@@ -790,18 +857,18 @@ public class PtInfoServiceImpl implements PtInfoService {
     public Response selectMedOrderList(Integer payStatus) {
         ResponseHasData response = new ResponseHasData();
         try {
-            ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
+            ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
             HttpServletRequest request = servletRequestAttributes.getRequest();
             HttpSession session = request.getSession();
             WeiXinUser user = (WeiXinUser) session.getAttribute("currentUser");
-            //String openId = user.getOpenId();
+            String openId = user.getOpenId();
 
             List<PtOpen> ptOpen = ptOpenMapper.selectBtOpenId(openId);
             PtInfo ptInfo = ptInfoMapper.selectByPrimaryKey(ptOpen.get(0).getPtNo());
-            List<MallOrder> mallOrders = mallOrderMapper.selectByPtNoAndPayStatus1(ptInfo.getPtNo(),payStatus);
+            List<MallOrder> mallOrders = mallOrderMapper.selectByPtNoAndPayStatus1(ptInfo.getPtNo(), payStatus);
 
             List<MedOrderQr> medOrderQrs = new ArrayList<MedOrderQr>();
-            for(MallOrder mallOrder:mallOrders){
+            for (MallOrder mallOrder : mallOrders) {
                 MedOrder medOrder = medOrderMapper.selectByPrimaryKey(mallOrder.getMedOrderNo());
                 MedOrderQr medOrderQr = new MedOrderQr();
                 medOrderQr.setOrderStatus(medOrder.getOrderStatus());
@@ -810,7 +877,7 @@ public class PtInfoServiceImpl implements PtInfoService {
                 medOrderQr.setMedOrderNo(mallOrder.getMedOrderNo());
                 medOrderQr.setOrderTime(mallOrder.getOrderTime());
                 medOrderQr.setMedRecordNo(Long.valueOf(medOrder.getMedRecordNo()));
-                if(mallOrder.getPayStatus()==0){
+                if (mallOrder.getPayStatus() == 0) {
                     medOrderQr.setShippingStatus(mallOrder.getShippingStatus());
                 }
                 medOrderQrs.add(medOrderQr);
@@ -828,7 +895,7 @@ public class PtInfoServiceImpl implements PtInfoService {
 
     @Override
     public Response selectMedOrderInfo(Long medOrderNo, Long medRecordNo) {
-        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = servletRequestAttributes.getRequest();
         HttpSession session = request.getSession();
         WeiXinUser user = (WeiXinUser) session.getAttribute("currentUser");
@@ -837,13 +904,13 @@ public class PtInfoServiceImpl implements PtInfoService {
         try {
             //PtOpen ptOpen = ptOpenMapper.findByPtOpenId(openId);
 
-            MallOrder mallOrder = mallOrderMapper.selectByMedOAndMedR(medOrderNo,medRecordNo);
+            MallOrder mallOrder = mallOrderMapper.selectByMedOAndMedR(medOrderNo, medRecordNo);
 
             DrInfoQr drInfoQr = drInfoMapper.selectByDrNo(mallOrder.getDrNo());
             MallOrderQr mallOrderQr = new MallOrderQr();
             mallOrderQr.setMallOrder(mallOrder);
             MedOrder medOrder = medOrderMapper.selectByPrimaryKey(mallOrder.getMedOrderNo());
-            if(medOrder.getOrderType()==1){
+            if (medOrder.getOrderType() == 1) {
                 BigDecimal unitPrice = medOrder.getOrderAmount().divide(new BigDecimal(medOrder.getPrescriptionNum().toString()));
                 medOrder.setUnitPrice(unitPrice);
             }
@@ -851,25 +918,25 @@ public class PtInfoServiceImpl implements PtInfoService {
             MedRecord medRecord = medRecordMapper.selectByPrimaryKey(medOrder.getMedRecordNo());
             String diagContentName = medRecord.getDiagContent();
             String[] diag = diagContentName.split(",");
-            System.out.println("diag"+diag);
-            if(medOrder.getOrderType()==1){
+            System.out.println("diag" + diag);
+            if (medOrder.getOrderType() == 1) {
                 diagContentName = "";
                 //中医
-                for(int i = 0 ; i < diag.length ; i++){
+                for (int i = 0; i < diag.length; i++) {
                     String[] diag1 = diag[i].split("-");
-                    diagContentName += diseaseMasterMapper.selectByPrimaryKey(Long.valueOf(diag1[0])).getChtName()+"-";
-                    diagContentName += diseaseMasterMapper.selectByPrimaryKey(Long.valueOf(diag1[1])).getChtName()+",";
-                    System.out.println("中医"+diagContentName);
+                    diagContentName += diseaseMasterMapper.selectByPrimaryKey(Long.valueOf(diag1[0])).getChtName() + "-";
+                    diagContentName += diseaseMasterMapper.selectByPrimaryKey(Long.valueOf(diag1[1])).getChtName() + ",";
+                    System.out.println("中医" + diagContentName);
                 }
-                diagContentName = diagContentName.substring(0,diagContentName.length()-1);
-            }else{
+                diagContentName = diagContentName.substring(0, diagContentName.length() - 1);
+            } else {
                 diagContentName = "";
                 //西医
-                for(int i = 0 ; i < diag.length ; i++){
-                    diagContentName += diseaseMasterMapper.selectByPrimaryKey(Long.valueOf(diag[i])).getChtName()+",";
-                    System.out.println("西医"+diagContentName);
+                for (int i = 0; i < diag.length; i++) {
+                    diagContentName += diseaseMasterMapper.selectByPrimaryKey(Long.valueOf(diag[i])).getChtName() + ",";
+                    System.out.println("西医" + diagContentName);
                 }
-                diagContentName = diagContentName.substring(0,diagContentName.length()-1);
+                diagContentName = diagContentName.substring(0, diagContentName.length() - 1);
             }
 
             medRecord.setDiagContentName(diagContentName);
@@ -877,7 +944,7 @@ public class PtInfoServiceImpl implements PtInfoService {
             MrPicture[] mrPictures = mrPictureMapper.selectByMedRecordNo(medOrder.getMedRecordNo());
             mallOrderQr.setMrPictures(mrPictures);
             List<MedItemQr> medItemQrs = medItemMapper.selectByMedOrderNo(medOrder.getOrderNo());
-            for (MedItemQr medItemQr:medItemQrs){
+            for (MedItemQr medItemQr : medItemQrs) {
                 DrugSet drugSet = drugSetMapper.selectByPrimaryKey(medItemQr.getDrugNo());
                 medItemQr.setDrugSet(drugSet);
             }
@@ -898,9 +965,7 @@ public class PtInfoServiceImpl implements PtInfoService {
             }*/
 
 
-
-
-            if(mallOrder.getAddress()!=null&&!"".equals(mallOrder.getAddress())){
+            if (mallOrder.getAddress() != null && !"".equals(mallOrder.getAddress())) {
                 ReceiptAddress receiptAddress = mallAddressMapper.selectByPrimaryKey1(Long.valueOf(mallOrder.getAddress()));
                 mallOrderQr.setReceiptAddress(receiptAddress);
             }
@@ -908,7 +973,6 @@ public class PtInfoServiceImpl implements PtInfoService {
             PtInfoQr ptInfo = ptInfoMapper.selectByPtNo(mallOrder.getPtNo());
             mallOrderQr.setPtInfoQr(ptInfo);
             mallOrderQr.setDrInfoQr(drInfoQr);
-
 
 
             //mallOrderQr.setPostage(post);

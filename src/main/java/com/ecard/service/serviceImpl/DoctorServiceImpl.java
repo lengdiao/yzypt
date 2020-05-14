@@ -81,7 +81,7 @@ public class DoctorServiceImpl implements DoctorService {
     public Response insert(String drName, String phone, String idNo, String hospital,
                            String chiefNo, Integer age, String practiceProfile, String signature,
                            String title, String drTitleCert, String drPracticeRegCert,
-                           String consultingHour, Integer disableFlag, Integer type, String province, String city) {
+                           String consultingHour, Integer disableFlag, Integer type, String province, String city, int platform, Long disNo) {
         ResponseHasData response = new ResponseHasData();
 
         try {
@@ -116,7 +116,15 @@ public class DoctorServiceImpl implements DoctorService {
             drInfo.setType(type);
             drInfo.setProvince(province);
             drInfo.setCity(city);
+            drInfo.setPlatform(platform);
+            drInfo.setHeadImg("https://www.yizhenyun.com.cn/yzypt/drImage/dr.jpg");
             drInfoMapper.insertSelective(drInfo);
+
+            DrDisRelation drDisRelation = new DrDisRelation();
+            drDisRelation.setDisableFlag(0);
+            drDisRelation.setDisNo(disNo);
+            drDisRelation.setDrNo(drInfo.getDrNo());
+            drDisRelationMapper.insertSelective(drDisRelation);
 
             RoleUtil.accredit(cloudPassInfo.getCloudPassNo(), "医生");
 
@@ -126,6 +134,7 @@ public class DoctorServiceImpl implements DoctorService {
             e.printStackTrace();
             response.setStatus(1);
             response.setMsg("添加医生失败");
+            throw e;
         }
 
         return response;
@@ -134,7 +143,8 @@ public class DoctorServiceImpl implements DoctorService {
     public Response update(Long drNo, String drName, String phone, String idNo, String hospital,
                            String chiefNo, Integer age, String practiceProfile, String signature,
                            String title, String drTitleCert, String drPracticeRegCert,
-                           String consultingHour, Integer disableFlag, Integer type, String province, String city) {
+                           String consultingHour, Integer disableFlag, Integer type, String province, String city,
+                           int platform, Long disNo) {
         ResponseHasData response = new ResponseHasData();
 
         try {
@@ -145,6 +155,8 @@ public class DoctorServiceImpl implements DoctorService {
                 return response;
             }
             DrInfo drInfo = drInfoMapper.selectByPrimaryKey(drNo);
+
+            DrDisRelation drDisRelation = drDisRelationMapper.selectAllByDrNo(drNo);
 
             CloudPassInfo cloudPassInfo = cloudPassInfoMapper.selectByPrimaryKey(drInfo.getCloudPassNo());
             cloudPassInfo.setName(drName);
@@ -169,7 +181,21 @@ public class DoctorServiceImpl implements DoctorService {
             drInfo.setProvince(province);
             drInfo.setCity(city);
             drInfo.setChiefNo(chiefNo);
+            drInfo.setPlatform(platform);
             drInfoMapper.updateByPrimaryKeySelective(drInfo);
+
+            if(drDisRelation!=null){
+                drDisRelation.setDisNo(disNo);
+                drDisRelationMapper.updateByPrimaryKeySelective(drDisRelation);
+            }else{
+                DrDisRelation drDisRelation1 = new DrDisRelation();
+                drDisRelation1.setDisNo(disNo);
+                drDisRelation1.setDrNo(drNo);
+                drDisRelation1.setDisableFlag(0);
+                drDisRelation1.setCreateTime(new Date());
+                drDisRelationMapper.insertSelective(drDisRelation1);
+            }
+
 
             response.setStatus(0);
             response.setMsg("更新医生成功");
@@ -812,9 +838,16 @@ public class DoctorServiceImpl implements DoctorService {
             System.out.println(ptInfoQr.getName());
             System.out.println(mallOrder.getMedOrderNo());
             System.out.println(mallOrder.getShippingStatus());
-            MyTimerTask myTimerTask = new MyTimerTask(ptOpens.get(0).getOpenId(), ptInfoQr.getName(), medOrder.getMedRecordNo(), mallOrder.getShippingStatus(), medRecordMapper, medOrderMapper, mallOrder.getMedOrderNo());
-            //t通过timer定时定频率调用myTimerTask的业务逻辑
-            timer.schedule(myTimerTask, times);
+            if(mallOrder.getPlatform()==1){
+                MyTimerTask myTimerTask = new MyTimerTask(ptOpens.get(0).getOpenId(), ptInfoQr.getName(), medOrder.getMedRecordNo(), mallOrder.getShippingStatus(), medRecordMapper, medOrderMapper, mallOrder.getMedOrderNo(),mallOrder.getPlatform());
+                //t通过timer定时定频率调用myTimerTask的业务逻辑
+                timer.schedule(myTimerTask, times);
+            }else if(mallOrder.getPlatform()==2){
+                MyTimerTask myTimerTask = new MyTimerTask(ptOpens.get(0).getSjOpenId(), ptInfoQr.getName(), medOrder.getMedRecordNo(), mallOrder.getShippingStatus(), medRecordMapper, medOrderMapper, mallOrder.getMedOrderNo(),mallOrder.getPlatform());
+                //t通过timer定时定频率调用myTimerTask的业务逻辑
+                timer.schedule(myTimerTask, times);
+            }
+
 
             response.setStatus(0);
             response.setMsg("提交成功");
@@ -1163,7 +1196,7 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
-    public Response count(String name, Long drNo, String startDate, Long drugNo) {
+    public Response count(String name, Long drNo, String startDate, String endDate, Long drugNo) {
         ResponseHasData response = new ResponseHasData();
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
@@ -1179,7 +1212,7 @@ public class DoctorServiceImpl implements DoctorService {
 
             if (drugNo != null) {
                 //西药处方
-                List<PcCountQr> mallOrders1 = mallOrderMapper.selectByNamePhoneDrNoDateType2(name, drNo, startDate, drugNo);
+                List<PcCountQr> mallOrders1 = mallOrderMapper.selectByNamePhoneDrNoDateType2(name, drNo, startDate,endDate, drugNo);
                 if (mallOrders1.size() != 0) {
                     for (PcCountQr pcCountQr : mallOrders1) {
                         pcCountQr.setDate(sdf.parse(startDate));
@@ -1187,7 +1220,7 @@ public class DoctorServiceImpl implements DoctorService {
                     }
 
                 }
-                List<PcCountQr> pcCountQrs1 = countMapper.count2(null, drugNo, null, null, null, startDate, drNo);
+                List<PcCountQr> pcCountQrs1 = countMapper.count2(null, drugNo, null, null, null, startDate,endDate, drNo);
                 if (pcCountQrs1.size() != 0) {
                     addAmount = addAmount.add(pcCountQrs1.get(0).getAddAmount());
                     addSum += pcCountQrs1.get(0).getAddSum();
@@ -1226,14 +1259,14 @@ public class DoctorServiceImpl implements DoctorService {
 
 
                 //西药处方
-                List<PcCountQr> mallOrders1 = mallOrderMapper.selectByNamePhoneDrNoDateType2(name, drNo, startDate, drugNo);
+                List<PcCountQr> mallOrders1 = mallOrderMapper.selectByNamePhoneDrNoDateType2(name, drNo, startDate, endDate, drugNo);
                 if (mallOrders1.size() != 0) {
                     for (PcCountQr pcCountQr : mallOrders1) {
                         pcCountQr.setDate(sdf.parse(startDate));
                         pcCountQrs.add(pcCountQr);
                     }
                 }
-                List<PcCountQr> pcCountQrs1 = countMapper.count2(null, drugNo, null, null, null, startDate, drNo);
+                List<PcCountQr> pcCountQrs1 = countMapper.count2(null, drugNo, null, null, null, startDate, endDate, drNo);
                 if (pcCountQrs1.size() != 0) {
                     addAmount = addAmount.add(pcCountQrs1.get(0).getAddAmount());
                     addSum += pcCountQrs1.get(0).getAddSum();
@@ -1337,9 +1370,14 @@ public class DoctorServiceImpl implements DoctorService {
                 response.setMsg("生成失败！！！");
                 return response;
             } else {
-                String json2 = "{\"action_name\": \"QR_LIMIT_STR_SCENE\", \"action_info\": {\"scene\": {\"scene_str\": "
-                        + drNo + "}}}";
-                String access_token = WeiXinUtils.getAccessToken().getToken();
+                DrInfoQr drInfoQr = drInfoMapper.selectByDrNo(drNo);
+                String json2 = "{\"action_name\": \"QR_LIMIT_STR_SCENE\", \"action_info\": {\"scene\": {\"scene_str\": \""+drNo +","+ drInfoQr.getPlatform() +"\"}}}";
+                String access_token = "";
+                if(drInfoQr.getPlatform()==1){
+                    access_token = WeiXinUtils.getAccessToken().getToken();
+                }else if(drInfoQr.getPlatform()==2){
+                    access_token = WeiXinUtils.getSjAccessToken().getToken();
+                }
                 String urlStr = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=" + access_token;
                 URL url = new URL(urlStr);
                 String resultStr = PostUtil.sendPost(url, "application/x-www-form-urlencoded", json2);
@@ -1358,7 +1396,6 @@ public class DoctorServiceImpl implements DoctorService {
             response.setMsg("生成失败！！！");
             e.printStackTrace();
             return response;
-
         }
     }
 

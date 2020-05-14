@@ -8,7 +8,6 @@ import com.ecard.service.YzyptService;
 import com.ecard.utils.WeiXinUtils;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -21,7 +20,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/yzypt")
-@Api(value = "后台Controller", tags = { "后台操作接口" })
+@Api(value = "后台Controller", tags = {"后台操作接口"})
 @CrossOrigin
 public class YzyptController {
     @Autowired
@@ -43,21 +42,21 @@ public class YzyptController {
     @PostMapping("/selectMallOrder")
     @ApiOperation(value = "条件查询所有订单", httpMethod = "POST")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType="query", name = "mallNo", value = "订单编号", dataType = "Long"),
-            @ApiImplicitParam(paramType="query", name = "orderStatus", value = "处方单状态", dataType = "Integer"),
-            @ApiImplicitParam(paramType="query", name = "ptNo", value = "患者编号", dataType = "Integer"),
-            @ApiImplicitParam(paramType="query", name = "drNo", value = "医生编号", dataType = "Integer"),
-            @ApiImplicitParam(paramType="query", name = "page", value = "当前页", dataType = "Integer"),
-            @ApiImplicitParam(paramType="query", name = "rows", value = "显示条数", dataType = "Integer")
+            @ApiImplicitParam(paramType = "query", name = "mallNo", value = "订单编号", dataType = "Long"),
+            @ApiImplicitParam(paramType = "query", name = "orderStatus", value = "处方单状态", dataType = "Integer"),
+            @ApiImplicitParam(paramType = "query", name = "ptNo", value = "患者编号", dataType = "Integer"),
+            @ApiImplicitParam(paramType = "query", name = "drNo", value = "医生编号", dataType = "Integer"),
+            @ApiImplicitParam(paramType = "query", name = "page", value = "当前页", dataType = "Integer"),
+            @ApiImplicitParam(paramType = "query", name = "rows", value = "显示条数", dataType = "Integer")
     })
     public Response selectMallOrder(
             @RequestParam(value = "mallNo", required = false) Long mallNo,
             @RequestParam(value = "orderStatus", required = false) Integer orderStatus,
             @RequestParam(value = "ptNo", required = false) Integer ptNo,
             @RequestParam(value = "drNo", required = false) Integer drNo,
-            @RequestParam(value="page", required=false, defaultValue="1") Integer page,
-            @RequestParam(value="rows", required=false, defaultValue="10") Integer rows) {
-        Response response = yzyptService.selectMallOrder(mallNo, orderStatus,ptNo,drNo,page,rows);
+            @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
+            @RequestParam(value = "rows", required = false, defaultValue = "10") Integer rows) {
+        Response response = yzyptService.selectMallOrder(mallNo, orderStatus, ptNo, drNo, page, rows);
         return response;
     }
 
@@ -70,16 +69,16 @@ public class YzyptController {
     @PostMapping("/findMallOrder")
     @ApiOperation(value = "后台条件查询订单", httpMethod = "POST")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType="query", name = "mallNo", value = "订单编号", dataType = "Long"),
-            @ApiImplicitParam(paramType="query", name = "drugStoreNo", value = "药店编号", dataType = "Long"),
-            @ApiImplicitParam(paramType="query", name = "orderStatus", value = "处方单状态", dataType = "Integer"),
-            @ApiImplicitParam(paramType="query", name = "startDate", value = "起始时间", dataType = "String"),
-            @ApiImplicitParam(paramType="query", name = "endDate", value = "结束时间", dataType = "String"),
-            @ApiImplicitParam(paramType="query", name = "drNo", value = "医生编号", dataType = "Long"),
-            @ApiImplicitParam(paramType="query", name = "disNo1", value = "一级代表编号", dataType = "Long"),
-            @ApiImplicitParam(paramType="query", name = "disNo2", value = "二级代表编号", dataType = "Long"),
-            @ApiImplicitParam(paramType="query", name = "page", value = "当前页", dataType = "Integer"),
-            @ApiImplicitParam(paramType="query", name = "rows", value = "显示条数", dataType = "Integer")
+            @ApiImplicitParam(paramType = "query", name = "mallNo", value = "订单编号", dataType = "Long"),
+            @ApiImplicitParam(paramType = "query", name = "drugStoreNo", value = "药店编号", dataType = "Long"),
+            @ApiImplicitParam(paramType = "query", name = "orderStatus", value = "处方单状态", dataType = "Integer"),
+            @ApiImplicitParam(paramType = "query", name = "startDate", value = "起始时间", dataType = "String"),
+            @ApiImplicitParam(paramType = "query", name = "endDate", value = "结束时间", dataType = "String"),
+            @ApiImplicitParam(paramType = "query", name = "drNo", value = "医生编号", dataType = "Long"),
+            @ApiImplicitParam(paramType = "query", name = "disNo1", value = "一级代表编号", dataType = "Long"),
+            @ApiImplicitParam(paramType = "query", name = "disNo2", value = "二级代表编号", dataType = "Long"),
+            @ApiImplicitParam(paramType = "query", name = "page", value = "当前页", dataType = "Integer"),
+            @ApiImplicitParam(paramType = "query", name = "rows", value = "显示条数", dataType = "Integer")
     })
     public Response findMallOrder(
             @RequestParam(value = "mallNo", required = false) Long mallNo,
@@ -90,9 +89,9 @@ public class YzyptController {
             @RequestParam(value = "drNo", required = false) Long drNo,
             @RequestParam(value = "disNo1", required = false) Long disNo1,
             @RequestParam(value = "disNo2", required = false) Long disNo2,
-            @RequestParam(value="page", required=false, defaultValue="1") Integer page,
-            @RequestParam(value="rows", required=false, defaultValue="10") Integer rows) {
-        Response response = yzyptService.findMallOrder(mallNo,drugStoreNo,orderStatus,startDate,endDate,page,rows,drNo,disNo1,disNo2);
+            @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
+            @RequestParam(value = "rows", required = false, defaultValue = "10") Integer rows) {
+        Response response = yzyptService.findMallOrder(mallNo, drugStoreNo, orderStatus, startDate, endDate, page, rows, drNo, disNo1, disNo2);
         return response;
     }
 
@@ -105,12 +104,12 @@ public class YzyptController {
     @PostMapping("/export")
     @ApiOperation(value = "后台条件查询订单", httpMethod = "POST")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType="query", name = "mallNo", value = "订单编号", dataType = "Long"),
-            @ApiImplicitParam(paramType="query", name = "orderStatus", value = "处方单状态", dataType = "Integer"),
-            @ApiImplicitParam(paramType="query", name = "ptNo", value = "患者编号", dataType = "Integer"),
-            @ApiImplicitParam(paramType="query", name = "drNo", value = "医生编号", dataType = "Integer"),
-            @ApiImplicitParam(paramType="query", name = "startDate", value = "起始时间", dataType = "String"),
-            @ApiImplicitParam(paramType="query", name = "endDate", value = "结束时间", dataType = "String")
+            @ApiImplicitParam(paramType = "query", name = "mallNo", value = "订单编号", dataType = "Long"),
+            @ApiImplicitParam(paramType = "query", name = "orderStatus", value = "处方单状态", dataType = "Integer"),
+            @ApiImplicitParam(paramType = "query", name = "ptNo", value = "患者编号", dataType = "Integer"),
+            @ApiImplicitParam(paramType = "query", name = "drNo", value = "医生编号", dataType = "Integer"),
+            @ApiImplicitParam(paramType = "query", name = "startDate", value = "起始时间", dataType = "String"),
+            @ApiImplicitParam(paramType = "query", name = "endDate", value = "结束时间", dataType = "String")
     })
     public Response export(
             @RequestParam(value = "mallNo", required = false) Long mallNo,
@@ -119,27 +118,28 @@ public class YzyptController {
             @RequestParam(value = "drNo", required = false) Integer drNo,
             @RequestParam(value = "startDate", required = false) String startDate,
             @RequestParam(value = "endDate", required = false) String endDate) {
-        Response response = yzyptService.export(mallNo, orderStatus,ptNo,drNo,startDate,endDate);
+        Response response = yzyptService.export(mallNo, orderStatus, ptNo, drNo, startDate, endDate);
         return response;
     }
 
 
     /**
      * 修改密码
+     *
      * @return
      */
-    @ApiOperation(value="修改密码")
+    @ApiOperation(value = "修改密码")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType="query", name = "phone", value = "手机号码", dataType = "String"),
-            @ApiImplicitParam(paramType="query", name = "oldPassword", value = "旧密码", dataType = "String"),
-            @ApiImplicitParam(paramType="query", name = "newPassword", value = "新密码", dataType = "String")
+            @ApiImplicitParam(paramType = "query", name = "phone", value = "手机号码", dataType = "String"),
+            @ApiImplicitParam(paramType = "query", name = "oldPassword", value = "旧密码", dataType = "String"),
+            @ApiImplicitParam(paramType = "query", name = "newPassword", value = "新密码", dataType = "String")
     })
     @PostMapping("/updateByPhoneAndPass")
     public Response updateByPhoneAndPass(
-            @RequestParam(value ="phone") String phone,
-            @RequestParam(value ="oldPassword") String oldPassword,
-            @RequestParam(value ="newPassword") String newPassword) {
-        Response response = yzyptService.updateByPhoneAndPass(phone,oldPassword,newPassword);
+            @RequestParam(value = "phone") String phone,
+            @RequestParam(value = "oldPassword") String oldPassword,
+            @RequestParam(value = "newPassword") String newPassword) {
+        Response response = yzyptService.updateByPhoneAndPass(phone, oldPassword, newPassword);
         return response;
     }
 
@@ -150,9 +150,9 @@ public class YzyptController {
      * @param phone
      * @return
      */
-    @ApiOperation(value="发送手机验证码")
+    @ApiOperation(value = "发送手机验证码")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType="query", name = "phone", value = "手机号码", dataType = "String")
+            @ApiImplicitParam(paramType = "query", name = "phone", value = "手机号码", dataType = "String")
     })
     @PostMapping(value = "/sednSms")
     public Response sendCodeSms(@RequestParam("phone") String phone) {
@@ -163,80 +163,122 @@ public class YzyptController {
 
     /**
      * 用户未登录，忘记密码 ---填写新密码
-     * @param code  手机验证码
+     *
+     * @param code    手机验证码
      * @param newCode
      * @return
      */
-    @ApiOperation(value="用户未登录，忘记密码 ---填写新密码")
+    @ApiOperation(value = "用户未登录，忘记密码 ---填写新密码")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType="query", name = "phone", value = "手机号码", dataType = "String"),
-            @ApiImplicitParam(paramType="query", name = "code", value = "验证码", dataType = "String"),
-            @ApiImplicitParam(paramType="query", name = "newCode", value = "新密码", dataType = "String")
+            @ApiImplicitParam(paramType = "query", name = "phone", value = "手机号码", dataType = "String"),
+            @ApiImplicitParam(paramType = "query", name = "code", value = "验证码", dataType = "String"),
+            @ApiImplicitParam(paramType = "query", name = "newCode", value = "新密码", dataType = "String")
     })
     @PostMapping("/updateByCode")
-    public Response updateByCode(@RequestParam(value="phone",required=false) String phone,
-                                 @RequestParam(value="code",required=false) String code,
-                                 @RequestParam(value="newCode",required=false) String newCode) {
-        Response response = yzyptService.updateByCode(phone,code,newCode);
+    public Response updateByCode(@RequestParam(value = "phone", required = false) String phone,
+                                 @RequestParam(value = "code", required = false) String code,
+                                 @RequestParam(value = "newCode", required = false) String newCode) {
+        Response response = yzyptService.updateByCode(phone, code, newCode);
         return response;
     }
 
 
-    //访问微信接口跳转
-    @RequestMapping("/getRedirect")
-    public void getRedirect(@RequestParam(value = "status", required = false) String status){
+    //访问微信接口跳转  platform=1易臻云 2视界
+    @RequestMapping(value = "/getRedirect",method = RequestMethod.GET)
+    public void getRedirect(@RequestParam(value = "status", required = false) String status,
+                            @RequestParam(value = "platform", required = false) int platform) {
         ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = servletRequestAttributes.getRequest();
         HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
                 .getResponse();
         try {
-            String url = "https://open.weixin.qq.com/connect/oauth2/authorize?redirect_uri=https://www.yizhenyun.com.cn/yzypt/yzypt/tologin/userinfo?status="
-                    + status + "&appid=" + "wx5a917cabd0432687"
+            String url = "https://open.weixin.qq.com/connect/oauth2/authorize?" +
+                    "redirect_uri=https://www.yizhenyun.com.cn/yzypt/yzypt/tologin/userinfo?status="
+                    + status + "," + platform + "&appid=" + "wx4224aa99aacaba5b"
                     + "&response_type=code&scope=snsapi_base&state=STATE&connect_redirect=1#wechat_redirect";
+            System.out.println(url);
             response.sendRedirect(url);
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.out.println("报错");
+            e.printStackTrace();
         }
     }
 
 
-
-
-
     /**
      * 进行网页授权，便于获取到用户的绑定的内容
-     * @param request
-     * @param session
-     * @param map
+     *
      * @return
      */
     @RequestMapping("/tologin/userinfo")
-    public void check(@RequestParam(value="status") int status) {
+    public void check(@RequestParam(value = "status") String status) {
         ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = servletRequestAttributes.getRequest();
         HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
                 .getResponse();
         HttpSession session = request.getSession();
         //首先判断一下session中，是否有保存着的当前用户的信息，有的话，就不需要进行重复请求信息
-        WeiXinUser weiXinUser = null ;
-        if(session.getAttribute("currentUser") != null){
+        WeiXinUser weiXinUser = null;
+        WeiXinUser sjWeiXinUser = null;
+        if (session.getAttribute("currentUser") != null) {
             weiXinUser = (WeiXinUser) session.getAttribute("currentUser");
             System.out.println("session中存在openId");
-            yzyptService.selectByOpenId(status);
-        }else {
+            yzyptService.selectByOpenId(Integer.parseInt(status.split(",")[0]), Integer.parseInt(status.split(",")[1]));
+        } else {
             /**
              * 进行获取openId，必须的一个参数，这个是当进行了授权页面的时候，再重定向了我们自己的一个页面的时候，
              * 会在request页面中，新增这个字段信息，要结合这个ProjectConst.Get_WEIXINPAGE_Code这个常量思考
              */
             String code = request.getParameter("code");
-            System.out.println("code"+code);
+            System.out.println("code" + code);
+            try {
+                sjWeiXinUser = getTheCode1(session,code);
+
+                session.setAttribute("sjCurrentUser",sjWeiXinUser);
+
+                String url = "https://open.weixin.qq.com/connect/oauth2/authorize?" +
+                        "redirect_uri=https://www.yizhenyun.com.cn/yzypt/yzypt/tologin/userinfo1?status="
+                        + status +"&appid=" + "wx5a917cabd0432687"
+                        + "&response_type=code&scope=snsapi_base&state=STATE&connect_redirect=1#wechat_redirect";
+                System.out.println(url);
+                response.sendRedirect(url);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        // map.put("weiXinUser", weiXinUser);
+    }
+
+
+    @RequestMapping("/tologin/userinfo1")
+    public void check1(@RequestParam(value = "status") String status) {
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = servletRequestAttributes.getRequest();
+        HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+                .getResponse();
+        HttpSession session = request.getSession();
+        //首先判断一下session中，是否有保存着的当前用户的信息，有的话，就不需要进行重复请求信息
+        WeiXinUser weiXinUser = null;
+        WeiXinUser sjWeiXinUser = null;
+        if (session.getAttribute("currentUser") != null) {
+            weiXinUser = (WeiXinUser) session.getAttribute("currentUser");
+            System.out.println("session中存在openId");
+            yzyptService.selectByOpenId(Integer.parseInt(status.split(",")[0]), Integer.parseInt(status.split(",")[1]));
+        } else {
+            /**
+             * 进行获取openId，必须的一个参数，这个是当进行了授权页面的时候，再重定向了我们自己的一个页面的时候，
+             * 会在request页面中，新增这个字段信息，要结合这个ProjectConst.Get_WEIXINPAGE_Code这个常量思考
+             */
+            String code = request.getParameter("code");
+            System.out.println("code" + code);
             try {
                 //得到当前用户的信息(具体信息就看weixinUser这个javabean)
                 weiXinUser = getTheCode(session, code);
                 //将获取到的用户信息，放入到session中
                 session.setAttribute("currentUser", weiXinUser);
 
-                yzyptService.selectByOpenId(status);
+                yzyptService.selectByOpenId(Integer.parseInt(status.split(",")[0]), Integer.parseInt(status.split(",")[1]));
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -247,32 +289,51 @@ public class YzyptController {
 
     /**
      * 获取用户的openId
+     *
      * @param session
      * @param code
      * @return 返回封装的微信用户的对象
      */
     private WeiXinUser getTheCode(HttpSession session, String code) {
-        Map<String , String> authInfo = new HashMap<>();
+        Map<String, String> authInfo = new HashMap<>();
         String openId = "";
-        if (code != null)
-        {
+        if (code != null) {
             // 调用根据用户的code得到需要的授权信息
-            authInfo= yzyptService.getAuthInfo(code);
+            authInfo = yzyptService.getAuthInfo(code);
             //获取到openId
             openId = authInfo.get("Openid");
-            System.out.println("wxcontroller:openId:"+openId);
+            System.out.println("wxcontroller:openId:" + openId);
         }
         // 获取基础刷新的接口访问凭证（目前还没明白为什么用authInfo.get("AccessToken");这里面的access_token就不行）
         String accessToken = WeiXinUtils.getAccessToken().getToken();
         //获取到微信用户的信息
-        WeiXinUser userinfo = yzyptService.getUserInfo(accessToken ,openId);
+        WeiXinUser userinfo = yzyptService.getUserInfo(accessToken, openId);
+
+        return userinfo;
+    }
+
+    private WeiXinUser getTheCode1(HttpSession session, String code) {
+        Map<String, String> authInfo = new HashMap<>();
+        String openId = "";
+        if (code != null) {
+            // 调用根据用户的code得到需要的授权信息
+            authInfo = yzyptService.getAuthInfo1(code);
+            //获取到openId
+            openId = authInfo.get("Openid");
+            System.out.println("wxcontroller:openId:" + openId);
+        }
+        // 获取基础刷新的接口访问凭证（目前还没明白为什么用authInfo.get("AccessToken");这里面的access_token就不行）
+        String accessToken = WeiXinUtils.getSjAccessToken().getToken();
+        //获取到微信用户的信息
+        WeiXinUser userinfo = yzyptService.getUserInfo(accessToken, openId);
 
         return userinfo;
     }
 
 
+
     @GetMapping("/getSign")
-    public Response getSign(@RequestParam(value="url") String url) {
+    public Response getSign(@RequestParam(value = "url",required = false) String url) {
         Response response = yzyptService.getSign(url);
         return response;
     }
@@ -348,9 +409,7 @@ public class YzyptController {
 
 
     /**
-     *
      * 新增经销商时，等级下拉框
-     *
      */
     @GetMapping("/getDisLeader")
     @ApiOperation(value = "根据代表等级查询上级代表", httpMethod = "GET")
@@ -361,9 +420,7 @@ public class YzyptController {
     }
 
     /**
-     *
      * 一级代表查询下属代表
-     *
      */
     @GetMapping("/getDisList")
     @ApiOperation(value = "一级代表查询下属代表", httpMethod = "GET")
@@ -384,9 +441,9 @@ public class YzyptController {
     @GetMapping("/selectMyDr")
     public Response selectMyDr(
             @ApiParam(name = "disNo", value = "代表编号", required = true) @RequestParam(value = "disNo", required = true) String disNo,
-            @ApiParam(name = "name", value = "名字或者手机号", required = false) @RequestParam(value = "name", required = false) String name,@ApiParam(name = "page", value = "页", required = false) @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
+            @ApiParam(name = "name", value = "名字或者手机号", required = false) @RequestParam(value = "name", required = false) String name, @ApiParam(name = "page", value = "页", required = false) @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
             @ApiParam(name = "rows", value = "行", required = false) @RequestParam(value = "rows", required = false, defaultValue = "10") Integer rows) {
-        Response response = yzyptService.selectMyDr(disNo, name,page,rows);
+        Response response = yzyptService.selectMyDr(disNo, name, page, rows);
         return response;
     }
 
@@ -428,7 +485,7 @@ public class YzyptController {
             @RequestParam(value = "leaderDrNo", required = false) String leaderDrNo,
             @ApiParam(name = "drTitleCert", value = "医生资格证编号", required = false)
             @RequestParam(value = "drTitleCert", required = false) String drTitleCert,
-            @ApiParam(name = "drPracticeRegCert", value = "医生执业证编号", required =false)
+            @ApiParam(name = "drPracticeRegCert", value = "医生执业证编号", required = false)
             @RequestParam(value = "drPracticeRegCert", required = false) String drPracticeRegCert,
             @ApiParam(name = "consultingHour", value = "值班时间", required = false)
             @RequestParam(value = "consultingHour", required = false) String consultingHour,
@@ -441,9 +498,11 @@ public class YzyptController {
             @ApiParam(name = "province", value = "省名", required = false)
             @RequestParam(value = "province", required = false) String province,
             @ApiParam(name = "city", value = "市名", required = false)
-            @RequestParam(value = "city", required = false) String city) {
+            @RequestParam(value = "city", required = false) String city,
+            @ApiParam(name = "platform", value = "平台标识", required = false)
+            @RequestParam(value = "platform", required = false) int platform) {
         Response response = yzyptService.insertDr(disNo, name, hospital, phone, chiefNo, practiceProfile, title,
-                leaderDrNo, drTitleCert, drPracticeRegCert, consultingHour,idNo,disableFlag,type,province,city);
+                leaderDrNo, drTitleCert, drPracticeRegCert, consultingHour, idNo, disableFlag, type, province, city,platform);
         return response;
     }
 
@@ -498,9 +557,11 @@ public class YzyptController {
             @ApiParam(name = "province", value = "省名", required = false)
             @RequestParam(value = "province", required = false) String province,
             @ApiParam(name = "city", value = "市名", required = false)
-            @RequestParam(value = "city", required = false) String city) {
+            @RequestParam(value = "city", required = false) String city,
+            @ApiParam(name = "platform", value = "平台标识", required = false)
+            @RequestParam(value = "platform", required = false) int platform) {
         Response response = yzyptService.updateDr(drNo, name, hospital, phone, chiefNo, practiceProfile, title,
-                drTitleCert, drPracticeRegCert, consultingHour,leaderDrNo,idNo,disableFlag,type,province,city);
+                drTitleCert, drPracticeRegCert, consultingHour, leaderDrNo, idNo, disableFlag, type, province, city,platform);
         return response;
     }
 
@@ -531,17 +592,17 @@ public class YzyptController {
     @PostMapping("/count")
     @ApiOperation(value = "统计", httpMethod = "POST")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType="query", name = "medOrderType", value = "1中药2西药", dataType = "int"),
-            @ApiImplicitParam(paramType="query", name = "drName", value = "医生名字", dataType = "String"),
-            @ApiImplicitParam(paramType="query", name = "drPhone", value = "医生手机号", dataType = "String"),
-            @ApiImplicitParam(paramType="query", name = "drugNo", value = "药品编号", dataType = "Long"),
-            @ApiImplicitParam(paramType="query", name = "disNo1", value = "一级代表编号", dataType = "Long"),
-            @ApiImplicitParam(paramType="query", name = "disNo2", value = "二级代表编号", dataType = "Long"),
-            @ApiImplicitParam(paramType="query", name = "startDate", value = "起始时间", dataType = "String"),
-            @ApiImplicitParam(paramType="query", name = "endDate", value = "结束时间", dataType = "String"),
-            @ApiImplicitParam(paramType="query", name = "drNo", value = "医生编号", dataType = "Long"),
-            @ApiImplicitParam(paramType="query", name = "page", value = "当前页", dataType = "Integer"),
-            @ApiImplicitParam(paramType="query", name = "rows", value = "显示条数", dataType = "Integer")
+            @ApiImplicitParam(paramType = "query", name = "medOrderType", value = "1中药2西药", dataType = "int"),
+            @ApiImplicitParam(paramType = "query", name = "drName", value = "医生名字", dataType = "String"),
+            @ApiImplicitParam(paramType = "query", name = "drPhone", value = "医生手机号", dataType = "String"),
+            @ApiImplicitParam(paramType = "query", name = "drugNo", value = "药品编号", dataType = "Long"),
+            @ApiImplicitParam(paramType = "query", name = "disNo1", value = "一级代表编号", dataType = "Long"),
+            @ApiImplicitParam(paramType = "query", name = "disNo2", value = "二级代表编号", dataType = "Long"),
+            @ApiImplicitParam(paramType = "query", name = "startDate", value = "起始时间", dataType = "String"),
+            @ApiImplicitParam(paramType = "query", name = "endDate", value = "结束时间", dataType = "String"),
+            @ApiImplicitParam(paramType = "query", name = "drNo", value = "医生编号", dataType = "Long"),
+            @ApiImplicitParam(paramType = "query", name = "page", value = "当前页", dataType = "Integer"),
+            @ApiImplicitParam(paramType = "query", name = "rows", value = "显示条数", dataType = "Integer")
     })
     public Response count(
             @RequestParam(value = "medOrderType") int medOrderType,
@@ -550,16 +611,18 @@ public class YzyptController {
             @RequestParam(value = "drugNo", required = false) Long drugNo,
             @RequestParam(value = "disNo1", required = false) Long disNo1,
             @RequestParam(value = "disNo2", required = false) Long disNo2,
-            @RequestParam(value = "startDate", required = false)String startDate,
-            @RequestParam(value = "endDate", required = false)String endDate,
+            @RequestParam(value = "startDate", required = false) String startDate,
+            @RequestParam(value = "endDate", required = false) String endDate,
             @RequestParam(value = "drNo", required = false) Long drNo,
-            @RequestParam(value="page", required=false, defaultValue="1") Integer page,
-            @RequestParam(value="rows", required=false, defaultValue="10") Integer rows
+            @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
+            @RequestParam(value = "rows", required = false, defaultValue = "10") Integer rows
     ) {
         System.out.println(drNo);
-        Response response = yzyptService.count(medOrderType,drName,drugNo,drPhone,disNo1,disNo2,startDate,endDate,drNo,page,rows);
+        Response response = yzyptService.count(medOrderType, drName, drugNo, drPhone, disNo1, disNo2, startDate, endDate, drNo, page, rows);
         return response;
     }
+
+
 
 
 

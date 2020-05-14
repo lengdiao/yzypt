@@ -262,4 +262,8 @@
     select * from cloudpassinfo cpi,userrole ur where cpi.CloudPassNo = ur.CloudPassNo
     and (ur.roleNo = 3 or ur.roleNo = 4 or ur.roleNo = 6) and cpi.Phone = #{phone,jdbcType=VARCHAR}
   </select>
+  <select id="selectByPhoneAndIDNo" resultType="com.ecard.entity.CloudPassInfo">
+    select * from cloudpassinfo where Phone = #{phone,jdbcType=VARCHAR} and
+    IdNo = #{idNo,jdbcType=VARCHAR}
+  </select>
 </mapper>

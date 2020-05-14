@@ -6,9 +6,10 @@
     <result column="PtNo" property="ptNo" jdbcType="BIGINT" />
     <result column="OpenId" property="openId" jdbcType="VARCHAR" />
     <result column="DrNo" property="drNo" jdbcType="BIGINT" />
+    <result column="SjOpenId" property="sjOpenId" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    Id, PtNo, OpenId, DrNo
+    Id, PtNo, OpenId, DrNo, SjOpenId
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
@@ -22,9 +23,9 @@
   </delete>
   <insert id="insert" parameterType="com.ecard.entity.PtOpen" >
     insert into ptopen (Id, PtNo, OpenId, 
-      DrNo)
+      DrNo,SjOpenId)
     values (#{id,jdbcType=BIGINT}, #{ptNo,jdbcType=BIGINT}, #{openId,jdbcType=VARCHAR}, 
-      #{drNo,jdbcType=BIGINT})
+      #{drNo,jdbcType=BIGINT},#{sjOpenId,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.ecard.entity.PtOpen" >
     insert into ptopen
@@ -41,6 +42,9 @@
       <if test="drNo != null" >
         DrNo,
       </if>
+      <if test="sjOpenId != null" >
+        SjOpenId,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -54,6 +58,9 @@
       </if>
       <if test="drNo != null" >
         #{drNo,jdbcType=BIGINT},
+      </if>
+      <if test="sjOpenId != null" >
+        #{sjOpenId,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -69,6 +76,9 @@
       <if test="drNo != null" >
         DrNo = #{drNo,jdbcType=BIGINT},
       </if>
+      <if test="sjOpenId != null" >
+        SjOpenId = #{sjOpenId,jdbcType=BIGINT},
+      </if>
     </set>
     where Id = #{id,jdbcType=BIGINT}
   </update>
@@ -76,7 +86,8 @@
     update ptopen
     set PtNo = #{ptNo,jdbcType=BIGINT},
       OpenId = #{openId,jdbcType=VARCHAR},
-      DrNo = #{drNo,jdbcType=BIGINT}
+      DrNo = #{drNo,jdbcType=BIGINT},
+      SjOpenId = #{sjOpenId,jdbcType=VARCHAR}
     where Id = #{id,jdbcType=BIGINT}
   </update>
   <select id="findByPtOpenId" parameterType="java.lang.String" resultType="com.ecard.entity.PtOpen">
@@ -96,6 +107,13 @@
   </select>
   <select id="selectByDrNoAndOpenId" resultType="com.ecard.entity.PtOpen">
     select * from ptopen where OpenId = #{openId,jdbcType=VARCHAR} and
+      DrNo = #{drNo,jdbcType=BIGINT}
+  </select>
+  <select id="selectBtOpenIdAndPlatform" parameterType="java.lang.String" resultType="com.ecard.entity.PtOpen">
+    select * from ptopen where sjOpenId = #{openId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByDrNoAndOpenId1" resultType="com.ecard.entity.PtOpen">
+    select * from ptopen where sjOpenId = #{openId,jdbcType=VARCHAR} and
       DrNo = #{drNo,jdbcType=BIGINT}
   </select>
 </mapper>

@@ -5,7 +5,6 @@ import com.ecard.dao.DrInfoMapper;
 import com.ecard.dao.MessageMapper;
 import com.ecard.dao.PtInfoMapper;
 import com.ecard.dao.PtOpenMapper;
-import com.ecard.entity.DrInfo;
 import com.ecard.entity.Message;
 import com.ecard.entity.PtOpen;
 import com.ecard.pojo.ResponseHasData;
@@ -74,7 +73,7 @@ public class MessageServiceImpl implements MessageService {
 			WeiXinUtils z=new WeiXinUtils();
 			List<PtOpen> ptopen=ptOpenMapper.selectByPtNo(Long.valueOf(ptNo));
 			if(ptopen==null||ptopen.equals("")) {}else {
-				z.newmsg(ptopen.get(0).getOpenId(), messageContent,drInfoQr.getDrName());}
+				z.newmsg(ptopen.get(0).getOpenId(),ptopen.get(0).getSjOpenId(), messageContent,drInfoQr.getDrName());}
 			response.setMsg("发送成功");
 			response.setStatus(Constants.STATUS_SUCCESS);
 			return response;

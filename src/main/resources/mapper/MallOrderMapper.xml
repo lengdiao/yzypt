@@ -30,6 +30,7 @@
     <result column="OffMoney" property="offMoney" jdbcType="DECIMAL" />
     <result column="Remark" property="remark" jdbcType="VARCHAR" />
     <result column="PacketId" property="packetId" jdbcType="BIGINT" />
+    <result column="Platform" property="platform" jdbcType="INTEGER" />
   </resultMap>
   <resultMap id="MedOrderMap" type="com.ecard.entity.MedOrder">
     <id column="OrderNo" jdbcType="BIGINT" property="orderNo" />
@@ -55,6 +56,7 @@
     <result column="UpdateUser" jdbcType="BIGINT" property="updateUser" />
     <result column="UpdateTime" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="Version" jdbcType="INTEGER" property="version" />
+    <result column="Platform" property="platform" jdbcType="INTEGER" />
   </resultMap>
   <resultMap id="MedRecordMap" type="com.ecard.entity.MedRecord">
     <id column="MedRecordNo" jdbcType="VARCHAR" property="medRecordNo" />
@@ -73,6 +75,7 @@
     <result column="UpdateUser" jdbcType="VARCHAR" property="updateUser" />
     <result column="UpdateTime" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="Version" jdbcType="INTEGER" property="version" />
+    <result column="Platform" property="platform" jdbcType="INTEGER" />
   </resultMap>
   <resultMap id="MallOrderQrMap" type="com.ecard.pojo.queryResult.MallOrderQr" >
     <id column="MallNo" property="mallNo" jdbcType="BIGINT" />
@@ -103,6 +106,7 @@
     <result column="OffMoney" property="offMoney" jdbcType="DECIMAL" />
     <result column="Remark" property="remark" jdbcType="VARCHAR" />
     <result column="PacketId" property="packetId" jdbcType="BIGINT" />
+    <result column="Platform" property="platform" jdbcType="INTEGER" />
     <association property="medOrder" column="OrderNo" resultMap="MedOrderMap" />
     <association property="medRecord" column="MedRecordNo" resultMap="MedRecordMap" />
   </resultMap>
@@ -110,7 +114,7 @@
     MallNo, PtNo, DrNo, DisNo, DrugStoreNo, MedOrderNo, OrderStatus, OrderTime, Phone, 
     Address, PayStatus, PayTime, ShippingStatus, ShippingCompany, ShippingContext, ShippingNo, 
     ShippingTime, OrderAmount, CreateUser, CreateTime, UpdateUser, UpdateTime, Version,
-    Rental,ActivityDetail,OffMoney,Remark,PacketId
+    Rental,ActivityDetail,OffMoney,Remark,PacketId,Platform
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
     select 
@@ -130,7 +134,7 @@
       ShippingStatus, ShippingCompany, ShippingContext, 
       ShippingNo, ShippingTime, OrderAmount, 
       CreateUser, CreateTime, UpdateUser, 
-      UpdateTime, Version,Rental,ActivityDetail,OffMoney,Remark,PacketId)
+      UpdateTime, Version,Rental,ActivityDetail,OffMoney,Remark,PacketId,Platform)
     values (#{mallNo,jdbcType=BIGINT}, #{ptNo,jdbcType=BIGINT}, #{drNo,jdbcType=BIGINT}, 
       #{disNo,jdbcType=BIGINT}, #{drugStoreNo,jdbcType=BIGINT}, #{medOrderNo,jdbcType=BIGINT}, 
       #{orderStatus,jdbcType=INTEGER}, #{orderTime,jdbcType=TIMESTAMP}, #{phone,jdbcType=VARCHAR}, 
@@ -141,6 +145,7 @@
       #{updateTime,jdbcType=TIMESTAMP}, #{version,jdbcType=INTEGER},
       #{rental,jdbcType=DECIMAL}, #{activityDetail,jdbcType=VARCHAR},
       #{offMoney,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR},#{packetId,jdbcType=BIGINT}
+      ,#{platform,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.ecard.entity.MallOrder" >
@@ -230,6 +235,9 @@
       <if test="packetId != null" >
         PacketId,
       </if>
+      <if test="platform != null" >
+        Platform,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="mallNo != null" >
@@ -315,6 +323,9 @@
       </if>
       <if test="packetId != null" >
         #{packetId,jdbcType=BIGINT},
+      </if>
+      <if test="platform != null" >
+        #{platform,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -402,6 +413,9 @@
       <if test="packetId != null" >
         PacketId = #{packetId,jdbcType=BIGINT},
       </if>
+      <if test="platform != null" >
+        Platform = #{platform,jdbcType=INTEGER},
+      </if>
     </set>
     where MallNo = #{mallNo,jdbcType=BIGINT}
   </update>
@@ -433,7 +447,8 @@
       ActivityDetail = #{activityDetail,jdbcType=VARCHAR},
       OffMoney = #{offMoney,jdbcType=DECIMAL},
       Remark = #{remark,jdbcType=VARCHAR},
-      PacketId = #{packetID,jdbcType=BIGINT}
+      PacketId = #{packetID,jdbcType=BIGINT},
+      Platform = #{paltform,jdbcType=INTEGER}
     where MallNo = #{mallNo,jdbcType=BIGINT}
   </update>
   <select id="selectByDrNo" parameterType="java.lang.Long" resultType="com.ecard.entity.MallOrder">
@@ -444,7 +459,7 @@
     mao.ShippingContext, mao.ShippingNo,
     mao.ShippingTime, mao.OrderAmount, mao.CreateUser, mao.CreateTime, mao.UpdateUser,
     mao.UpdateTime, mao.Version, mao.Rental, mao.ActivityDetail, mao.OffMoney, mao.Remark,
-    mao.PacketId
+    mao.PacketId,mao.Platform
      from mallorder mao,medorder meo
     where mao.MedOrderNo = meo.OrderNo and DrNo = #{drNo,jdbcType=BIGINT}
     and meo.OrderStatus = 0
@@ -457,7 +472,7 @@
     mao.MallNo, mao.PtNo, mao.DrNo, mao.DisNo, mao.DrugStoreNo, mao.MedOrderNo, mao.OrderStatus, mao.OrderTime, mao.Phone,
     mao.Address, mao.PayStatus, mao.PayTime, mao.ShippingStatus, mao.ShippingCompany, mao.ShippingContext, mao.ShippingNo,
     mao.ShippingTime, mao.OrderAmount, mao.CreateUser, mao.CreateTime, mao.UpdateUser, mao.UpdateTime, mao.Version,
-    mao.Rental, mao.ActivityDetail, mao.OffMoney, mao.Remark,mao.PacketId
+    mao.Rental, mao.ActivityDetail, mao.OffMoney, mao.Remark,mao.PacketId,mao.Platform
     from mallorder mao,medorder meo
     where mao.MedOrderNo = meo.OrderNo
     <if test="ptNo != null" >
@@ -482,7 +497,7 @@
     mao.Address, mao.PayStatus, mao.PayTime, mao.ShippingStatus, mao.ShippingCompany, mao.ShippingContext,
     mao.ShippingNo,
     mao.ShippingTime, mao.OrderAmount, mao.CreateUser, mao.CreateTime, mao.UpdateUser, mao.UpdateTime, mao.Version,
-    mao.Rental, mao.ActivityDetail, mao.OffMoney, mao.Remark,mao.PacketId
+    mao.Rental, mao.ActivityDetail, mao.OffMoney, mao.Remark,mao.PacketId,mao.Platform
     from mallorder mao,medorder meo where
     mao.MedOrderNo = meo.OrderNo
     and
@@ -494,7 +509,7 @@
     mao.Address, mao.PayStatus, mao.PayTime, mao.ShippingStatus, mao.ShippingCompany, mao.ShippingContext,
     mao.ShippingNo,
     mao.ShippingTime, mao.OrderAmount, mao.CreateUser, mao.CreateTime, mao.UpdateUser, mao.UpdateTime, mao.Version
-    , mao.Rental, mao.ActivityDetail, mao.OffMoney, mao.Remark,mao.PacketId
+    , mao.Rental, mao.ActivityDetail, mao.OffMoney, mao.Remark,mao.PacketId,mao.Platform
     from mallorder mao,medorder meo where
     mao.MedOrderNo = meo.OrderNo
     and
@@ -508,7 +523,7 @@
     mao.Address, mao.PayStatus, mao.PayTime, mao.ShippingStatus, mao.ShippingCompany, mao.ShippingContext,
     mao.ShippingNo,
     mao.ShippingTime, mao.OrderAmount, mao.CreateUser, mao.CreateTime, mao.UpdateUser, mao.UpdateTime, mao.Version
-    , mao.Rental, mao.ActivityDetail, mao.OffMoney, mao.Remark,mao.PacketId
+    , mao.Rental, mao.ActivityDetail, mao.OffMoney, mao.Remark,mao.PacketId,mao.Platform
     from mallorder mao,medorder meo,medrecord mer where
     mao.MedOrderNo = meo.OrderNo and mer.MedRecordNo = meo.MedRecordNo
     <if test="medOrderNo != null and medOrderNo !=''" >
@@ -534,7 +549,7 @@
     mao.MallNo, mao.PtNo, mao.DrNo, mao.DisNo, mao.DrugStoreNo, mao.MedOrderNo, mao.OrderStatus, mao.OrderTime, mao.Phone,
     mao.Address, mao.PayStatus, mao.PayTime, mao.ShippingStatus, mao.ShippingCompany, mao.ShippingContext, mao.ShippingNo,
     mao.ShippingTime, mao.OrderAmount, mao.CreateUser, mao.CreateTime, mao.UpdateUser, mao.UpdateTime, mao.Version
-    , mao.Rental, mao.ActivityDetail, mao.OffMoney, mao.Remark,mao.PacketId
+    , mao.Rental, mao.ActivityDetail, mao.OffMoney, mao.Remark,mao.PacketId,mao.Platform
     from mallorder mao,medorder meo
     where mao.MedOrderNo = meo.OrderNo and mao.OrderStatus !=3
     <if test="ptNo != null and ptNo !=''" >
@@ -558,7 +573,7 @@
     mao.MallNo, mao.PtNo, mao.DrNo, mao.DisNo, mao.DrugStoreNo, mao.MedOrderNo, mao.OrderStatus, mao.OrderTime, mao.Phone,
     mao.Address, mao.PayStatus, mao.PayTime, mao.ShippingStatus, mao.ShippingCompany, mao.ShippingContext, mao.ShippingNo,
     mao.ShippingTime, mao.OrderAmount, mao.CreateUser, mao.CreateTime, mao.UpdateUser, mao.UpdateTime, mao.Version
-    , mao.Rental, mao.ActivityDetail, mao.OffMoney, mao.Remark,mao.PacketId
+    , mao.Rental, mao.ActivityDetail, mao.OffMoney, mao.Remark,mao.PacketId,mao.Platform
     from mallorder mao,medorder meo
     where mao.MedOrderNo = meo.OrderNo and mao.OrderStatus !=3 and mao.DrugStoreNo = #{drugStoreNo,jdbcType=INTEGER}
     <if test="startDate != null and endDate != null" >
@@ -570,7 +585,7 @@
     mao.MallNo, mao.PtNo, mao.DrNo, mao.DisNo, mao.DrugStoreNo, mao.MedOrderNo, mao.OrderStatus, mao.OrderTime, mao.Phone,
     mao.Address, mao.PayStatus, mao.PayTime, mao.ShippingStatus, mao.ShippingCompany, mao.ShippingContext, mao.ShippingNo,
     mao.ShippingTime, mao.OrderAmount, mao.CreateUser, mao.CreateTime, mao.UpdateUser, mao.UpdateTime, mao.Version
-    , mao.Rental, mao.ActivityDetail, mao.OffMoney, mao.Remark,mao.PacketId
+    , mao.Rental, mao.ActivityDetail, mao.OffMoney, mao.Remark,mao.PacketId,mao.Platform
     from mallorder mao,medorder meo,disinfo dis,drdisrelation drdis
     where mao.MedOrderNo = meo.OrderNo
     and mao.DrNo = drdis.DrNo
@@ -596,7 +611,7 @@
       and meo.OrderStatus = #{orderStatus,jdbcType=INTEGER}
     </if>
     <if test="startDate != null and startDate !='' and endDate != null and endDate !=''" >
-      and date_format(mao.OrderTime,'%Y-%m') between #{startDate,jdbcType=VARCHAR} and #{endDate,jdbcType=VARCHAR}
+      and date_format(meo.UpdateTime,'%Y-%m') between #{startDate,jdbcType=TIMESTAMP} and #{endDate,jdbcType=TIMESTAMP}
     </if>
   </select>
   <select id="selectByPtNo1" resultType="com.ecard.entity.MallOrder">
@@ -604,7 +619,7 @@
     mao.MallNo, mao.PtNo, mao.DrNo, mao.DisNo, mao.DrugStoreNo, mao.MedOrderNo, mao.OrderStatus, mao.OrderTime, mao.Phone,
     mao.Address, mao.PayStatus, mao.PayTime, mao.ShippingStatus, mao.ShippingCompany, mao.ShippingContext, mao.ShippingNo,
     mao.ShippingTime, mao.OrderAmount, mao.CreateUser, mao.CreateTime, mao.UpdateUser, mao.UpdateTime, mao.Version
-    , mao.Rental, mao.ActivityDetail, mao.OffMoney, mao.Remark,mao.PacketId
+    , mao.Rental, mao.ActivityDetail, mao.OffMoney, mao.Remark,mao.PacketId,mao.Platform
     from
     mallorder mao left join ptinfo pt on mao.PtNo = pt.PtNo
     left join medorder meo on mao.MedOrderNo = meo.OrderNo
@@ -621,7 +636,7 @@
     mao.MallNo, mao.PtNo, mao.DrNo, mao.DisNo, mao.DrugStoreNo, mao.MedOrderNo, mao.OrderStatus, mao.OrderTime, mao.Phone,
     mao.Address, mao.PayStatus, mao.PayTime, mao.ShippingStatus, mao.ShippingCompany, mao.ShippingContext, mao.ShippingNo,
     mao.ShippingTime, mao.OrderAmount, mao.CreateUser, mao.CreateTime, mao.UpdateUser, mao.UpdateTime, mao.Version
-    , mao.Rental, mao.ActivityDetail, mao.OffMoney, mao.Remark,mao.PacketId
+    , mao.Rental, mao.ActivityDetail, mao.OffMoney, mao.Remark,mao.PacketId,mao.Platform
     from mallorder mao,ptinfo pt,medorder meo,medrecord mer
     where mao.PtNo = pt.PtNo and mao.orderStatus !=3 and mao.MedOrderNo = meo.OrderNo and meo.MedRecordNo = mer.MedRecordNo
     and mao.PayStatus = 0
@@ -633,7 +648,7 @@
      mao.MallNo, mao.PtNo, mao.DrNo, mao.DisNo, mao.DrugStoreNo, mao.MedOrderNo, mao.OrderStatus, mao.OrderTime, mao.Phone,
     mao.Address, mao.PayStatus, mao.PayTime, mao.ShippingStatus, mao.ShippingCompany, mao.ShippingContext, mao.ShippingNo,
     mao.ShippingTime, mao.OrderAmount, mao.CreateUser, mao.CreateTime, mao.UpdateUser, mao.UpdateTime, mao.Version
-    , mao.Rental, mao.ActivityDetail, mao.OffMoney, mao.Remark,mao.PacketId
+    , mao.Rental, mao.ActivityDetail, mao.OffMoney, mao.Remark,mao.PacketId,mao.Platform
     from mallorder mao,ptinfo pt,medorder meo,medrecord mer
      where mao.PtNo = pt.PtNo and mao.MedOrderNo = meo.OrderNo and mer.MedRecordNo = meo.MedRecordNo
      and mao.orderStatus !=3
@@ -648,7 +663,7 @@
     mao.MallNo, mao.PtNo, mao.DrNo, mao.DisNo, mao.DrugStoreNo, mao.MedOrderNo, mao.OrderStatus, mao.OrderTime, mao.Phone,
     mao.Address, mao.PayStatus, mao.PayTime, mao.ShippingStatus, mao.ShippingCompany, mao.ShippingContext, mao.ShippingNo,
     mao.ShippingTime, mao.OrderAmount, mao.CreateUser, mao.CreateTime, mao.UpdateUser, mao.UpdateTime, mao.Version
-    , mao.Rental, mao.ActivityDetail, mao.OffMoney, mao.Remark,mao.PacketId
+    , mao.Rental, mao.ActivityDetail, mao.OffMoney, mao.Remark,mao.PacketId,mao.Platform
     from mallorder mao,medorder meo,medrecord mer
     where mao.MedOrderNo = meo.OrderNo and mer.MedRecordNo = meo.MedRecordNo
     and mer.MedRecordStatus = 1
@@ -659,7 +674,7 @@
     mao.MallNo, mao.PtNo, mao.DrNo, mao.DisNo, mao.DrugStoreNo, mao.MedOrderNo, mao.OrderStatus, mao.OrderTime, mao.Phone,
     mao.Address, mao.PayStatus, mao.PayTime, mao.ShippingStatus, mao.ShippingCompany, mao.ShippingContext, mao.ShippingNo,
     mao.ShippingTime, mao.OrderAmount, mao.CreateUser, mao.CreateTime, mao.UpdateUser, mao.UpdateTime, mao.Version
-    , mao.Rental, mao.ActivityDetail, mao.OffMoney, mao.Remark,mao.PacketId
+    , mao.Rental, mao.ActivityDetail, mao.OffMoney, mao.Remark,mao.PacketId,mao.Platform
     from mallorder mao,medorder meo,medrecord mer
     where mao.MedOrderNo = meo.OrderNo and mer.MedRecordNo = meo.MedRecordNo
     and mer.MedRecordNo = #{medRecordNo,jdbcType=INTEGER}
@@ -684,7 +699,7 @@
     mao.MallNo, mao.PtNo, mao.DrNo, mao.DisNo, mao.DrugStoreNo, mao.MedOrderNo, mao.OrderStatus, mao.OrderTime, mao.Phone,
     mao.Address, mao.PayStatus, mao.PayTime, mao.ShippingStatus, mao.ShippingCompany, mao.ShippingContext, mao.ShippingNo,
     mao.ShippingTime, mao.OrderAmount, mao.CreateUser, mao.CreateTime, mao.UpdateUser, mao.UpdateTime, mao.Version
-    , mao.Rental, mao.ActivityDetail, mao.OffMoney, mao.Remark,mao.PacketId
+    , mao.Rental, mao.ActivityDetail, mao.OffMoney, mao.Remark,mao.PacketId,mao.Platform
     from mallorder mao,cloudpassinfo cpi,ptinfo pt
     where mao.PtNo = pt.PtNo and cpi.CloudPassNo = pt.CloudPassNo
     <if test="drNo != null and drNo !=''" >
@@ -783,7 +798,7 @@
      mao.MallNo, mao.PtNo, mao.DrNo, mao.DisNo, mao.DrugStoreNo, mao.MedOrderNo, mao.OrderStatus, mao.OrderTime, mao.Phone,
     mao.Address, mao.PayStatus, mao.PayTime, mao.ShippingStatus, mao.ShippingCompany, mao.ShippingContext, mao.ShippingNo,
     mao.ShippingTime, mao.OrderAmount, mao.CreateUser, mao.CreateTime, mao.UpdateUser, mao.UpdateTime, mao.Version
-    , mao.Rental, mao.ActivityDetail, mao.OffMoney, mao.Remark,mao.PacketId
+    , mao.Rental, mao.ActivityDetail, mao.OffMoney, mao.Remark,mao.PacketId,mao.Platform
      FROM mallorder mao,medorder meo where mao.MedOrderNo = meo.OrderNo and mao.ptNo = #{ptNo,jdbcType=INTEGER} and mao.drNo = #{drNo,jdbcType=INTEGER} and mao.payStatus = 0 ORDER BY meo.updateTime desc LIMIT 0,1) a GROUP BY a.MallNo
   </select>
   <select id="selectByPtNoAndUpdateTime" parameterType="java.lang.Long" resultType="com.ecard.entity.MallOrder">
@@ -791,7 +806,7 @@
     mao.MallNo, mao.PtNo, mao.DrNo, mao.DisNo, mao.DrugStoreNo, mao.MedOrderNo, mao.OrderStatus, mao.OrderTime, mao.Phone,
     mao.Address, mao.PayStatus, mao.PayTime, mao.ShippingStatus, mao.ShippingCompany, mao.ShippingContext, mao.ShippingNo,
     mao.ShippingTime, mao.OrderAmount, mao.CreateUser, mao.CreateTime, mao.UpdateUser, mao.UpdateTime, mao.Version
-    , mao.Rental, mao.ActivityDetail, mao.OffMoney, mao.Remark,mao.PacketId
+    , mao.Rental, mao.ActivityDetail, mao.OffMoney, mao.Remark,mao.PacketId,mao.Platform
     FROM mallorder mao,medorder meo
     where mao.MedOrderNo = meo.OrderNo and mao.ptNo = #{ptNo,jdbcType=INTEGER} and mao.payStatus = 0 ORDER BY meo.updateTime LIMIT 0,1
   </select>

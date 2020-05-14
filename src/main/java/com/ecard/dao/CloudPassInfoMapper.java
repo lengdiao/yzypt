@@ -60,4 +60,8 @@ public interface CloudPassInfoMapper {
     CloudPassInfo selectByPhoneDrugStore(String phone);
 
     CloudPassInfo selectByPhoneAndPasswordNull(String phone);
+
+    List<CloudPassInfo> selectByPhoneAndIDNo(
+            @Param("phone") String phone,
+            @Param("idNo") String idNo);
 }

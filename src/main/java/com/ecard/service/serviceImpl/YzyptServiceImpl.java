@@ -85,7 +85,8 @@ public class YzyptServiceImpl implements YzyptService {
     @Autowired
     private ChiCountMapper chiCountMapper;
 
-    public void selectByOpenId(int status) {
+    //platform 1:易臻云 2：视界
+    public void selectByOpenId(int status, int platform) {
         try {
             ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
             HttpServletRequest request = servletRequestAttributes.getRequest();
@@ -97,41 +98,43 @@ public class YzyptServiceImpl implements YzyptService {
             //String openId = "oLkiUwbC5SFlF0oyN5dcs_-Ujz8s";
 
             List<PtOpen> open = ptOpenMapper.selectBtOpenId(openId);
-            if(open.size()==0) {
+            if (open.size() == 0) {
                 //注册页面
                 String url = null;
-                if(status==1){
+                if (status == 1) {
                     //跳转易臻云平台
-                    url = "https://www.yizhenyun.com.cn/yzypt/wx/register/index.html#/register?status=2";
-                }else if(status==2){
+                    url = "https://www.yizhenyun.com.cn/yzypt/wx/register/index.html#/register?status=2&platform=" + platform;
+                } else if (status == 2) {
                     //跳转自主下单
-                    url = "https://www.yizhenyun.com.cn/yzypt/wx/zzxd/index.html#/home";
+                    url = "https://www.yizhenyun.com.cn/yzypt/wx/zzxd/index.html#/home?platform=" + platform;
                 }
                 response.sendRedirect(url);
-            }else {
+            } else {
                 PtInfoQr ptInfo = ptInfoMapper.selectByPtNo(open.get(0).getPtNo());
-                if("".equals(ptInfo.getPhone())||ptInfo.getPhone()==null){
+                if ("".equals(ptInfo.getPhone()) || ptInfo.getPhone() == null) {
                     //需要补全信息
-                    if(status==1){
+                    if (status == 1) {
                         //跳转易臻云平台
-                        String url = "https://www.yizhenyun.com.cn/yzypt/wx/register/index.html#/register?status=2";
+                        String url = "https://www.yizhenyun.com.cn/yzypt/wx/register/index.html#/register?status=2&platform=" + platform;
                         response.sendRedirect(url);
-                    }else if(status==2){
+                    } else if (status == 2) {
                         //跳转自主下单
-                        String url = "https://www.yizhenyun.com.cn/yzypt/wx/zzxd/index.html#/home";
+                        String url = "https://www.yizhenyun.com.cn/yzypt/wx/zzxd/index.html#/home?platform=" + platform;
                         response.sendRedirect(url);
                     }
-                }else{
-                    if(status==1) {
-                        String url = "https://www.yizhenyun.com.cn/yzypt/wx/br/index.html#/myDoctor";
+                } else {
+                    if (status == 1) {
+                        String url = "https://www.yizhenyun.com.cn/yzypt/wx/br/index.html#/myDoctor?platform=" + platform;
                         response.sendRedirect(url);
-                    }else if(status==2) {
-                        String url = "https://www.yizhenyun.com.cn/yzypt/wx/zzxd/index.html#/home";
+                    } else if (status == 2) {
+                        String url = "https://www.yizhenyun.com.cn/yzypt/wx/zzxd/index.html#/home?platform=" + platform;
                         response.sendRedirect(url);
                     }
                 }
 
             }
+
+
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -140,11 +143,9 @@ public class YzyptServiceImpl implements YzyptService {
     }
 
 
-
-
-
     /**
      * 获取微信用户的信息
+     *
      * @param accessToken
      * @param openId
      * @return
@@ -181,7 +182,7 @@ public class YzyptServiceImpl implements YzyptService {
                 } else {
                     int errorCode = jsonObject.getInt("errcode");
                     String errorMsg = jsonObject.getString("errmsg");
-                    System.out.println("由于"+errorCode +"错误码；错误信息为："+errorMsg+"；导致获取用户信息失败");
+                    System.out.println("由于" + errorCode + "错误码；错误信息为：" + errorMsg + "；导致获取用户信息失败");
                 }
             }
         }
@@ -190,8 +191,9 @@ public class YzyptServiceImpl implements YzyptService {
 
     /**
      * 进行用户授权，获取到需要的授权字段，比如openId
+     *
      * @param code 识别得到用户id必须的一个值
-     * 得到网页授权凭证和用户id
+     *             得到网页授权凭证和用户id
      * @return
      */
     public Map<String, String> oauth2GetOpenid(String code) {
@@ -208,7 +210,35 @@ public class YzyptServiceImpl implements YzyptService {
             //OpenidJSONO可以得到的内容：access_token expires_in  refresh_token openid scope
             String Openid = String.valueOf(OpenidJSONO.get("openid"));
             String AccessToken = String.valueOf(OpenidJSONO.get("access_token"));
-            System.out.println("AccessToken"+AccessToken);
+            System.out.println("AccessToken" + AccessToken);
+            //用户保存的作用域
+            String Scope = String.valueOf(OpenidJSONO.get("scope"));
+            String refresh_token = String.valueOf(OpenidJSONO.get("refresh_token"));
+            result.put("Openid", Openid);
+            result.put("AccessToken", AccessToken);
+            result.put("scope", Scope);
+            result.put("refresh_token", refresh_token);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public Map<String, String> oauth2GetOpenid1(String code) {
+        //自己的配置appid（公众号进行查阅）
+        String appid = ProjectConst.PROJECT_APPID_SJ;
+        //自己的配置APPSECRET;（公众号进行查阅）
+        String appsecret = ProjectConst.PROJECT_APPSECRET_SJ;
+        //拼接用户授权接口信息
+        String requestUrl = ProjectConst.GET_WEBAUTH_URL.replace("APPID", appid).replace("SECRET", appsecret).replace("CODE", code);
+        //存储获取到的授权字段信息
+        Map<String, String> result = new HashMap<String, String>();
+        try {
+            JSONObject OpenidJSONO = WeiXinUtils.doGetStr(requestUrl);
+            //OpenidJSONO可以得到的内容：access_token expires_in  refresh_token openid scope
+            String Openid = String.valueOf(OpenidJSONO.get("openid"));
+            String AccessToken = String.valueOf(OpenidJSONO.get("access_token"));
+            System.out.println("AccessToken" + AccessToken);
             //用户保存的作用域
             String Scope = String.valueOf(OpenidJSONO.get("scope"));
             String refresh_token = String.valueOf(OpenidJSONO.get("refresh_token"));
@@ -224,15 +254,25 @@ public class YzyptServiceImpl implements YzyptService {
 
     /**
      * 获取到微信用户的唯一的OpendID
-     * @param code  这是要获取OpendId的必须的一个参数
+     *
+     * @param code 这是要获取OpendId的必须的一个参数
      * @return
      */
-    public Map<String , String> getAuthInfo(String code) {
+    public Map<String, String> getAuthInfo(String code) {
         //进行授权验证，获取到OpenID字段等信息
         Map<String, String> result = oauth2GetOpenid(code);
         // 从这里可以得到用户openid
         String openId = result.get("Openid");
-        System.out.println("openId="+openId);
+        System.out.println("openId=" + openId);
+        return result;
+    }
+
+    public Map<String, String> getAuthInfo1(String code) {
+        //进行授权验证，获取到OpenID字段等信息
+        Map<String, String> result = oauth2GetOpenid1(code);
+        // 从这里可以得到用户openid
+        String openId = result.get("Openid");
+        System.out.println("openId=" + openId);
         return result;
     }
 
@@ -241,11 +281,11 @@ public class YzyptServiceImpl implements YzyptService {
         ResponseHasData response = new ResponseHasData();
 
         try {
-            Page<?> pa =  PageHelper.startPage(page, rows);
+            Page<?> pa = PageHelper.startPage(page, rows);
             List<MallOrderQr> mallOrderQrs = new ArrayList<MallOrderQr>();
-            List<MallOrder> mallOrders = mallOrderMapper.selectByMnOsPnDn(mallNo,orderStatus,ptNo,drNo);
-            if(mallOrders.size()!=0){
-                for(MallOrder mallOrder : mallOrders){
+            List<MallOrder> mallOrders = mallOrderMapper.selectByMnOsPnDn(mallNo, orderStatus, ptNo, drNo);
+            if (mallOrders.size() != 0) {
+                for (MallOrder mallOrder : mallOrders) {
                     MallOrderQr mallOrderQr = new MallOrderQr();
                     mallOrderQr.setMallOrder(mallOrder);
                     MedOrder medOrder = medOrderMapper.selectByPrimaryKey(mallOrder.getMedOrderNo());
@@ -254,7 +294,7 @@ public class YzyptServiceImpl implements YzyptService {
                     mallOrderQr.setMedRecord(medRecord);
                     MrPicture[] mrPictures = mrPictureMapper.selectByMedRecordNo(medOrder.getMedRecordNo());
                     mallOrderQr.setMrPictures(mrPictures);
-                    if(mallOrder.getAddress()!=null&&!"".equals(mallOrder.getAddress())){
+                    if (mallOrder.getAddress() != null && !"".equals(mallOrder.getAddress())) {
                         ReceiptAddress receiptAddress = mallAddressMapper.selectByPrimaryKey1(Long.valueOf(mallOrder.getAddress()));
                         mallOrderQr.setReceiptAddress(receiptAddress);
                     }
@@ -267,7 +307,7 @@ public class YzyptServiceImpl implements YzyptService {
             }
             Long total = pa.getTotal();
             //创建分页条件
-            PageInfo<MallOrderQr> pageData = new PageInfo<MallOrderQr>(mallOrderQrs,total.intValue());
+            PageInfo<MallOrderQr> pageData = new PageInfo<MallOrderQr>(mallOrderQrs, total.intValue());
 
             response.setData(pageData);
             response.setMsg("查询成功");
@@ -284,23 +324,23 @@ public class YzyptServiceImpl implements YzyptService {
     public Response updateByPhoneAndPass(String phone, String oldPassword, String newPassword) {
         ResponseHasData response = new ResponseHasData();
         try {
-            if(phone==null||"".equals(phone)) {
+            if (phone == null || "".equals(phone)) {
                 response.setStatus(1);
                 response.setMsg("电话号码为空");
-            }else if(oldPassword==null||"".equals(oldPassword)) {
+            } else if (oldPassword == null || "".equals(oldPassword)) {
                 response.setStatus(1);
                 response.setMsg("原密码为空");
-            }else if(newPassword==null||"".equals(newPassword)) {
+            } else if (newPassword == null || "".equals(newPassword)) {
                 response.setStatus(1);
                 response.setMsg("新密码为空");
-            }else {
+            } else {
                 CloudPassInfo cloudPassInfo = cloudPassInfoMapper.selectByPhone(phone);
-                if(oldPassword.endsWith(cloudPassInfo.getPassword())) {
+                if (oldPassword.endsWith(cloudPassInfo.getPassword())) {
                     cloudPassInfo.setPassword(newPassword);
                     cloudPassInfoMapper.updateByPrimaryKeySelective(cloudPassInfo);
                     response.setStatus(0);
                     response.setMsg("修改成功");
-                }else {
+                } else {
                     response.setStatus(0);
                     response.setMsg("原密码错误");
                 }
@@ -376,7 +416,7 @@ public class YzyptServiceImpl implements YzyptService {
                 return response;
             }
             cloudPassInfo = cloudPassInfoMapper.selectByPhone(phone);
-            if(cloudPassInfo==null) {
+            if (cloudPassInfo == null) {
                 response.setStatus(1);
                 response.setMsg("没有此用户");
                 return response;
@@ -421,7 +461,7 @@ public class YzyptServiceImpl implements YzyptService {
         List<CloudPassInfo> cloudPassInfos = new ArrayList<CloudPassInfo>();
         CloudPassInfo cloudPassInfo = new CloudPassInfo();
         System.out.println("service 进来了 ");
-        if (phone==null||phone.equals("")) {
+        if (phone == null || phone.equals("")) {
             response.setStatus(1);
             response.setMsg("登录账号不能为空");
             return response;
@@ -429,15 +469,15 @@ public class YzyptServiceImpl implements YzyptService {
         if (phone.length() == 11) {
             cloudPassInfos = cloudPassInfoMapper.findByPhoneRole(phone);
         }
-        if (cloudPassInfos.size()==0) {
+        if (cloudPassInfos.size() == 0) {
             response.setStatus(1);
             response.setMsg("登陆账号不存在");
             return response;
-        }else if(cloudPassInfos.size()==1){
+        } else if (cloudPassInfos.size() == 1) {
             cloudPassInfo = cloudPassInfoMapper.selectByPhoneAndPasswordNull(phone);
-        }else if(cloudPassInfos.size()>1){
+        } else if (cloudPassInfos.size() > 1) {
             cloudPassInfo = cloudPassInfoMapper.findByPhoneDisRole(phone);
-            if (cloudPassInfo==null){
+            if (cloudPassInfo == null) {
                 cloudPassInfo = cloudPassInfoMapper.selectByPhoneDrugStore(phone);
             }
         }
@@ -454,20 +494,20 @@ public class YzyptServiceImpl implements YzyptService {
             data.put("name", cloudPassInfo.getName());
             Long roleNo = urRole.getRoleNo();
             data.put("roleNo", roleNo);
-            if(roleNo==2){//医生
+            if (roleNo == 2) {//医生
                 DrInfoQr drInfo = drInfoMapper.selectByCloudPassNo(cloudPassInfo.getCloudPassNo());
-                data.put("drNo",drInfo.getDrNo());
-            }else if(roleNo==3||roleNo==4||roleNo==6){//药店
+                data.put("drNo", drInfo.getDrNo());
+            } else if (roleNo == 3 || roleNo == 4 || roleNo == 6) {//药店
                 DrugStore drugStore = drugStoreMapper.selectByCloudPassNo(cloudPassInfo.getCloudPassNo());
-                data.put("drugStoreNo",drugStore.getDrugStoreNo());
-            }else if(roleNo==5||roleNo==7){
+                data.put("drugStoreNo", drugStore.getDrugStoreNo());
+            } else if (roleNo == 5 || roleNo == 7) {
                 Long disNo = disInfoMapper.selectByCloudPassNo(cloudPassInfo.getCloudPassNo()).getDisNo();
                 DisInfo disInfo = disInfoMapper.selectByPrimaryKey(disNo);
                 data.put("disNo", disNo);
-                data.put("disLevel",disInfo.getDisLevel());
-                if(disInfo.getDisLevel().equals("2")){
+                data.put("disLevel", disInfo.getDisLevel());
+                if (disInfo.getDisLevel().equals("2")) {
                     DisInfo disInfo1 = disInfoMapper.select1DisNo(disNo);
-                    data.put("disLeader",disInfo1.getDisNo());
+                    data.put("disLeader", disInfo1.getDisNo());
                 }
             }
 
@@ -488,14 +528,14 @@ public class YzyptServiceImpl implements YzyptService {
         String nonce_str = randomStr(32);
         String timestamp = create_timestamp();
         ResponseHasData response = new ResponseHasData();
-        AccessToken accessToken=WeiXinUtils.getAccessToken();
+        AccessToken accessToken = WeiXinUtils.getAccessToken();
         String jsapi_ticket = WeiXinUtils.getJsapi_ticket(accessToken.getToken());
-        System.out.println("jsapi_ticket="+jsapi_ticket);
-        String string1 ="jsapi_ticket="+jsapi_ticket+"&noncestr="+nonce_str+"&timestamp="+timestamp+"&url="+url;
+        System.out.println("jsapi_ticket=" + jsapi_ticket);
+        String string1 = "jsapi_ticket=" + jsapi_ticket + "&noncestr=" + nonce_str + "&timestamp=" + timestamp + "&url=" + url;
         String signature = Sha1.getSha1(string1);
-        Map<String , String > map = new HashMap<String,String>();
+        Map<String, String> map = new HashMap<String, String>();
         map.put("signature", signature);
-        map.put("noncestr", nonce_str);
+        map.put("nonceStr", nonce_str);
         map.put("timestamp", timestamp);
         map.put("appid", "wx5a917cabd0432687");
         response.setData(map);
@@ -509,41 +549,41 @@ public class YzyptServiceImpl implements YzyptService {
         ResponseHasData response = new ResponseHasData();
         try {
             List<MallOrderQr> mallOrderQrs = new ArrayList<MallOrderQr>();
-            Page<?> pa =  PageHelper.startPage(page, rows);
-            List<MallOrder> mallOrders = mallOrderMapper.selectByMoOsSdEd(drugStoreNo,mallNo,orderStatus,startDate,endDate,drNo,disNo1,disNo2);
-            if(mallOrders.size()!=0){
-                for(MallOrder mallOrder : mallOrders){
+            Page<?> pa = PageHelper.startPage(page, rows);
+            List<MallOrder> mallOrders = mallOrderMapper.selectByMoOsSdEd(drugStoreNo, mallNo, orderStatus, startDate, endDate, drNo, disNo1, disNo2);
+            if (mallOrders.size() != 0) {
+                for (MallOrder mallOrder : mallOrders) {
                     DrInfoQr drInfoQr = drInfoMapper.selectByDrNo(mallOrder.getDrNo());
                     MallOrderQr mallOrderQr = new MallOrderQr();
                     mallOrderQr.setMallOrder(mallOrder);
                     MedOrder medOrder = medOrderMapper.selectByPrimaryKey(mallOrder.getMedOrderNo());
-                    if(medOrder.getOrderType()==1){
+                    if (medOrder.getOrderType() == 1) {
                         BigDecimal unitPrice = medOrder.getOrderAmount().divide(new BigDecimal(medOrder.getPrescriptionNum().toString()));
                         medOrder.setUnitPrice(unitPrice);
                     }
                     mallOrderQr.setMedOrder(medOrder);
                     MedRecord medRecord = medRecordMapper.selectByPrimaryKey(medOrder.getMedRecordNo());
                     String diagContentName = medRecord.getDiagContent();
-                    if(diagContentName!=null&&!"".equals(diagContentName)){
+                    if (diagContentName != null && !"".equals(diagContentName)) {
                         String[] diag = diagContentName.split(",");
-                        if(medOrder.getOrderType()==1){
+                        if (medOrder.getOrderType() == 1) {
                             diagContentName = "";
                             //中医
-                            for(int i = 0 ; i < diag.length ; i++){
+                            for (int i = 0; i < diag.length; i++) {
                                 String[] diag1 = diag[i].split("-");
-                                diagContentName += diseaseMasterMapper.selectByPrimaryKey(Long.valueOf(diag1[0])).getChtName()+"-";
-                                diagContentName += diseaseMasterMapper.selectByPrimaryKey(Long.valueOf(diag1[1])).getChtName()+",";
-                                System.out.println("中医"+diagContentName);
+                                diagContentName += diseaseMasterMapper.selectByPrimaryKey(Long.valueOf(diag1[0])).getChtName() + "-";
+                                diagContentName += diseaseMasterMapper.selectByPrimaryKey(Long.valueOf(diag1[1])).getChtName() + ",";
+                                System.out.println("中医" + diagContentName);
                             }
-                            diagContentName = diagContentName.substring(0,diagContentName.length()-1);
-                        }else{
+                            diagContentName = diagContentName.substring(0, diagContentName.length() - 1);
+                        } else {
                             diagContentName = "";
                             //西医
-                            for(int i = 0 ; i < diag.length ; i++){
-                                diagContentName += diseaseMasterMapper.selectByPrimaryKey(Long.valueOf(diag[i])).getChtName()+",";
-                                System.out.println("西医"+diagContentName);
+                            for (int i = 0; i < diag.length; i++) {
+                                diagContentName += diseaseMasterMapper.selectByPrimaryKey(Long.valueOf(diag[i])).getChtName() + ",";
+                                System.out.println("西医" + diagContentName);
                             }
-                            diagContentName = diagContentName.substring(0,diagContentName.length()-1);
+                            diagContentName = diagContentName.substring(0, diagContentName.length() - 1);
                         }
                         medRecord.setDiagContentName(diagContentName);
 
@@ -554,20 +594,20 @@ public class YzyptServiceImpl implements YzyptService {
                     MrPicture[] mrPictures = mrPictureMapper.selectByMedRecordNo(medOrder.getMedRecordNo());
                     mallOrderQr.setMrPictures(mrPictures);
                     List<MedItemQr> medItemQrs = medItemMapper.selectByMedOrderNo(medOrder.getOrderNo());
-                    for (MedItemQr medItemQr:medItemQrs){
+                    for (MedItemQr medItemQr : medItemQrs) {
                         DrugSet drugSet = drugSetMapper.selectByPrimaryKey(medItemQr.getDrugNo());
                         medItemQr.setDrugSet(drugSet);
                     }
 
 
-                    if(mallOrder.getAddress()!=null&&!"".equals(mallOrder.getAddress())){
+                    if (mallOrder.getAddress() != null && !"".equals(mallOrder.getAddress())) {
                         ReceiptAddress receiptAddress = mallAddressMapper.selectByPrimaryKey1(Long.valueOf(mallOrder.getAddress()));
                         mallOrderQr.setReceiptAddress(receiptAddress);
                     }
                     mallOrderQr.setMedItemQr(medItemQrs);
                     PtInfoQr ptInfo = ptInfoMapper.selectByPtNo(mallOrder.getPtNo());
-                    if(ptInfo.getIdNo()!=null&&!"null".equals(ptInfo.getIdNo())&&!"".equals(ptInfo.getIdNo())
-                    ){
+                    if (ptInfo.getIdNo() != null && !"null".equals(ptInfo.getIdNo()) && !"".equals(ptInfo.getIdNo())
+                    ) {
                         int age = IdNOToAge(ptInfo.getIdNo());
                         ptInfo.setAge(age);
                     }
@@ -585,7 +625,7 @@ public class YzyptServiceImpl implements YzyptService {
             }
             Long total = pa.getTotal();
             //创建分页条件
-            PageInfo<MallOrderQr> pageData = new PageInfo<MallOrderQr>(mallOrderQrs,total.intValue());
+            PageInfo<MallOrderQr> pageData = new PageInfo<MallOrderQr>(mallOrderQrs, total.intValue());
 
             response.setData(pageData);
             response.setMsg("查询成功");
@@ -602,8 +642,8 @@ public class YzyptServiceImpl implements YzyptService {
     public Response insertDiseaseMaster(DiseaseMaster diseaseMaster) {
         ResponseHasData response = new ResponseHasData();
         try {
-            List<DiseaseMaster> diseaseMaster1 = diseaseMasterMapper.selectByIcdAndName(diseaseMaster.getChtName(),diseaseMaster.getIcdCode());
-            if(diseaseMaster1.size()!=0){
+            List<DiseaseMaster> diseaseMaster1 = diseaseMasterMapper.selectByIcdAndName(diseaseMaster.getChtName(), diseaseMaster.getIcdCode());
+            if (diseaseMaster1.size() != 0) {
                 response.setStatus(1);
                 response.setMsg("已经存在该疾病");
                 return response;
@@ -623,8 +663,8 @@ public class YzyptServiceImpl implements YzyptService {
     public Response updateDiseaseMaster(DiseaseMaster diseaseMaster) {
         ResponseHasData response = new ResponseHasData();
         try {
-            List<DiseaseMaster> diseaseMaster1 = diseaseMasterMapper.selectByIcdAndNameAndNo(diseaseMaster.getChtName(),diseaseMaster.getIcdCode(),diseaseMaster.getDNo());
-            if(diseaseMaster1!=null){
+            List<DiseaseMaster> diseaseMaster1 = diseaseMasterMapper.selectByIcdAndNameAndNo(diseaseMaster.getChtName(), diseaseMaster.getIcdCode(), diseaseMaster.getDNo());
+            if (diseaseMaster1 != null) {
                 response.setStatus(1);
                 response.setMsg("已经存在该疾病");
                 return response;
@@ -646,9 +686,9 @@ public class YzyptServiceImpl implements YzyptService {
 
         try {
             List<MallOrderQr> mallOrderQrs = new ArrayList<MallOrderQr>();
-            List<MallOrder> mallOrders = mallOrderMapper.selectByMnOsPnDns(mallNo,orderStatus,ptNo,drNo,startDate,endDate);
-            if(mallOrders.size()!=0){
-                for(MallOrder mallOrder : mallOrders){
+            List<MallOrder> mallOrders = mallOrderMapper.selectByMnOsPnDns(mallNo, orderStatus, ptNo, drNo, startDate, endDate);
+            if (mallOrders.size() != 0) {
+                for (MallOrder mallOrder : mallOrders) {
                     MallOrderQr mallOrderQr = new MallOrderQr();
                     mallOrderQr.setMallOrder(mallOrder);
                     MedOrder medOrder = medOrderMapper.selectByPrimaryKey(mallOrder.getMedOrderNo());
@@ -657,7 +697,7 @@ public class YzyptServiceImpl implements YzyptService {
                     mallOrderQr.setMedRecord(medRecord);
                     MrPicture[] mrPictures = mrPictureMapper.selectByMedRecordNo(medOrder.getMedRecordNo());
                     mallOrderQr.setMrPictures(mrPictures);
-                    if(mallOrder.getAddress()!=null&&!"".equals(mallOrder.getAddress())){
+                    if (mallOrder.getAddress() != null && !"".equals(mallOrder.getAddress())) {
                         ReceiptAddress receiptAddress = receiptAddressMapper.selectByPrimaryKey(Long.valueOf(mallOrder.getAddress()));
                         mallOrderQr.setReceiptAddress(receiptAddress);
                     }
@@ -686,8 +726,8 @@ public class YzyptServiceImpl implements YzyptService {
 
         try {
             // 创建CloudPassInfo
-            List<CloudPassInfo> cpi = cloudPassInfoMapper.findByPhoneDis(null,disInfoQr.getPhone());
-            if (cpi.size()!=0) {
+            List<CloudPassInfo> cpi = cloudPassInfoMapper.findByPhoneDis(null, disInfoQr.getPhone());
+            if (cpi.size() != 0) {
                 response.setStatus(Constants.STATUS_FAIL);
                 response.setMsg("注册手机号码已存在，请更换注册手机号");
                 return response;
@@ -705,9 +745,9 @@ public class YzyptServiceImpl implements YzyptService {
             cloudPassInfoMapper.insertSelective(cloudPassInfo);
             Long cloudPassNo = cloudPassInfo.getCloudPassNo();
             // 授权
-            if(disInfoQr.getDisLevel().equals("1")){
+            if (disInfoQr.getDisLevel().equals("1")) {
                 RoleUtil.accredit(cloudPassNo, "一级代表");
-            }else if(disInfoQr.getDisLevel().equals("2")){
+            } else if (disInfoQr.getDisLevel().equals("2")) {
                 RoleUtil.accredit(cloudPassNo, "二级代表");
             }
 
@@ -740,10 +780,10 @@ public class YzyptServiceImpl implements YzyptService {
         ResponseHasData response = new ResponseHasData();
         try {
             DisInfoQr disInfoQr = disInfoMapper.selectByNo(disno);
-            if(disInfoQr.getDisLevel().equals(1)) {
+            if (disInfoQr.getDisLevel().equals(1)) {
                 disInfoQr.setDisLevelName("经理");
             }
-            if(disInfoQr.getDisLevel().equals(2)) {
+            if (disInfoQr.getDisLevel().equals(2)) {
                 disInfoQr.setDisLevelName("代表");
             }
             response.setStatus(Constants.STATUS_SUCCESS);
@@ -760,7 +800,7 @@ public class YzyptServiceImpl implements YzyptService {
     @Override
     public Response updateDis(DisInfoQr disInfoQr) {
         ResponseHasData response = new ResponseHasData();
-        System.out.println(disInfoQr.getAddress()+"地址");
+        System.out.println(disInfoQr.getAddress() + "地址");
         // 判断传入主键是否为空
         Long cloudPassNo = disInfoQr.getCloudPassNo();
         Long disNo = disInfoQr.getDisNo();
@@ -769,8 +809,8 @@ public class YzyptServiceImpl implements YzyptService {
             response.setMsg("传入cloudpassno或drno不能为空");
             return response;
         }
-        List<CloudPassInfo> cpi = cloudPassInfoMapper.findByPhoneDis(disInfoQr.getDisNo(),disInfoQr.getPhone());
-        if (cpi.size()!=0) {
+        List<CloudPassInfo> cpi = cloudPassInfoMapper.findByPhoneDis(disInfoQr.getDisNo(), disInfoQr.getPhone());
+        if (cpi.size() != 0) {
             response.setStatus(Constants.STATUS_FAIL);
             response.setMsg("注册手机号码已存在，请更换注册手机号");
             return response;
@@ -838,7 +878,7 @@ public class YzyptServiceImpl implements YzyptService {
     public Response insertDr(String disNo, String name, String hospital, String phone, String chiefNo,
                              String practiceProfile, String title, String leaderDrNo, String drTitleCert,
                              String drPracticeRegCert, String consultingHour, String idNo, int disableFlag, int type,
-                             String province, String city) {
+                             String province, String city, int paltform) {
         ResponseHasData response = new ResponseHasData();
         DrInfo di = new DrInfo();
         CloudPassInfo cpi = new CloudPassInfo();
@@ -859,7 +899,7 @@ public class YzyptServiceImpl implements YzyptService {
             cpi.setIdNo(idNo);
             cpi.setDisableFlag(disableFlag);
             cloudPassInfoMapper.insertSelective(cpi);
-            RoleUtil.accredit(cpi.getCloudPassNo(),"医生");
+            RoleUtil.accredit(cpi.getCloudPassNo(), "医生");
             di.setChiefNo(chiefNo);
             di.setCloudPassNo(cpi.getCloudPassNo());
             di.setConsultingHour(consultingHour);
@@ -878,6 +918,7 @@ public class YzyptServiceImpl implements YzyptService {
             di.setDrTitleCert(drTitleCert);
             di.setDrPracticeRegCert(drPracticeRegCert);
             di.setType(type);
+            di.setPlatform(paltform);
             drInfoMapper.insertSelective(di);
 
             ddr.setCreateTime(new Date());
@@ -900,12 +941,12 @@ public class YzyptServiceImpl implements YzyptService {
     public Response updateDr(String drNo, String name, String hospital, String phone, String chiefNo,
                              String practiceProfile, String title, String drTitleCert, String drPracticeRegCert,
                              String consultingHour, String leaderDrNo, String idNo, int disableFlag, int type,
-                             String province, String city) {
+                             String province, String city, int platform) {
         ResponseHasData response = new ResponseHasData();
         try {
 
-            CloudPassInfo info = cloudPassInfoMapper.selectByPhoneIdNoDrNo(Long.valueOf(drNo),phone,idNo);
-            if(info!=null){
+            CloudPassInfo info = cloudPassInfoMapper.selectByPhoneIdNoDrNo(Long.valueOf(drNo), phone, idNo);
+            if (info != null) {
                 response.setStatus(1);
                 response.setMsg("手机号码或身份证号码重复");
                 return response;
@@ -923,14 +964,15 @@ public class YzyptServiceImpl implements YzyptService {
             di.setTitle(title);
             di.setCity(city);
             di.setProvince(province);
-            if(leaderDrNo==null||leaderDrNo.equals("")||leaderDrNo.equals("null")) {
+            if (leaderDrNo == null || leaderDrNo.equals("") || leaderDrNo.equals("null")) {
                 di.setLeaderDrNo(null);
-            }else {
+            } else {
                 di.setLeaderDrNo(Long.parseLong(leaderDrNo));
             }
             di.setDrTitleCert(drTitleCert);
             di.setDrPracticeRegCert(drPracticeRegCert);
             di.setType(type);
+            di.setPlatform(platform);
             drInfoMapper.updateByPrimaryKeySelective(di);
             CloudPassInfo cpi = cloudPassInfoMapper.selectByPrimaryKey(di.getCloudPassNo());
             cpi.setName(name);
@@ -956,31 +998,31 @@ public class YzyptServiceImpl implements YzyptService {
         ResponseHasData response = new ResponseHasData();
         try {
 
-            if(medOrderType==1){
+            if (medOrderType == 1) {
                 //中药处方
-                Page<?> pa =  PageHelper.startPage(page, rows);
-                List<PcCountQr> pcCountQrs = chiCountMapper.selectByTypeDrNameDate(drName,drugNo,disNo1,disNo2,startDate,endDate,drPhone,drNo);
+                Page<?> pa = PageHelper.startPage(page, rows);
+                List<PcCountQr> pcCountQrs = chiCountMapper.selectByTypeDrNameDate(drName, drugNo, disNo1, disNo2, startDate, endDate, drPhone, drNo);
                 //查询结果总数
                 Long total = pa.getTotal();
                 //创建分页条件
-                PageInfo<PcCountQr> pageData = new PageInfo<PcCountQr>(pcCountQrs,total.intValue());
+                PageInfo<PcCountQr> pageData = new PageInfo<PcCountQr>(pcCountQrs, total.intValue());
 
                 response.setStatus(0);
                 response.setMsg("查询成功");
                 response.setData(pageData);
-            }else{
+            } else {
                 System.out.println(drName);
                 System.out.println(medOrderType);
                 //西药处方
-                Page<?> pa =  PageHelper.startPage(page, rows);
-                List<PcCountQr> pcCountQrs = countMapper.count1(drName,drugNo,drPhone,disNo1,disNo2,startDate,endDate,drNo);
-                for (PcCountQr pcCountQr:pcCountQrs){
-                    pcCountQr.setSum(pcCountQr.getAddSum()+pcCountQr.getSaveSum());
+                Page<?> pa = PageHelper.startPage(page, rows);
+                List<PcCountQr> pcCountQrs = countMapper.count1(drName, drugNo, drPhone, disNo1, disNo2, startDate, endDate, drNo);
+                for (PcCountQr pcCountQr : pcCountQrs) {
+                    pcCountQr.setSum(pcCountQr.getAddSum() + pcCountQr.getSaveSum());
                 }
                 //查询结果总数
                 Long total = pa.getTotal();
                 //创建分页条件
-                PageInfo<PcCountQr> pageData = new PageInfo<PcCountQr>(pcCountQrs,total.intValue());
+                PageInfo<PcCountQr> pageData = new PageInfo<PcCountQr>(pcCountQrs, total.intValue());
 
                 response.setStatus(0);
                 response.setMsg("查询成功");
@@ -1041,12 +1083,12 @@ public class YzyptServiceImpl implements YzyptService {
             }
             Page<?> pa = PageHelper.startPage(page, rows);
             List<DrInfoQr> drq = drDisRelationMapper.selectByDisNo(Long.valueOf(disNo), name, phone);
-            for(DrInfoQr drInfoQr:drq){
+            for (DrInfoQr drInfoQr : drq) {
                 DrInfoQr drInfoQr1 = drInfoMapper.selectByDrNo(drInfoQr.getDrNo());
                 drInfoQr.setDisableFlag(drInfoQr1.getDisableFlag());
                 drInfoQr.setIdNo(drInfoQr1.getIdNo());
                 drInfoQr.setType(drInfoQr1.getType());
-                if(drInfoQr1.getIdNo()!=null&&!drInfoQr1.getIdNo().equals("null")&&!drInfoQr1.getIdNo().equals("")){
+                if (drInfoQr1.getIdNo() != null && !drInfoQr1.getIdNo().equals("null") && !drInfoQr1.getIdNo().equals("")) {
                     drInfoQr.setAge(IdNOToAge(drInfoQr1.getIdNo()));
                 }
             }
@@ -1102,17 +1144,17 @@ public class YzyptServiceImpl implements YzyptService {
     }
 
 
-    public static int IdNOToAge(String IdNO){
+    public static int IdNOToAge(String IdNO) {
         int leh = IdNO.length();
-        String dates="";
+        String dates = "";
         if (leh == 18) {
             int se = Integer.valueOf(IdNO.substring(leh - 1)) % 2;
             dates = IdNO.substring(6, 10);
             SimpleDateFormat df = new SimpleDateFormat("yyyy");
-            String year=df.format(new Date());
-            int u=Integer.parseInt(year)-Integer.parseInt(dates);
+            String year = df.format(new Date());
+            int u = Integer.parseInt(year) - Integer.parseInt(dates);
             return u;
-        }else{
+        } else {
             dates = IdNO.substring(6, 8);
             return Integer.parseInt(dates);
         }

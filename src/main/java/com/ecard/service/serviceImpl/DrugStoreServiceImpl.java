@@ -7,6 +7,7 @@ import com.ecard.pojo.ResponseHasData;
 import com.ecard.pojo.queryResult.*;
 import com.ecard.service.DrugStoreService;
 import com.ecard.utils.RoleUtil;
+import com.ecard.utils.WeiXinUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -343,9 +344,13 @@ public class DrugStoreServiceImpl implements DrugStoreService {
 
             List<PtOpen> ptOpen = ptOpenMapper.selectByPtNo(mallOrder.getPtNo());
 
-            /*if(shippingStatus==0&&shippingCompany!=null&&!"".equals(shippingCompany)&&shippingNo!=null&&!"".equals(shippingNo)){
-                WeiXinUtils.shippingRemind( ptOpen.get(0).getOpenId(), goods.getGoodsName(), shippingStatus, shippingCompany, shippingNo);
-            }*/
+            if(shippingStatus==0&&shippingCompany!=null&&!"".equals(shippingCompany)&&shippingNo!=null&&!"".equals(shippingNo)){
+                if(mallOrder.getPlatform()==1){
+                    WeiXinUtils.shippingRemind( ptOpen.get(0).getOpenId(), goods.getGoodsName(), shippingStatus, shippingCompany, shippingNo,mallOrder.getPlatform());
+                }else if(mallOrder.getPlatform()==2){
+                    WeiXinUtils.shippingRemind( ptOpen.get(0).getSjOpenId(), goods.getGoodsName(), shippingStatus, shippingCompany, shippingNo,mallOrder.getPlatform());
+                }
+            }
 
             response.setStatus(0);
             response.setMsg("修改成功");
@@ -362,7 +367,7 @@ public class DrugStoreServiceImpl implements DrugStoreService {
         int leh = IdNO.length();
         String dates="";
         if (leh == 18) {
-            int se = Integer.valueOf(IdNO.substring(leh - 1)) % 2;
+            //int se = Integer.valueOf(IdNO.substring(leh - 1)) % 2;
             dates = IdNO.substring(6, 10);
             SimpleDateFormat df = new SimpleDateFormat("yyyy");
             String year=df.format(new Date());

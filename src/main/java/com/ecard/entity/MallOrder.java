@@ -69,6 +69,16 @@ public class MallOrder {
     private Long packetId;
     @ApiModelProperty(value = "红包金额", name = "packetAmount")
     private BigDecimal packetAmount;
+    @ApiModelProperty(value = "平台标识(1:易臻云2:视界)", name = "platform")
+    private int platform;
+
+    public int getPlatform() {
+        return platform;
+    }
+
+    public void setPlatform(int platform) {
+        this.platform = platform;
+    }
 
     public BigDecimal getPacketAmount() {
         return packetAmount;

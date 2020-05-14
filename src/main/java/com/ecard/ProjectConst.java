@@ -6,10 +6,14 @@ package com.ecard;
  * @desc 项目相关的静态量
  **/
 public class ProjectConst {
-	
+
 	public static final String PROJECT_APPID = "wx5a917cabd0432687";
-	
+
 	public static final String PROJECT_APPSECRET="44076cfd93495db70c64b1b769d6781e";
+
+    public static final String PROJECT_APPID_SJ = "wx4224aa99aacaba5b";
+
+    public static final String PROJECT_APPSECRET_SJ="ce50acd5ec7cbc201fd0569beb71c9eb";
 	
     /**
      * 用于获取当前与微信公众号交互的用户信息的接口（一般是用第一个接口地址）

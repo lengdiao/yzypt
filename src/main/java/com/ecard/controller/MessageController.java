@@ -37,7 +37,7 @@ public class MessageController {
     }
 
     /**
-     * 医生留言给指定病人
+     * 病人留言给指定医生
      *
      * @param drNo
      * @param ptNo
@@ -45,7 +45,7 @@ public class MessageController {
      * @return
      */
     @PostMapping(value = "/insertMsgByPtNo")
-    @ApiOperation(value = "医生留言给指定病人", httpMethod = "POST")
+    @ApiOperation(value = "病人留言给指定医生", httpMethod = "POST")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType="query", name = "drNo", value = "医生编号", dataType = "String"),
             @ApiImplicitParam(paramType="query", name = "ptNo", value = "病人编号", dataType = "String"),

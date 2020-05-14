@@ -40,7 +40,9 @@ public class DoctorController {
             @ApiImplicitParam(paramType="query", name = "disableFlag", value = "停用标志", dataType = "Integer"),
             @ApiImplicitParam(paramType="query", name = "type", value = "1:中医2：西医", dataType = "Integer"),
             @ApiImplicitParam(paramType="query", name = "province", value = "省名", dataType = "String"),
-            @ApiImplicitParam(paramType="query", name = "city", value = "市名", dataType = "String")
+            @ApiImplicitParam(paramType="query", name = "city", value = "市名", dataType = "String"),
+            @ApiImplicitParam(paramType="query", name = "platform", value = "平台标识", dataType = "Integer"),
+            @ApiImplicitParam(paramType="query", name = "disNo", value = "代表编号", dataType = "Long")
     })
     public Response insert(
             @RequestParam(value = "drName") String drName,
@@ -58,10 +60,12 @@ public class DoctorController {
             @RequestParam(value = "disableFlag", required = false) Integer disableFlag,
             @RequestParam(value = "type", required = false) Integer type,
             @RequestParam(value = "province", required = false) String province,
-            @RequestParam(value = "city", required = false) String city) {
+            @RequestParam(value = "city", required = false) String city,
+            @RequestParam(value = "platform", required = false) int platform,
+            @RequestParam(value = "disNo", required = false) Long disNo) {
         Response response = doctorService.insert(drName, phone, idNo, hospital, chiefNo, age,
                 practiceProfile, signature, title, drTitleCert, drPracticeRegCert,
-                consultingHour, disableFlag,type,province,city);
+                consultingHour, disableFlag,type,province,city,platform,disNo);
         return response;
     }
 
@@ -90,7 +94,9 @@ public class DoctorController {
             @ApiImplicitParam(paramType="query", name = "disableFlag", value = "停用标志", dataType = "Integer"),
             @ApiImplicitParam(paramType="query", name = "type", value = "1:中医2：西医", dataType = "Integer"),
             @ApiImplicitParam(paramType="query", name = "province", value = "省名", dataType = "String"),
-            @ApiImplicitParam(paramType="query", name = "city", value = "市名", dataType = "String")
+            @ApiImplicitParam(paramType="query", name = "city", value = "市名", dataType = "String"),
+            @ApiImplicitParam(paramType="query", name = "platform", value = "平台标识", dataType = "Integer"),
+            @ApiImplicitParam(paramType="query", name = "disNo", value = "代表编号", dataType = "Long")
     })
     public Response update(
             @RequestParam(value = "drNo") Long drNo,
@@ -109,10 +115,12 @@ public class DoctorController {
             @RequestParam(value = "disableFlag", required = false) Integer disableFlag,
             @RequestParam(value = "type", required = false) Integer type,
             @RequestParam(value = "province", required = false) String province,
-            @RequestParam(value = "city", required = false) String city) {
+            @RequestParam(value = "city", required = false) String city,
+            @RequestParam(value = "platform", required = false) int platform,
+            @RequestParam(value = "disNo", required = false) Long disNo) {
         Response response = doctorService.update(drNo, drName, phone, idNo, hospital, chiefNo, age,
                 practiceProfile, signature, title, drTitleCert, drPracticeRegCert,
-                consultingHour, disableFlag,type,province,city);
+                consultingHour, disableFlag,type,province,city,platform,disNo);
         return response;
     }
 
@@ -616,14 +624,16 @@ public class DoctorController {
             @ApiImplicitParam(paramType="query", name = "name", value = "患者姓名或电话", dataType = "String"),
             @ApiImplicitParam(paramType="query", name = "drNo", value = "医生编号", dataType = "Long"),
             @ApiImplicitParam(paramType="query", name = "startDate", value = "开始时间", dataType = "String"),
+            @ApiImplicitParam(paramType="query", name = "endDate", value = "结束时间", dataType = "String"),
             @ApiImplicitParam(paramType="query", name = "drugNo", value = "药品编号", dataType = "Long")
     })
     public Response count(
             @RequestParam(value = "name",required = false) String name,
             @RequestParam(value="drNo") Long drNo,
             @RequestParam(value="startDate",required = false) String startDate,
+            @RequestParam(value="endDate",required = false) String endDate,
             @RequestParam(value = "drugNo",required = false) Long drugNo) {
-        Response response = doctorService.count(name,drNo,startDate,drugNo);
+        Response response = doctorService.count(name,drNo,startDate,endDate,drugNo);
         return response;
     }
 
